@@ -18,7 +18,7 @@
 This library is used to develop plugins used for use with [Millennium](https://github.com/SteamClientHomebrew/Millennium).
 
 
-This repository is a optimistic fork from [Decky Loader's](https://github.com/SteamDeckHomebrew/decky-loader) frontend library for developing plugins ([decky-frontend-lib](https://github.com/SteamDeckHomebrew/decky-frontend-lib)). Decky loader is a plugin loader for the Steam Deck similar to this project. Millennium's plugin loader portion was heavily inspired by decky, and it will hopefully serve to decky's  existing library, and add functionality to portions of the Steam Client that weren't previously supported.
+This repository is a optimistic fork from [Decky Loader's](https://github.com/SteamDeckHomebrew/decky-loader) frontend library for developing plugins ([decky-frontend-lib](https://github.com/SteamDeckHomebrew/decky-frontend-lib)). Decky loader is a plugin loader for the Steam Deck similar to this project. Millennium's plugin loader portion was heavily inspired by decky, and it will hopefully serve to extend decky's existing library, and add functionality to portions of the Steam Client that weren't previously supported.
 
 With that being said, any issues you encounter while developing should be fowarded here, and not the Decky developers.
 
