@@ -1,7 +1,7 @@
 {
-  "name": "decky-frontend-lib",
+  "name": "millennium-lib",
   "version": "3.25.0",
-  "description": "A library for building decky plugins",
+  "description": "A library for building decky plugins; Based on decky-frontend-lib",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
@@ -19,27 +19,6 @@
     "/src",
     "/dist"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SteamDeckHomebrew/decky-frontend-lib.git"
-  },
-  "keywords": [
-    "decky",
-    "steam-deck",
-    "steam",
-    "components"
-  ],
-  "author": "Jonas Dellinger <jonas@dellinger.dev>",
-  "license": "LGPL-2.1",
-  "bugs": {
-    "url": "https://github.com/SteamDeckHomebrew/decky-frontend-lib/issues"
-  },
-  "homepage": "https://github.com/SteamDeckHomebrew/decky-frontend-lib#readme",
-  "config": {
-    "commitizen": {
-      "path": "@commitlint/cz-commitlint"
-    }
-  },
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
     "@commitlint/config-conventional": "^17.0.2",

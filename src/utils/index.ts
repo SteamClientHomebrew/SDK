@@ -1,4 +1,3 @@
-export * from './patcher';
 export * from './react';
 
 declare global {

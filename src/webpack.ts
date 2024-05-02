@@ -11,23 +11,8 @@ type FilterFn = (module: any) => boolean;
 type FindFn = (module: any) => any;
 
 export let webpackCache: any = {};
-let hasWebpack5 = false;
 
-if (window.webpackJsonp && !window.webpackJsonp.deckyShimmed) {
-  // Webpack 4, currently on stable
-  const wpRequire = window.webpackJsonp.push([
-    [],
-    { get_require: (mod: any, _exports: any, wpRequire: any) => (mod.exports = wpRequire) },
-    [['get_require']],
-  ]);
-
-  delete wpRequire.m.get_require;
-  delete wpRequire.c.get_require;
-  webpackCache = wpRequire.c;
-} else {
-  // Webpack 5, currently on beta
-  hasWebpack5 = true;
-  const id = Math.random();
+const id = Math.random();
   let initReq: any;
   window.webpackChunksteamui.push([
     [id],
@@ -43,13 +28,8 @@ if (window.webpackJsonp && !window.webpackJsonp.deckyShimmed) {
       console.debug("[DFL:Webpack]: Ignoring require error for module", i, e);
     }
   }
-}
 
-export const allModules: Module[] = hasWebpack5
-  ? Object.values(webpackCache).filter((x) => x)
-  : Object.keys(webpackCache)
-      .map((x) => webpackCache[x].exports)
-      .filter((x) => x);
+export const allModules: Module[] = Object.values(webpackCache).filter((x) => x)
 
 export const findModule = (filter: FilterFn) => {
   for (const m of allModules) {
