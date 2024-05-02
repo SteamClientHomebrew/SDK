@@ -13,9 +13,11 @@
 [docs-badge]: https://img.shields.io/badge/wiki-green?labelColor=0c0d10&color=3a71c1&style=for-the-badge&logo=readthedocs&logoColor=3a71c1
 [docs-link]: https://github.com/SteamClientHomebrew/Millennium/wiki
 
-Library used to develop plugins used for use with [Millennium](https://github.com/SteamClientHomebrew/Millennium).
-
 ## Introduction
+
+This library is used to develop plugins used for use with [Millennium](https://github.com/SteamClientHomebrew/Millennium).
+
+
 This repository is a optimistic fork from [Decky Loader's](https://github.com/SteamDeckHomebrew/decky-loader) frontend library for developing plugins ([decky-frontend-lib](https://github.com/SteamDeckHomebrew/decky-frontend-lib)). Decky loader is a plugin loader for the Steam Deck similar to this project. Millennium's plugin loader portion was heavily inspired by decky, and it will hopefully serve to decky's  existing library, and add functionality to portions of the Steam Client that weren't previously supported.
 
 With that being said, any issues you encounter while developing should be fowarded here, and not the Decky developers.
@@ -34,8 +36,4 @@ This library can also theoretically be used to extend existing UI elements of th
 
 ### Getting Started (Developers)
 
-If you would like a feature added to decky-frontend-lib, please request it via a Github issue.  
-
-If you want to start making a plugin with decky-frontend-lib, please direct your attention to the [decky-plugin-template](https://github.com/SteamDeckHomebrew/decky-plugin-template) repository.
-
-This library can be found on [npm](https://www.npmjs.com/package/decky-frontend-lib) and as such you can pull it without a local copy for your project as needed.
+If you would like a feature added to library, please request it via a Github issue.  
