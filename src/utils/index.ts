@@ -1,115 +1,41 @@
-import * as React from 'react';
-
-// this shouldn't need to be redeclared but it does for some reason
+export * from './react';
 
 declare global {
-  interface Window {
-    SP_REACT: typeof React;
-  }
+  var FocusNavController: any;
+  var GamepadNavTree: any;
 }
 
-export function fakeRenderComponent(fun: Function, customHooks: any = {}): any {
-  const hooks = (window.SP_REACT as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher
-    .current;
-
-  // TODO: add more hooks
-
-  let oldHooks = {
-    useContext: hooks.useContext,
-    useCallback: hooks.useCallback,
-    useLayoutEffect: hooks.useLayoutEffect,
-    useEffect: hooks.useEffect,
-    useMemo: hooks.useMemo,
-    useRef: hooks.useRef,
-    useState: hooks.useState,
-  };
-
-  hooks.useCallback = (cb: Function) => cb;
-  hooks.useContext = (cb: any) => cb._currentValue;
-  hooks.useLayoutEffect = (_: Function) => {}; //cb();
-  hooks.useMemo = (cb: Function, _: any[]) => cb;
-  hooks.useEffect = (_: Function) => {}; //cb();
-  hooks.useRef = (val: any) => ({ current: val || {} });
-  hooks.useState = (v: any) => {
-    let val = v;
-
-    return [val, (n: any) => (val = n)];
-  };
-
-  Object.assign(hooks, customHooks);
-
-  const res = fun(hooks);
-
-  Object.assign(hooks, oldHooks);
-
-  return res;
+export function joinClassNames(...classes: string[]): string {
+  return classes.join(' ');
 }
 
-export function wrapReactType(node: any, prop: any = 'type') {
-  if (node[prop]?.__DECKY_WRAPPED) {
-    return node[prop];
-  } else {
-    return (node[prop] = { ...node[prop], __DECKY_WRAPPED: true });
-  }
+export function sleep(ms: number) {
+  return new Promise((res) => setTimeout(res, ms));
 }
 
-export function wrapReactClass(node: any, prop: any = 'type') {
-  if (node[prop]?.__DECKY_WRAPPED) {
-    return node[prop];
-  } else {
-    const cls = node[prop];
-    const wrappedCls = class extends cls {
-      static __DECKY_WRAPPED = true;
-    };
-    return (node[prop] = wrappedCls);
-  }
+/**
+ * Finds the SP window, since it is a render target as of 10-19-2022's beta
+ */
+export function findSP(): Window {
+  // old (SP as host)
+  if (document.title == 'SP') return window;
+  // new (SP as popup)
+  const navTrees = getGamepadNavigationTrees();
+  return navTrees?.find((x: any) => x.m_ID == 'root_1_').Root.Element.ownerDocument.defaultView;
 }
 
-export function getReactRoot(o: HTMLElement | Element | Node) {
-  return (
-    o[Object.keys(o).find((k) => k.startsWith('__reactContainer$')) as string] ||
-    o['_reactRootContainer']?._internalRoot?.current
-  );
+/**
+ * Gets the correct FocusNavController, as the Feb 22 2023 beta has two for some reason.
+ */
+export function getFocusNavController(): any {
+  return window.GamepadNavTree?.m_context?.m_controller || window.FocusNavController;
 }
 
-export function getReactInstance(o: HTMLElement | Element | Node) {
-  return (
-    o[Object.keys(o).find((k) => k.startsWith('__reactFiber')) as string] ||
-    o[Object.keys(o).find((k) => k.startsWith('__reactInternalInstance')) as string]
-  );
+/**
+ * Gets the gamepad navigation trees as Valve seems to be moving them.
+ */
+export function getGamepadNavigationTrees(): any {
+  const focusNav = getFocusNavController();
+  const context = focusNav.m_ActiveContext || focusNav.m_LastActiveContext;
+  return context?.m_rgGamepadNavigationTrees;
 }
-
-// Based on https://github.com/GooseMod/GooseMod/blob/9ef146515a9e59ed4e25665ed365fd72fc0dcf23/src/util/react.js#L20
-export interface findInTreeOpts {
-  walkable?: string[];
-  ignore?: string[];
-}
-
-export declare type findInTreeFilter = (element: any) => boolean;
-
-export const findInTree = (parent: any, filter: findInTreeFilter, opts: findInTreeOpts): any => {
-  const { walkable = null, ignore = [] } = opts ?? {};
-
-  if (!parent || typeof parent !== 'object') {
-    // Parent is invalid to search through
-    return null;
-  }
-
-  if (filter(parent)) return parent; // Parent matches, just return
-
-  if (Array.isArray(parent)) {
-    // Parent is an array, go through values
-    return parent.map((x) => findInTree(x, filter, opts)).find((x) => x);
-  }
-
-  // Parent is an object, go through values (or option to only use certain keys)
-  return (walkable || Object.keys(parent))
-    .map((x) => !ignore.includes(x) && findInTree(parent[x], filter, opts))
-    .find((x: any) => x);
-};
-
-export const findInReactTree = (node: any, filter: findInTreeFilter) =>
-  findInTree(node, filter, {
-    // Specialised findInTree for React nodes
-    walkable: ['props', 'children', 'child', 'sibling'],
-  });
