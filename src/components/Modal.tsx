@@ -176,3 +176,33 @@ export const SimpleModal = ModalModuleProps.find(prop => {
 }) as FC<SimpleModalProps>;
 
 export const ModalPosition = ModalModuleProps.find(prop => prop?.toString().includes(".ModalPosition,fallback:")) as FC<SimpleModalProps>;
+
+export enum MessageBoxResult {
+  close,
+  okay
+}
+
+interface MessageBoxProps {
+  props: ConfirmModalProps
+  close(type: MessageBoxResult): void
+}
+
+const RenderMessageBox: React.FC<MessageBoxProps> = ({ props, close }) => {
+
+  return (
+    <ConfirmModal 
+      onCancel={() => close(MessageBoxResult.close)}
+      onOK={() => close(MessageBoxResult.okay)}
+      {...props}
+    />    
+  )
+}
+
+export const ShowMessageBox = (modalProps: ShowModalProps, messageProps: ConfirmModalProps): Promise<MessageBoxResult> => {
+
+  const windowOptions: ShowModalProps = modalProps
+
+  return new Promise<MessageBoxResult>((resolve, _) => {
+      const modal: ShowModalResult = showModal(<RenderMessageBox props={messageProps} close={(type: MessageBoxResult) => { resolve(type); modal.Close() }}/>, window, windowOptions);
+  })
+}
