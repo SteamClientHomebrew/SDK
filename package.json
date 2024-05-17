@@ -13,12 +13,7 @@
   },
   "scripts": {
     "start": "./src/bundler/bundler.mjs",
-    "build": "shx rm -rf dist && tsc -b",
-    "dev": "tsc -b -w",
-    "docs": "typedoc --theme wiki-js --tsconfig ./tsconfig.json src/**/*",
-    "test": "echo 'No tests for now!'",
-    "prepare": "husky install",
-    "commit": "git-cz"
+    "build": "shx rm -rf dist && tsc -b"
   },
   "files": [
     "/lib",
@@ -35,19 +30,14 @@
     "@types/react": "16.14.0",
     "@types/react-router": "5.1.18",
     "commitizen": "^4.2.4",
-    "husky": "^8.0.1",
     "import-sort-style-module": "^6.0.0",
     "jest": "^27.5.1",
     "minimist": "^1.2.6",
     "prettier": "^2.7.1",
     "prettier-plugin-import-sort": "^0.0.7",
-    "semantic-release": "^19.0.3",
+    "semantic-release": "^23.1.1",
     "shx": "^0.3.4",
     "ts-jest": "^27.1.4",
-    "typedoc": "^0.23.24",
-    "typedoc-plugin-mdn-links": "^2.0.0",
-    "typedoc-plugin-missing-exports": "^1.0.0",
-    "typedoc-wikijs-theme": "^1.0.5",
     "typescript": "^4.9.5"
   },
   "pnpm": {
