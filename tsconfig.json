@@ -19,6 +19,6 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true
   },
-  "include": ["src", "globals.d.ts"],
+  "include": ["src", "src/globals.d.ts"],
   "exclude": ["src/transpiler", "node_modules"]
 }
