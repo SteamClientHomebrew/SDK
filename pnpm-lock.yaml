@@ -4360,10 +4360,16 @@ snapshots:
       conventional-changelog-angular: 7.0.0
       conventional-commits-filter: 4.0.0
       conventional-commits-parser: 5.0.0
+      conventional-changelog-angular: 7.0.0
+      conventional-commits-filter: 4.0.0
+      conventional-commits-parser: 5.0.0
       debug: 4.3.4
       import-from-esm: 1.3.4
       lodash-es: 4.17.21
+      import-from-esm: 1.3.4
+      lodash-es: 4.17.21
       micromatch: 4.0.5
+      semantic-release: 23.1.1(typescript@4.9.5)
       semantic-release: 23.1.1(typescript@4.9.5)
     transitivePeerDependencies:
       - supports-color
@@ -4383,6 +4389,7 @@ snapshots:
       micromatch: 4.0.5
       p-reduce: 2.1.0
       semantic-release: 23.1.1(typescript@4.9.5)
+      semantic-release: 23.1.1(typescript@4.9.5)
     transitivePeerDependencies:
       - supports-color
 
@@ -4394,8 +4401,23 @@ snapshots:
       '@octokit/plugin-throttling': 9.3.0(@octokit/core@6.1.2)
       '@semantic-release/error': 4.0.0
       aggregate-error: 5.0.0
+      '@octokit/core': 6.1.2
+      '@octokit/plugin-paginate-rest': 11.3.0(@octokit/core@6.1.2)
+      '@octokit/plugin-retry': 7.1.1(@octokit/core@6.1.2)
+      '@octokit/plugin-throttling': 9.3.0(@octokit/core@6.1.2)
+      '@semantic-release/error': 4.0.0
+      aggregate-error: 5.0.0
       debug: 4.3.4
       dir-glob: 3.0.1
+      globby: 14.0.1
+      http-proxy-agent: 7.0.2
+      https-proxy-agent: 7.0.4
+      issue-parser: 7.0.0
+      lodash-es: 4.17.21
+      mime: 4.0.3
+      p-filter: 4.1.0
+      semantic-release: 23.1.1(typescript@4.9.5)
+      url-join: 5.0.0
       globby: 14.0.1
       http-proxy-agent: 7.0.2
       https-proxy-agent: 7.0.4
@@ -4418,7 +4440,10 @@ snapshots:
       nerf-dart: 1.0.0
       normalize-url: 8.0.1
       npm: 10.8.0
+      normalize-url: 8.0.1
+      npm: 10.8.0
       rc: 1.2.8
+      read-pkg: 9.0.1
       read-pkg: 9.0.1
       registry-auth-token: 5.0.2
       semantic-release: 23.1.1(typescript@4.9.5)
@@ -4431,7 +4456,17 @@ snapshots:
       conventional-changelog-writer: 7.0.1
       conventional-commits-filter: 4.0.0
       conventional-commits-parser: 5.0.0
+      conventional-changelog-angular: 7.0.0
+      conventional-changelog-writer: 7.0.1
+      conventional-commits-filter: 4.0.0
+      conventional-commits-parser: 5.0.0
       debug: 4.3.4
+      get-stream: 7.0.1
+      import-from-esm: 1.3.4
+      into-stream: 7.0.0
+      lodash-es: 4.17.21
+      read-pkg-up: 11.0.0
+      semantic-release: 23.1.1(typescript@4.9.5)
       get-stream: 7.0.1
       import-from-esm: 1.3.4
       into-stream: 7.0.0
@@ -4998,6 +5033,7 @@ snapshots:
     dependencies:
       import-fresh: 3.3.0
       js-yaml: 4.1.0
+      js-yaml: 4.1.0
       parse-json: 5.2.0
       path-type: 4.0.0
     optionalDependencies:
@@ -5005,6 +5041,7 @@ snapshots:
 
   cosmiconfig@9.0.0(typescript@4.9.5):
     dependencies:
+      env-paths: 2.2.1
       env-paths: 2.2.1
       import-fresh: 3.3.0
       js-yaml: 4.1.0
@@ -5149,6 +5186,7 @@ snapshots:
 
   env-ci@11.0.0:
     dependencies:
+      execa: 8.0.1
       execa: 8.0.1
       java-properties: 1.0.2
 
@@ -5625,6 +5663,7 @@ snapshots:
 
   http-proxy-agent@7.0.2:
     dependencies:
+      agent-base: 7.1.1
       agent-base: 7.1.1
       debug: 4.3.4
     transitivePeerDependencies:
@@ -6328,6 +6367,7 @@ snapshots:
       saxes: 5.0.1
       symbol-tree: 3.2.4
       tough-cookie: 4.1.4
+      tough-cookie: 4.1.4
       w3c-hr-time: 1.0.2
       w3c-xmlserializer: 2.0.0
       webidl-conversions: 6.1.0
@@ -7000,6 +7040,10 @@ snapshots:
       execa: 9.1.0
       figures: 6.1.0
       find-versions: 6.0.0
+      env-ci: 11.0.0
+      execa: 9.1.0
+      figures: 6.1.0
+      find-versions: 6.0.0
       get-stream: 6.0.1
       git-log-parser: 1.2.0
       hook-std: 3.0.0
@@ -7008,7 +7052,16 @@ snapshots:
       lodash-es: 4.17.21
       marked: 12.0.2
       marked-terminal: 7.0.0(marked@12.0.2)
+      hook-std: 3.0.0
+      hosted-git-info: 7.0.2
+      import-from-esm: 1.3.4
+      lodash-es: 4.17.21
+      marked: 12.0.2
+      marked-terminal: 7.0.0(marked@12.0.2)
       micromatch: 4.0.5
+      p-each-series: 3.0.0
+      p-reduce: 3.0.0
+      read-package-up: 11.0.0
       p-each-series: 3.0.0
       p-reduce: 3.0.0
       read-package-up: 11.0.0
