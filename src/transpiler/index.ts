@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import chalk from 'chalk'
 import { BuildType, ValidateParameters } from "./parameters"
 import { CheckForUpdates } from "./updater"
 import { ValidatePlugin } from './pluginValidate'

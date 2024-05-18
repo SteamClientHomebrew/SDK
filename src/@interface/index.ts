@@ -12,6 +12,10 @@ declare global {
  * Steam window popup manager. 
  */
 declare const g_PopupManager: any; 
+/**
+ * pre export module from rollup
+ */
+declare const exports: any;
 
 window.MILLENNIUM_BACKEND_IPC = {
     postMessage: (messageId: number, contents: string) => {

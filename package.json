@@ -1,6 +1,6 @@
 {
   "name": "millennium-lib",
-  "version": "3.3.9",
+  "version": "3.4.0",
   "description": "A support library for creating typescript plugins with Millennium.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,6 +27,7 @@
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/git": "^10.0.1",
     "@types/jest": "^27.4.1",
+    "@types/node": "^20.12.12",
     "@types/react": "16.14.0",
     "@types/react-router": "5.1.18",
     "commitizen": "^4.2.4",
@@ -60,6 +61,7 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-replace": "^5.0.5",
     "@rollup/plugin-terser": "^0.4.4",
+    "chalk": "^4.1.0",
     "rollup": "^4.17.2",
     "rollup-plugin-import-css": "^3.5.0",
     "rollup-plugin-typescript2": "^0.36.0"
