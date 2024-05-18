@@ -1,6 +1,6 @@
 {
   "name": "millennium-lib",
-  "version": "3.3.8",
+  "version": "3.3.9",
   "description": "A support library for creating typescript plugins with Millennium.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,10 +9,10 @@
   "type": "module",
   "license": "LGPL-2.1-only",
   "bin": {
-    "millennium-lib": "./src/transpiler/node/index.js"
+    "millennium-lib": "./linker/index.js"
   },
   "scripts": {
-    "start": "./src/transpiler/node/index.js",
+    "start": "./linker/index.js",
     "build": "shx rm -rf dist && tsc -b && cd ./src/transpiler/ && rollup -c"
   },
   "files": [

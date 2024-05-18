@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import { Logger } from "./logger"
 
 /***
  * @brief print the parameter list to the stdout
@@ -33,8 +34,8 @@ export const ValidateParameters = (args: Array<string>): ParameterProps => {
     
     // startup args are invalid
     if (!args.includes("--build")) {
-        console.error('\x1b[91m%s\x1b[0m', 'invalid parameters');
-        PrintParamHelp()
+        Logger.Error("Received invalid arguments...");
+        PrintParamHelp();
         process.exit();
     }
     
@@ -42,11 +43,13 @@ export const ValidateParameters = (args: Array<string>): ParameterProps => {
     {
         if (args[i] === "--build") 
         {
-            switch (args[i + 1]) {
-                case "dev": typeProp = BuildType.DevBuild
-                case "prod": typeProp = BuildType.ProdBuild
+            const BuildMode: string = args[i + 1]
+
+            switch (BuildMode) {
+                case "dev": typeProp = BuildType.DevBuild; break
+                case "prod": typeProp = BuildType.ProdBuild; break
                 default: {
-                    console.error(chalk.red('--build parameter must be preceded by build type [dev, prod]'));
+                    Logger.Error('--build parameter must be preceded by build type [dev, prod]');
                     process.exit();
                 }
             }
@@ -54,7 +57,7 @@ export const ValidateParameters = (args: Array<string>): ParameterProps => {
     
         if (args[i] == "--target") {
             if (args[i + 1] === undefined) {
-                console.error(chalk.red('--target parameter must be preceded by system path'));
+                Logger.Error('--target parameter must be preceded by system path');
                 process.exit();
             }
 

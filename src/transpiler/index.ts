@@ -5,22 +5,32 @@ import { BuildType, ValidateParameters } from "./parameters"
 import { CheckForUpdates } from "./updater"
 import { ValidatePlugin } from './pluginValidate'
 import { TranspilerPluginComponent, TranspilerProps } from './transpiler'
+import { performance } from 'perf_hooks';
+import { Logger } from './logger'
+
+declare global {
+    var PerfStartTime: number;
+}
 
 const CheckModuleUpdates = async () => {
     return await CheckForUpdates()
 }
 
 const StartCompilerModule = () => {
-    const parameters = ValidateParameters( process.argv.slice(2) );
 
-    console.log("[+] " + chalk.white.bold("warming compiler..."));
-    console.log(chalk.magenta.bold("--target: ") + chalk.white(parameters.targetPlugin));
-    console.log(chalk.magenta.bold("--build: ") + chalk.white(parameters.type));
+    const parameters   = ValidateParameters( process.argv.slice(2) );
+    const bTersePlugin = parameters.type == BuildType.ProdBuild
+
+    Logger.Tree("Transpiler config:", {
+        target: parameters.targetPlugin,
+        build: BuildType[parameters.type],
+        minify: bTersePlugin
+    })
 
     ValidatePlugin(parameters.targetPlugin).then((json: any) => {
 
         const props: TranspilerProps = {
-            bTersePlugin: parameters.type == BuildType.ProdBuild,
+            bTersePlugin: bTersePlugin,
             strPluginInternalName: json?.name
         }
 
@@ -36,6 +46,7 @@ const StartCompilerModule = () => {
 }
 
 const Initialize = () => {
+    global.PerfStartTime = performance.now();
 
     CheckModuleUpdates().then(() => {
         StartCompilerModule()

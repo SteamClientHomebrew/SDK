@@ -12,6 +12,46 @@ import typescript from 'rollup-plugin-typescript2';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import css from 'rollup-plugin-import-css';
 import terser from '@rollup/plugin-terser';
+import { performance as performance$1 } from 'perf_hooks';
+
+const Logger = {
+    Info: (...LogMessage) => {
+        console.log(chalk.magenta.bold("[+]"), ...LogMessage);
+    },
+    Warn: (...LogMessage) => {
+        console.log(chalk.yellow.bold("[*]"), ...LogMessage);
+    },
+    Error: (...LogMessage) => {
+        console.log(chalk.red.bold("[-]"), ...LogMessage);
+    },
+    Tree: (strTitle, LogObject) => {
+        console.log(chalk.magenta.bold("[┬]"), strTitle);
+        const isLocalPath = (strTestPath) => {
+            // Regular expression to match common file path patterns
+            const filePathRegex = /^(\/|\.\/|\.\.\/|\w:\/)?([\w-.]+\/)*[\w-.]+\.\w+$/;
+            return filePathRegex.test(strTestPath);
+        };
+        const entries = Object.entries(LogObject);
+        const totalEntries = entries.length;
+        for (const [index, [key, value]] of entries.entries()) {
+            const connector = index === totalEntries - 1 ? "└" : "├";
+            let color = chalk.white;
+            switch (typeof value) {
+                case typeof String(): {
+                    color = isLocalPath(value) ? chalk.blueBright : chalk.white;
+                    break;
+                }
+                case typeof Boolean():
+                    color = chalk.green;
+                    break;
+                case typeof Number():
+                    color = chalk.yellow;
+                    break;
+            }
+            console.log(chalk.magenta.bold(` ${connector}──${key}:`), color(value));
+        }
+    }
+};
 
 /***
  * @brief print the parameter list to the stdout
@@ -35,24 +75,29 @@ const ValidateParameters = (args) => {
     }
     // startup args are invalid
     if (!args.includes("--build")) {
-        console.error('\x1b[91m%s\x1b[0m', 'invalid parameters');
+        Logger.Error("Received invalid arguments...");
         PrintParamHelp();
         process.exit();
     }
     for (let i = 0; i < args.length; i++) {
         if (args[i] === "--build") {
-            switch (args[i + 1]) {
-                case "dev": typeProp = BuildType.DevBuild;
-                case "prod": typeProp = BuildType.ProdBuild;
+            const BuildMode = args[i + 1];
+            switch (BuildMode) {
+                case "dev":
+                    typeProp = BuildType.DevBuild;
+                    break;
+                case "prod":
+                    typeProp = BuildType.ProdBuild;
+                    break;
                 default: {
-                    console.error(chalk.red('--build parameter must be preceded by build type [dev, prod]'));
+                    Logger.Error('--build parameter must be preceded by build type [dev, prod]');
                     process.exit();
                 }
             }
         }
         if (args[i] == "--target") {
             if (args[i + 1] === undefined) {
-                console.error(chalk.red('--target parameter must be preceded by system path'));
+                Logger.Error('--target parameter must be preceded by system path');
                 process.exit();
             }
             targetProp = args[i + 1];
@@ -66,16 +111,17 @@ const ValidateParameters = (args) => {
 
 const CheckForUpdates = async () => {
     return new Promise(async (resolve) => {
-        const packageJsonPath = path.resolve(dirname(fileURLToPath(import.meta.url)), '../../package.json');
+        const packageJsonPath = path.resolve(dirname(fileURLToPath(import.meta.url)), '../package.json');
         const packageJson = JSON.parse(await readFile(packageJsonPath, 'utf8'));
         fetch("https://registry.npmjs.org/millennium-lib").then(response => response.json()).then(json => {
             if (json?.["dist-tags"]?.latest != packageJson.version) {
-                console.warn(`[+] millennium-lib@${packageJson.version} requires update to ${json?.["dist-tags"]?.latest}`);
-                console.log("   run `npm i millennium-lib` to get latest updates! ");
+                Logger.Tree(`millennium-lib@${packageJson.version} requires update to ${json?.["dist-tags"]?.latest}`, {
+                    cmd: "run `npm i millennium-lib` to get latest updates!"
+                });
                 resolve(true);
             }
             else {
-                console.log(`[+] millennium-lib@${packageJson.version} is up-to-date!`);
+                Logger.Info(`millennium-lib@${packageJson.version} is up-to-date!`);
                 resolve(false);
             }
         });
@@ -164,7 +210,7 @@ function InsertMillennium(props) {
             if (bundle[fileName].type != 'chunk') {
                 continue;
             }
-            process.stdout.write("[+] injecting millennium shims...");
+            Logger.Info("Injecting Millennium shims into module... " + chalk.green.bold("okay"));
             bundle[fileName].code = ContructFunctions([
                 // define the plugin name at the top of the bundle, so it can be used in wrapped functions
                 `const pluginName = "${props.strPluginInternalName}";`,
@@ -174,7 +220,6 @@ function InsertMillennium(props) {
                 // insert globalize function and run it
                 globalize.toString(), globalize.name + "()"
             ]);
-            console.log(chalk.green.bold(" okay"));
         }
     };
     return {
@@ -202,7 +247,6 @@ function GetPluginComponents(props) {
     return pluginList;
 }
 const TranspilerPluginComponent = async (props) => {
-    console.log("[?] tersing plugin frontend?...", props.bTersePlugin);
     const rollupConfig = {
         input: './frontend/index.tsx',
         plugins: GetPluginComponents(props),
@@ -219,13 +263,12 @@ const TranspilerPluginComponent = async (props) => {
             format: 'iife',
         },
     };
-    console.log("[+] starting build, this may take a few moments...");
+    Logger.Info("Starting build, this may take a few moments...");
     // Load the Rollup configuration file
     const bundle = await rollup(rollupConfig);
     const outputOptions = rollupConfig.output;
     await bundle.write(outputOptions);
-    // const end = performance.now();
-    // console.log('[+] done!', Number((end - start).toFixed(3)), 'ms elapsed.');
+    Logger.Info('Build succeeded!', Number((performance.now() - global.PerfStartTime).toFixed(3)), 'ms elapsed.');
 };
 
 const CheckModuleUpdates = async () => {
@@ -233,12 +276,15 @@ const CheckModuleUpdates = async () => {
 };
 const StartCompilerModule = () => {
     const parameters = ValidateParameters(process.argv.slice(2));
-    console.log("[+] " + chalk.white.bold("warming compiler..."));
-    console.log(chalk.magenta.bold("--target: ") + chalk.white(parameters.targetPlugin));
-    console.log(chalk.magenta.bold("--build: ") + chalk.white(parameters.type));
+    const bTersePlugin = parameters.type == BuildType.ProdBuild;
+    Logger.Tree("Transpiler config:", {
+        target: parameters.targetPlugin,
+        build: BuildType[parameters.type],
+        minify: bTersePlugin
+    });
     ValidatePlugin(parameters.targetPlugin).then((json) => {
         const props = {
-            bTersePlugin: parameters.type == BuildType.ProdBuild,
+            bTersePlugin: bTersePlugin,
             strPluginInternalName: json?.name
         };
         TranspilerPluginComponent(props);
@@ -251,6 +297,7 @@ const StartCompilerModule = () => {
     });
 };
 const Initialize = () => {
+    global.PerfStartTime = performance$1.now();
     CheckModuleUpdates().then(() => {
         StartCompilerModule();
     });

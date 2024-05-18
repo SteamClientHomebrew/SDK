@@ -8,6 +8,7 @@ import css from "rollup-plugin-import-css";
 import terser from '@rollup/plugin-terser';
 
 import chalk from 'chalk'
+import { Logger } from "./logger";
 
 declare global {
     interface Window {
@@ -79,7 +80,7 @@ function InsertMillennium(props: TranspilerProps)
 			if (bundle[fileName].type != 'chunk') {
 				continue 
 			}
-			process.stdout.write("[+] injecting millennium shims...");
+            Logger.Info("Injecting Millennium shims into module... " + chalk.green.bold("okay"))
 
 			bundle[fileName].code = ContructFunctions([    
                 // define the plugin name at the top of the bundle, so it can be used in wrapped functions
@@ -90,8 +91,6 @@ function InsertMillennium(props: TranspilerProps)
                 // insert globalize function and run it
 				globalize.toString(), globalize.name + "()"
 			])
-
-            console.log(chalk.green.bold(" okay"))
 		}
     }
 
@@ -124,8 +123,6 @@ function GetPluginComponents(props: TranspilerProps) {
 
 export const TranspilerPluginComponent = async (props: TranspilerProps) => {
     
-    console.log("[?] tersing plugin frontend?...", props.bTersePlugin)
-
     const rollupConfig: RollupOptions = {
         input: './frontend/index.tsx',
         plugins: GetPluginComponents(props),
@@ -143,13 +140,12 @@ export const TranspilerPluginComponent = async (props: TranspilerProps) => {
         },
     }
 
-    console.log("[+] starting build, this may take a few moments...")
+    Logger.Info("Starting build, this may take a few moments...")
     // Load the Rollup configuration file
     const bundle = await rollup(rollupConfig);
     const outputOptions = rollupConfig.output as OutputOptions;
 
     await bundle.write(outputOptions);
-    // const end = performance.now();
 
-    // console.log('[+] done!', Number((end - start).toFixed(3)), 'ms elapsed.');
+    Logger.Info('Build succeeded!', Number((performance.now() - global.PerfStartTime).toFixed(3)), 'ms elapsed.')
 }
