@@ -9,11 +9,11 @@
   "type": "module",
   "license": "LGPL-2.1-only",
   "bin": {
-    "millennium-lib": "./src/bundler/bundler.mjs"
+    "millennium-lib": "./src/transpiler/node/index.js"
   },
   "scripts": {
-    "start": "./src/bundler/bundler.mjs",
-    "build": "shx rm -rf dist && tsc -b"
+    "start": "./src/transpiler/node/index.js",
+    "build": "shx rm -rf dist && tsc -b && cd ./src/transpiler/ && rollup -c"
   },
   "files": [
     "/lib",

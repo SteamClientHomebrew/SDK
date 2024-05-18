@@ -20,5 +20,5 @@
     "skipLibCheck": true
   },
   "include": ["src", "globals.d.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["src/transpiler", "node_modules"]
 }
