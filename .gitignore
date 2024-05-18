@@ -33,7 +33,4 @@ Thumbs.db
 
 # Ignore built ts files
 dist/
-
-research/
-
-docs/
+linker/
