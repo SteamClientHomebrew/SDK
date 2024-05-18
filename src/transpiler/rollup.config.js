@@ -8,9 +8,5 @@ export default {
   output: {
     file: '../../linker/index.js'
   },
-  plugins: [
-    commonjs(),
-    typescript(),
-    json()
-  ]
+  plugins: [commonjs(), typescript(), json()]
 };
