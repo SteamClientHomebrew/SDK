@@ -2,7 +2,7 @@ declare global {
     interface Window {
         Millennium: Millennium,
         PLUGIN_LIST: any,
-        MILLENNIUM_BACKEND_IPC: any,
+        MILLENNIUM_BACKEND_IPC: typeof IPCMain,
         MILLENNIUM_IPC_SOCKET: WebSocket,
         CURRENT_IPC_CALL_COUNT: number
     }
@@ -17,7 +17,7 @@ declare const g_PopupManager: any;
  */
 declare const exports: any;
 
-window.MILLENNIUM_BACKEND_IPC = {
+const IPCMain = {
     postMessage: (messageId: number, contents: string) => {
         return new Promise((resolve: (value: unknown) => void) => {
 
@@ -41,6 +41,8 @@ window.MILLENNIUM_BACKEND_IPC = {
         });
     }
 }
+
+window.MILLENNIUM_BACKEND_IPC = IPCMain
 
 window.Millennium = {
     // @ts-ignore (ignore overloaded function)

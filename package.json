@@ -1,11 +1,11 @@
 {
   "name": "millennium-lib",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "A support library for creating typescript plugins with Millennium.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
-  "sideEffects": false,
+  "sideEffects": ["src/@interface/index.ts"],
   "type": "module",
   "license": "LGPL-2.1-only",
   "bin": {

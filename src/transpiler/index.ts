@@ -20,7 +20,7 @@ const StartCompilerModule = () => {
     const parameters   = ValidateParameters( process.argv.slice(2) );
     const bTersePlugin = parameters.type == BuildType.ProdBuild
 
-    Logger.Tree("Transpiler config:", {
+    Logger.Tree("Transpiler config: ", {
         target: parameters.targetPlugin,
         build: BuildType[parameters.type],
         minify: bTersePlugin

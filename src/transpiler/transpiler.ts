@@ -16,10 +16,7 @@ declare global {
     }
 }
 
-declare const pluginName: string, 
-              millennium_main: any,
-              MILLENNIUM_BACKEND_IPC: any
-
+declare const pluginName: string, millennium_main: any, MILLENNIUM_BACKEND_IPC: any
 
 export interface TranspilerProps {
     bTersePlugin?: boolean,
@@ -43,12 +40,11 @@ async function wrappedCallServerMethod(methodName: string, kwargs: any) {
  * @description Append the active plugin to the global plugin 
  * list and notify that the frontend Loaded.
  */
-function globalize() {
+function ExecutePluginModule() {
 	// Assign the plugin on plugin list. 
 	Object.assign(window.PLUGIN_LIST[pluginName], millennium_main)
 	// Run the rolled up plugins default exported function 
 	millennium_main["default"]();
-	// Notify Millennium this plugin has loaded. This propegates and calls the backend method.
 	MILLENNIUM_BACKEND_IPC.postMessage(1, { pluginName: pluginName })
 }
 
@@ -56,7 +52,7 @@ function globalize() {
  * @description Simple bootstrap function that initializes PLUGIN_LIST 
  * for current plugin given that is doesnt exist. 
  */
-function bootstrap() {
+function InitializePlugins() {
 	/** 
 	 * This function is called n times depending on n plugin count,
 	 * Create the plugin list if it wasn't already created 
@@ -86,10 +82,9 @@ function InsertMillennium(props: TranspilerProps)
                 // define the plugin name at the top of the bundle, so it can be used in wrapped functions
 				`const pluginName = "${props.strPluginInternalName}";`,
                 // insert the bootstrap function and call it
-				bootstrap.toString(), bootstrap.name + "()",
+				InitializePlugins.toString(), InitializePlugins.name + "()",
 				wrappedCallServerMethod.toString(), bundle[fileName].code,
-                // insert globalize function and run it
-				globalize.toString(), globalize.name + "()"
+				ExecutePluginModule.toString(), ExecutePluginModule.name + "()"
 			])
 		}
     }
@@ -136,8 +131,8 @@ export const TranspilerPluginComponent = async (props: TranspilerProps) => {
                 "react-dom": "window.SP_REACTDOM"
             },
             exports: 'named',
-            format: 'iife',
-        },
+            format: 'iife'
+        }
     }
 
     Logger.Info("Starting build, this may take a few moments...")
