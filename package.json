@@ -1,11 +1,13 @@
 {
   "name": "millennium-lib",
-  "version": "3.4.1",
+  "version": "3.4.2",
   "description": "A support library for creating typescript plugins with Millennium.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
-  "sideEffects": ["src/@interface/index.ts"],
+  "sideEffects": [
+    "src/@interface/index.ts"
+  ],
   "type": "module",
   "license": "LGPL-2.1-only",
   "bin": {
@@ -61,9 +63,9 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-replace": "^5.0.5",
     "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.6",
     "chalk": "^4.1.0",
     "rollup": "^4.17.2",
-    "rollup-plugin-import-css": "^3.5.0",
     "rollup-plugin-typescript2": "^0.36.0"
   }
 }

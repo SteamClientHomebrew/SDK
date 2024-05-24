@@ -2,9 +2,8 @@ import { OutputOptions, RollupOptions, rollup } from "rollup";
 import json from '@rollup/plugin-json';
 import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
-import typescript from 'rollup-plugin-typescript2';
+import typescript from '@rollup/plugin-typescript';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import css from "rollup-plugin-import-css";
 import terser from '@rollup/plugin-terser';
 
 import chalk from 'chalk'
@@ -100,7 +99,7 @@ function GetPluginComponents(props: TranspilerProps) {
          * @brief resolve millennium, edit the exported bundle to work with millennium
          */
         InsertMillennium(props),
-		typescript(), nodeResolve(), commonjs(), json(), css(),
+		typescript(), nodeResolve(), commonjs(), json(),
 		replace({
 			preventAssignment: true,
 			// replace callServerMethod with wrapped replacement function. 
@@ -135,12 +134,17 @@ export const TranspilerPluginComponent = async (props: TranspilerProps) => {
         }
     }
 
-    Logger.Info("Starting build, this may take a few moments...")
+    Logger.Info("Starting build; this may take a few moments...")
     // Load the Rollup configuration file
-    const bundle = await rollup(rollupConfig);
-    const outputOptions = rollupConfig.output as OutputOptions;
-
-    await bundle.write(outputOptions);
-
-    Logger.Info('Build succeeded!', Number((performance.now() - global.PerfStartTime).toFixed(3)), 'ms elapsed.')
+    try {
+        const bundle = await rollup(rollupConfig);
+        const outputOptions = rollupConfig.output as OutputOptions;
+    
+        await bundle.write(outputOptions);
+    
+        Logger.Info('Build succeeded!', Number((performance.now() - global.PerfStartTime).toFixed(3)), 'ms elapsed.')
+    }
+    catch (exception) {
+        Logger.Error('Build failed!', exception)
+    }
 }
