@@ -13,12 +13,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: set node-version
-      uses: actions/setup-node@v3
-      with:
-        registry-url: 'https://registry.npmjs.org/'
-        cache: 'npm'
-
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
