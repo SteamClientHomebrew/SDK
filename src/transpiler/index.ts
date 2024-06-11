@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 
+/**
+ * this component serves as:
+ * - typescript transpiler
+ * - rollup configurator
+ */
 import { BuildType, ValidateParameters } from "./parameters"
 import { CheckForUpdates } from "./updater"
 import { ValidatePlugin } from './pluginValidate'
