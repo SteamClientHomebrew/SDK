@@ -4,12 +4,12 @@ import {
 	WebUIServiceTransport,
 } from "./shared/interfaces";
 
-enum EUserConfigStoreNamespace {
+export enum EUserConfigStoreNamespace {
 	Invalid,
 	Library,
 }
 
-enum EConflictResolutionMethod {
+export enum EConflictResolutionMethod {
 	LastWriteWins = "last-write",
 	CustomMethod = "custom",
 	InitializationOnly = "initial",
@@ -20,7 +20,7 @@ enum EConflictResolutionMethod {
  * Will break the client if a key isn't a string.
  * Probably better to not look at this thing at all.
  */
-interface CloudStorage {
+export interface CloudStorage {
 	m_eNamespace: EUserConfigStoreNamespace;
 
 	Get(key: string): string | null;
@@ -37,7 +37,12 @@ interface CloudStorage {
 		resolutionMethodId?: any,
 	): Promise<void>;
 	StoreObject(key: string, value: any, param2: any, param3: any): Promise<void>;
-	StoreString(key: string, value: string, param2: any, param3: any): Promise<void>;
+	StoreString(
+		key: string,
+		value: string,
+		param2: any,
+		param3: any,
+	): Promise<void>;
 }
 
 export interface App {

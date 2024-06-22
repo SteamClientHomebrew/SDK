@@ -1,29 +1,29 @@
 import { CMInterface, SubscribableValue } from "./shared/interfaces";
 
-enum ETextFilterSetting {
+export enum ETextFilterSetting {
 	SteamLabOptedOut,
 	Enabled,
 	EnabledAllowProfanity,
 	Disabled,
 }
 
-enum EUserReviewScorePreference {
+export enum EUserReviewScorePreference {
 	Unset,
 	IncludeAll,
 	ExcludeBombs,
 }
 
-enum EProvideDeckFeedbackPreference {
+export enum EProvideDeckFeedbackPreference {
 	Unset,
 	Yes,
 	No,
 }
 
-interface BatteryPreferences {
+export interface BatteryPreferences {
 	bShowBatteryPercentage: boolean;
 }
 
-interface CommunityPreferences {
+export interface CommunityPreferences {
 	bParenthesizeNicknames: boolean;
 	bTextFilterIgnoreFriends: boolean;
 	content_descriptor_preferences: {
@@ -35,7 +35,7 @@ interface CommunityPreferences {
 	};
 }
 
-interface StorePreferences {
+export interface StorePreferences {
 	content_descriptor_preferences: {
 		content_descriptors_to_exclude: any[];
 	};

@@ -1,11 +1,11 @@
 import { CCallbackList } from "./shared/interfaces";
 
-enum ESteamNotificationSource {
+export enum ESteamNotificationSource {
 	Client = 1,
 	Server,
 }
 
-enum ESteamNotificationType {
+export enum ESteamNotificationType {
 	DownloadComplete = 1,
 	FriendInvite,
 	FriendinGame,
@@ -61,13 +61,13 @@ enum ESteamNotificationType {
 }
 
 // that's what I *guess* it is, no idea what this is
-enum ESteamNotificationAction {
+export enum ESteamNotificationAction {
 	New,
 	Update,
 	Remove,
 }
 
-interface SteamNotification {
+export interface SteamNotification {
 	bNewIndicator: boolean;
 	data: any; // proto msg
 	eSource: ESteamNotificationSource;
@@ -78,6 +78,24 @@ interface SteamNotification {
 	 * UNIX timestamp.
 	 */
 	rtCreated: number;
+}
+
+export interface TrayNotification {
+	eType: ESteamNotificationType;
+	notifications: SteamNotification[];
+}
+
+export interface NotificationTarget {
+	// enum
+	eFeature: number;
+	fnShowModal: () => void;
+	fnTray: (
+		target: NotificationTarget,
+		notificationsInTray: TrayNotification[],
+	) => void;
+	nRemoveFromTraySec: number;
+	toastDurationMS: number;
+	type: number;
 }
 
 /**
@@ -94,18 +112,15 @@ export interface NotificationStore {
 	m_bTestNotifications: boolean;
 	m_cbkCurrentToast: CCallbackList;
 	m_cbkNotificationTray: CCallbackList;
-	m_hPendingToastTimer: any;
-	m_hTrayRemoveTimer: any;
+	m_hPendingToastTimer: number;
+	m_hTrayRemoveTimer: number;
 	m_iLastBatteryLevelNotification: number;
 	m_mapAppOverlayToasts: Map<number, any[]>;
 	m_nNextTestNotificationID: number;
 	m_nUnviewedNotifications: number;
 	m_rgContextsRenderingToasts: number[];
 	m_rgNotificationToasts: SteamNotification[];
-	m_rgNotificationTray: {
-		eType: ESteamNotificationType;
-		notifications: SteamNotification[];
-	}[];
+	m_rgNotificationTray: TrayNotification[];
 	m_rgPendingToasts: any[];
 	m_rtNextTrayRemove: number;
 
@@ -173,7 +188,7 @@ export interface NotificationStore {
 	 */
 	OnNotification(
 		notificationIndex: number,
-		type: number,
+		type: ESteamNotificationType,
 		data: ArrayBuffer,
 	): void;
 	OnNotificationUpdateReceived(
@@ -185,9 +200,9 @@ export interface NotificationStore {
 	PlayNotificationSound(toast: SteamNotification): void;
 	PopNextToastNotification(e: any): any;
 	ProcessNotification(
-		target: any,
+		target: NotificationTarget,
 		notification: SteamNotification,
-		param2: ESteamNotificationAction,
+		action: ESteamNotificationAction,
 	): void;
 	RemoveFromToastsWhere(callback: (toast: SteamNotification) => void): void;
 	RemoveFromTrayWhere(callback: (toast: SteamNotification) => void): void;

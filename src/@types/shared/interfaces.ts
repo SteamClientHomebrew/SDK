@@ -90,7 +90,7 @@ export interface CurrentUser {
 	rgFamilyGroupMembers: any[];
 }
 
-interface Unsubscribable {
+export interface Unsubscribable {
 	Unsubscribe(): void;
 }
 

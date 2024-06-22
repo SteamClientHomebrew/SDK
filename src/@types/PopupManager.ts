@@ -1,7 +1,7 @@
 import { EBrowserType } from "./shared/enums";
 import { BrowserContext } from "./shared/interfaces";
 
-interface RestoreDetails {
+export interface RestoreDetails {
 	bExpires: boolean;
 	/**
 	 * Date as a Unix timestamp.
@@ -10,7 +10,7 @@ interface RestoreDetails {
 	strRestoreDetails: string;
 }
 
-interface SteamPopupParameters {
+export interface SteamPopupParameters {
 	availscreenheight: number;
 	availscreenwidth: number;
 	bHideOnClose: boolean;
@@ -103,7 +103,7 @@ interface SteamPopupParameters {
  * Helper to track when all links for a newly created popup have loaded.
  * Supports CPopup replacement too.
  */
-interface CRenderWhenLinksReady {
+export interface CRenderWhenLinksReady {
 	m_fnRender: () => void | undefined;
 	m_rgLoadingLinks: Node[];
 
@@ -111,7 +111,7 @@ interface CRenderWhenLinksReady {
 	SetTarget(renderCallback: any): void;
 }
 
-interface SteamPopup {
+export interface SteamPopup {
 	/**
 	 * `true` if the popup will not be shown initially.
 	 */

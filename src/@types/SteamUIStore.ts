@@ -4,14 +4,14 @@ import {
 	SubscribableValue,
 } from "./shared/interfaces";
 
-enum ENotificationPosition {
+export enum ENotificationPosition {
 	TopLeft,
 	TopRight,
 	BottomLeft,
 	BottomRight,
 }
 
-enum EWindowType {
+export enum EWindowType {
 	MainGamepadUI,
 	OverlayGamepadUI,
 	Keyboard,
@@ -57,14 +57,14 @@ type SteamWindowSettingsSection =
 	| "System"
 	| "Voice";
 
-interface SteamWindowMediaState {
+export interface SteamWindowMediaState {
 	state: {
 		strScreenshotHandle: string;
 		nAppID: number;
 	};
 }
 
-interface SteamWindowNavigator {
+export interface SteamWindowNavigator {
 	type: "desktop" | "desktopoverlay" | "gamepad";
 	setNavigatingToInitialRoute(value: boolean): void;
 
@@ -85,7 +85,7 @@ interface SteamWindowNavigator {
 	SteamWebTab(url: string): void;
 }
 
-interface SteamWindowNavigator_Gamepad extends SteamWindowNavigator {
+export interface SteamWindowNavigator_Gamepad extends SteamWindowNavigator {
 	Account(): void;
 	ControllerConfigurator: {
 		Main(appId: number): void;
@@ -97,7 +97,7 @@ interface SteamWindowNavigator_Gamepad extends SteamWindowNavigator {
 	Reauthentication(): void;
 }
 
-interface SteamWindowNotificationPosition {
+export interface SteamWindowNotificationPosition {
 	horizontalInset: number;
 	position: ENotificationPosition;
 	verticalInset: number;
@@ -157,7 +157,7 @@ export interface VirtualKeyboardManager {
 	ShowVirtualKeyboard(e: any, t: any, n: any, o: any): any;
 }
 
-interface SteamUIWindow {
+export interface SteamUIWindow {
 	/** The window's {@link Window}. */
 	m_BrowserWindow: Window;
 

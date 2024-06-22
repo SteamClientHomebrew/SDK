@@ -2,12 +2,12 @@ import { Unregisterable } from "./shared/interfaces";
 
 type ConsoleSpewType = "error" | "info" | "input";
 
-interface ConsoleSpewInfo {
+export interface ConsoleSpewInfo {
 	text: string;
 	type: string;
 }
 
-interface ConsoleSpew {
+export interface ConsoleSpew {
 	/**
 	 * Zero-indexed line number.
 	 */

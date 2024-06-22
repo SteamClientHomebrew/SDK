@@ -4,7 +4,7 @@ type SteamBrowserAction = "POP" | "PUSH" | "REPLACE";
 
 type SteamBrowserTab = "community" | "store" | "me";
 
-interface SteamBrowserHistoryEntry {
+export interface SteamBrowserHistoryEntry {
 	hash: string;
 	key: string;
 	pathname: string;
@@ -25,12 +25,12 @@ interface SteamBrowserHistoryEntry {
 	};
 }
 
-interface SteamBrowserHistory {
+export interface SteamBrowserHistory {
 	entries: SteamBrowserHistoryEntry[];
 	index: number;
 }
 
-interface SteamBrowserHistory_Full extends SteamBrowserHistory {
+export interface SteamBrowserHistory_Full extends SteamBrowserHistory {
 	action: SteamBrowserAction;
 	block(param0: any): any;
 	canGo(index: number): boolean;
@@ -51,14 +51,14 @@ interface SteamBrowserHistory_Full extends SteamBrowserHistory {
 	replace(param0: any, param1: any): any;
 }
 
-interface TabbedBrowserWebPageRequest {
+export interface TabbedBrowserWebPageRequest {
 	requestid: number;
 	strLastURL: string;
 	strTitle: string;
 	strURL: string;
 }
 
-interface CTabbedBrowserStore {
+export interface CTabbedBrowserStore {
 	m_cbWebPageRequestsChanged: CCallbackList;
 	m_nActiveWebpageRequestID: number;
 	m_nWebPageRequestID: number;
