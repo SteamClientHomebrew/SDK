@@ -1,6 +1,6 @@
 {
   "name": "millennium-lib",
-  "version": "3.4.6",
+  "version": "3.4.7",
   "description": "A support library for creating typescript plugins with Millennium.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
