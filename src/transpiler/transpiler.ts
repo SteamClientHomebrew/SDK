@@ -124,7 +124,7 @@ export const TranspilerPluginComponent = async (props: TranspilerProps) => {
         external: ['react', 'react-dom'],
         output: {
             name: "millennium_main",
-            file: "dist/index.js",
+            file: ".millennium/Dist/index.js",
             globals: {
                 react: "window.SP_REACT",
                 "react-dom": "window.SP_REACTDOM"
