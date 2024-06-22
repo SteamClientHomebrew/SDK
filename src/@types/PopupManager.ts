@@ -1,5 +1,5 @@
-import { EBrowserType } from "./enums";
-import { BrowserContext } from "./interfaces";
+import { EBrowserType } from "./shared/enums";
+import { BrowserContext } from "./shared/interfaces";
 
 interface RestoreDetails {
 	bExpires: boolean;
