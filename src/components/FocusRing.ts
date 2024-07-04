@@ -1,6 +1,6 @@
 import { ElementType, FC, ReactNode } from 'react';
 
-import { findModuleChild } from '../webpack';
+import { Export, findModuleExport } from '../webpack';
 
 export interface FocusRingProps {
   className?: string;
@@ -10,10 +10,6 @@ export interface FocusRingProps {
   NavigationManager?: any;
 }
 
-export const FocusRing = findModuleChild((m: any) => {
-  if (typeof m !== 'object') return false;
-  for (let prop in m) {
-    if (m[prop]?.toString()?.includes('.GetShowDebugFocusRing())')) return m[prop];
-  }
-  return false;
-}) as FC<FocusRingProps>;
+export const FocusRing = findModuleExport((e: Export) =>
+  e?.toString()?.includes('.GetShowDebugFocusRing())'),
+) as FC<FocusRingProps>;

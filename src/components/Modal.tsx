@@ -187,8 +187,7 @@ interface MessageBoxProps {
   close(type: MessageBoxResult): void
 }
 
-const RenderMessageBox: React.FC<MessageBoxProps> = ({ props, close }) => {
-
+const RenderMessageBox: FC<MessageBoxProps> = ({ props, close }) => {
   return (
     <ConfirmModal 
       onCancel={() => close(MessageBoxResult.close)}
@@ -203,6 +202,11 @@ export const ShowMessageBox = (modalProps: ShowModalProps, messageProps: Confirm
   const windowOptions: ShowModalProps = modalProps
 
   return new Promise<MessageBoxResult>((resolve, _) => {
-      const modal: ShowModalResult = showModal(<RenderMessageBox props={messageProps} close={(type: MessageBoxResult) => { resolve(type); modal.Close() }}/>, window, windowOptions);
+      const modal: ShowModalResult = showModal(
+        <RenderMessageBox 
+          props={messageProps} 
+          close={(type: MessageBoxResult) => { resolve(type); modal.Close() }}
+        />, 
+      window, windowOptions);
   })
 }
