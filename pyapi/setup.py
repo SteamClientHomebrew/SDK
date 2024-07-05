@@ -15,7 +15,7 @@ setup(
     packages=find_packages(),
     classifiers=[
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: LGPL-2.1 License',
+        'License :: OSI Approved :: LGPL-2.1',
         'Programming Language :: Python :: 3.11.8',
     ],
     python_requires='>=3.11.8'
