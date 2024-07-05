@@ -8,7 +8,7 @@
   "type": "module",
   "license": "LGPL-2.1-only",
   "bin": {
-    "millennium-ttc": "./dist/ttc/index.js"
+    "millennium-ttc": "dist/ttc/index.js"
   },
   "scripts": {
     "start": "./dist/ttc/index.js",
@@ -52,6 +52,9 @@
       "parser": "typescript"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-json": "^6.1.0",
@@ -61,5 +64,16 @@
     "@rollup/plugin-typescript": "^11.1.6",
     "chalk": "^4.1.0",
     "rollup": "^4.17.2"
-  }
+  },
+  "keywords": [
+    "steam",
+    "steam-client",
+    "millennium",
+    "ui-components"
+  ],
+  "author": "SteamClientHomebrew",
+  "bugs": {
+    "url": "https://github.com/SteamClientHomebrew/PluginComponents/issues"
+  },
+  "homepage": "https://github.com/SteamClientHomebrew/PluginComponents#readme"
 }
