@@ -1,7 +1,6 @@
 from typing import Union
 
 def ready() -> bool: pass
-
 def get_user_settings() -> dict: pass
 def set_user_settings_key(key: str, value: str) -> None: pass
 def version() -> str: pass
