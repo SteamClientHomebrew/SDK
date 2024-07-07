@@ -8,6 +8,7 @@ import terser from '@rollup/plugin-terser';
 
 import chalk from 'chalk'
 import { Logger } from "./Logger";
+import fs from 'fs';
 
 declare global {
     interface Window {
@@ -123,10 +124,24 @@ function GetPluginComponents(props: TranspilerProps) {
 	return pluginList
 }
 
+const GetFrontEndDirectory = () => {
+    const pluginJsonPath = './plugin.json';
+
+    try {
+        const pluginJson = JSON.parse(fs.readFileSync(pluginJsonPath, 'utf8'));
+        const frontendDirectory = pluginJson?.frontend;
+
+        return frontendDirectory ? frontendDirectory : "frontend";
+    } 
+    catch (error) {
+        return "frontend";
+    }
+}
+
 export const TranspilerPluginComponent = async (props: TranspilerProps) => {
     
     const rollupConfig: RollupOptions = {
-        input: './frontend/index.tsx',
+        input: `./${GetFrontEndDirectory()}/index.tsx`,
         plugins: GetPluginComponents(props),
         context: 'window',
         external: ['react', 'react-dom'],
