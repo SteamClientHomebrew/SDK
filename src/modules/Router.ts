@@ -1,4 +1,4 @@
-import { sleep } from '../utils';
+// import { sleep } from '../utils';
 import { Export, findModuleExport } from '../webpack';
 
 export enum SideMenu {
@@ -122,53 +122,53 @@ export interface Navigation {
 
 export let Navigation = {} as Navigation;
 
-try {
-  (async () => {
-    let InternalNavigators: any = {};
-    if (!Router.NavigateToAppProperties || (Router as unknown as any).deckyShim) {
-      function initInternalNavigators() {
-        try {
-          InternalNavigators = findModuleExport((e: Export) => e.GetNavigator && e.SetNavigator)?.GetNavigator();
-        } catch (e) {
-          console.error('[DFL:Router]: Failed to init internal navigators, trying again');
-        }
-      }
-      initInternalNavigators();
-      while (!InternalNavigators?.AppProperties) {
-        console.log('[DFL:Router]: Trying to init internal navigators again');
-        await sleep(2000);
-        initInternalNavigators();
-      }
-    }
-    const newNavigation = {
-      Navigate: Router.Navigate?.bind(Router),
-      NavigateBack: Router.WindowStore?.GamepadUIMainWindowInstance?.NavigateBack?.bind(
-        Router.WindowStore.GamepadUIMainWindowInstance,
-      ),
-      NavigateToAppProperties: InternalNavigators?.AppProperties || Router.NavigateToAppProperties?.bind(Router),
-      NavigateToExternalWeb: InternalNavigators?.ExternalWeb || Router.NavigateToExternalWeb?.bind(Router),
-      NavigateToInvites: InternalNavigators?.Invites || Router.NavigateToInvites?.bind(Router),
-      NavigateToChat: InternalNavigators?.Chat || Router.NavigateToChat?.bind(Router),
-      NavigateToLibraryTab: InternalNavigators?.LibraryTab || Router.NavigateToLibraryTab?.bind(Router),
-      NavigateToLayoutPreview: Router.NavigateToLayoutPreview?.bind(Router),
-      NavigateToSteamWeb: Router.WindowStore?.GamepadUIMainWindowInstance?.NavigateToSteamWeb?.bind(
-        Router.WindowStore.GamepadUIMainWindowInstance,
-      ),
-      OpenSideMenu: Router.WindowStore?.GamepadUIMainWindowInstance?.MenuStore.OpenSideMenu?.bind(
-        Router.WindowStore.GamepadUIMainWindowInstance.MenuStore,
-      ),
-      OpenQuickAccessMenu: Router.WindowStore?.GamepadUIMainWindowInstance?.MenuStore.OpenQuickAccessMenu?.bind(
-        Router.WindowStore.GamepadUIMainWindowInstance.MenuStore,
-      ),
-      OpenMainMenu: Router.WindowStore?.GamepadUIMainWindowInstance?.MenuStore.OpenMainMenu?.bind(
-        Router.WindowStore.GamepadUIMainWindowInstance.MenuStore,
-      ),
-      CloseSideMenus: Router.CloseSideMenus?.bind(Router),
-      OpenPowerMenu: Router.OpenPowerMenu?.bind(Router),
-    } as Navigation;
+// try {
+//   (async () => {
+//     let InternalNavigators: any = {};
+//     if (!Router.NavigateToAppProperties || (Router as unknown as any).deckyShim) {
+//       function initInternalNavigators() {
+//         try {
+//           InternalNavigators = findModuleExport((e: Export) => e.GetNavigator && e.SetNavigator)?.GetNavigator();
+//         } catch (e) {
+//           console.error('[DFL:Router]: Failed to init internal navigators, trying again');
+//         }
+//       }
+//       initInternalNavigators();
+//       while (!InternalNavigators?.AppProperties) {
+//         console.log('[DFL:Router]: Trying to init internal navigators again');
+//         await sleep(2000);
+//         initInternalNavigators();
+//       }
+//     }
+//     const newNavigation = {
+//       Navigate: Router.Navigate?.bind(Router),
+//       NavigateBack: Router.WindowStore?.GamepadUIMainWindowInstance?.NavigateBack?.bind(
+//         Router.WindowStore.GamepadUIMainWindowInstance,
+//       ),
+//       NavigateToAppProperties: InternalNavigators?.AppProperties || Router.NavigateToAppProperties?.bind(Router),
+//       NavigateToExternalWeb: InternalNavigators?.ExternalWeb || Router.NavigateToExternalWeb?.bind(Router),
+//       NavigateToInvites: InternalNavigators?.Invites || Router.NavigateToInvites?.bind(Router),
+//       NavigateToChat: InternalNavigators?.Chat || Router.NavigateToChat?.bind(Router),
+//       NavigateToLibraryTab: InternalNavigators?.LibraryTab || Router.NavigateToLibraryTab?.bind(Router),
+//       NavigateToLayoutPreview: Router.NavigateToLayoutPreview?.bind(Router),
+//       NavigateToSteamWeb: Router.WindowStore?.GamepadUIMainWindowInstance?.NavigateToSteamWeb?.bind(
+//         Router.WindowStore.GamepadUIMainWindowInstance,
+//       ),
+//       OpenSideMenu: Router.WindowStore?.GamepadUIMainWindowInstance?.MenuStore.OpenSideMenu?.bind(
+//         Router.WindowStore.GamepadUIMainWindowInstance.MenuStore,
+//       ),
+//       OpenQuickAccessMenu: Router.WindowStore?.GamepadUIMainWindowInstance?.MenuStore.OpenQuickAccessMenu?.bind(
+//         Router.WindowStore.GamepadUIMainWindowInstance.MenuStore,
+//       ),
+//       OpenMainMenu: Router.WindowStore?.GamepadUIMainWindowInstance?.MenuStore.OpenMainMenu?.bind(
+//         Router.WindowStore.GamepadUIMainWindowInstance.MenuStore,
+//       ),
+//       CloseSideMenus: Router.CloseSideMenus?.bind(Router),
+//       OpenPowerMenu: Router.OpenPowerMenu?.bind(Router),
+//     } as Navigation;
 
-    Object.assign(Navigation, newNavigation);
-  })();
-} catch (e) {
-  console.error('[DFL:Router]: Error initializing Navigation interface', e);
-}
+//     Object.assign(Navigation, newNavigation);
+//   })();
+// } catch (e) {
+//   console.error('[DFL:Router]: Error initializing Navigation interface', e);
+// }

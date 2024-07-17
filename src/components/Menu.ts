@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 
-import { fakeRenderComponent } from '../utils';
+// import { fakeRenderComponent } from '../utils';
 import { Export, findModuleExport } from '../webpack';
 import { FooterLegendProps } from './FooterLegend';
 
@@ -26,12 +26,12 @@ export interface MenuGroupProps {
   children?: ReactNode;
 }
 
-export const MenuGroup: FC<MenuGroupProps> = findModuleExport(
-  (e: Export) =>
-    (e?.toString()?.includes?.('bInGamepadUI:') &&
-      fakeRenderComponent(() => e({ overview: { appid: 7 } }), {useContext: () => ({IN_GAMEPADUI: true})})?.type?.prototype?.RenderSubMenu) ||
-    (e?.prototype?.RenderSubMenu && e?.prototype?.ShowSubMenu)
-);
+// export const MenuGroup: FC<MenuGroupProps> = findModuleExport(
+//   (e: Export) =>
+//     (e?.toString()?.includes?.('bInGamepadUI:') &&
+//       fakeRenderComponent(() => e({ overview: { appid: 7 } }), {useContext: () => ({IN_GAMEPADUI: true})})?.type?.prototype?.RenderSubMenu) ||
+//     (e?.prototype?.RenderSubMenu && e?.prototype?.ShowSubMenu)
+// );
 export interface MenuItemProps extends FooterLegendProps {
   bInteractableItem?: boolean;
   onClick?(evt: Event): void;
