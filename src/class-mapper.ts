@@ -21,10 +21,19 @@ export const classMap: ClassModule = Object.assign({}, ...classMapList.map(obj =
   Object.fromEntries(Object.entries(obj).map(([key, value]) => [key, value]))
 ));
 
-
 export function findClass(name: string): string | void {
   return classMapList.find((m) => m?.[name])?.[name];
 }
+
+const findClassHandler = {
+  get: (target: any, prop: string) => {
+    if (typeof prop === "string") {
+      return target(prop);
+    }
+  }
+};
+
+export const Classes = new Proxy(findClass, findClassHandler);
 
 export function findClassModule(filter: (module: any) => boolean): ClassModule | void {
   return classMapList.find((m) => filter(m));
