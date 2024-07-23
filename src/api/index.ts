@@ -49,30 +49,21 @@ window.Millennium = {
     callServerMethod: (pluginName: string, methodName: string, kwargs: any) => {
         return new Promise((resolve, reject) => {
             const query: any = {
-                pluginName: pluginName,
-                methodName: methodName
-            }
-
-            if (kwargs) query.argumentList = kwargs
+                pluginName,
+                methodName,
+                ...(kwargs && { argumentList: kwargs })
+            };
 
             /* call handled from "src\core\ipc\pipe.cpp @ L:67" */
             window.MILLENNIUM_BACKEND_IPC.postMessage(0, query).then((response: any) => 
             {
                 if (response?.failedRequest) {
-
-                    const m = ` Millennium.callServerMethod() from [name: ${pluginName}, method: ${methodName}] failed on exception -> ${response.failMessage}`;
-                    
-                    // Millennium can't accurately pin point where this came from
-                    // check the sources tab and find your plugins index.js, and look for a call that could error this
-                    throw new Error(m)
-                    reject()
+                    reject(` IPC call from [name: ${pluginName}, method: ${methodName}] failed on exception -> ${response.failMessage}`)
                 }
 
-                const val: string = response.returnValue
-                if (typeof val === 'string') {
-                    resolve(atob(val))
-                }
-                resolve(val)
+                const responseStream: string = response.returnValue
+                // FFI backend encodes string responses in base64 to avoid encoding issues
+                resolve(typeof responseStream === 'string' ? atob(responseStream) : responseStream)
             })
         })
     }, 

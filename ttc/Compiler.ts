@@ -111,6 +111,7 @@ function GetPluginComponents(props: TranspilerProps) {
 		typescript(), nodeResolve(), commonjs(), json(),
 		replace({
 			preventAssignment: true,
+            'process.env.NODE_ENV': JSON.stringify('production'),
 			// replace callServerMethod with wrapped replacement function. 
 			'Millennium.callServerMethod': `wrappedCallServerMethod`,
 			delimiters: ['', ''],
