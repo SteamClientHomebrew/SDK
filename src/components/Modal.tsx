@@ -1,11 +1,11 @@
 import { FC, ReactNode } from 'react';
 
 import { findSP } from '../utils';
-import { findModule, findModuleChild } from '../webpack';
+import { Export, findModule, findModuleDetailsByExport, findModuleExport } from '../webpack';
 
 // All of the popout options + strTitle are related. Proper usage is not yet known...
 export interface ShowModalProps {
-  browserContext?: unknown; // This is another Deck Object that is yet to be found
+  browserContext?: unknown;
   bForcePopOut?: boolean;
   bHideActionIcons?: boolean;
   bHideMainWindowForPopouts?: boolean;
@@ -29,38 +29,18 @@ export interface ShowModalResult {
   Update: (modal: ReactNode) => void;
 }
 
-const showModalRaw:
-  | ((
-      modal: ReactNode,
-      parent?: EventTarget,
-      title?: string,
-      props?: ShowModalProps,
-      unknown1?: unknown,
-      hideActions?: { bHideActions?: boolean },
-      modalManager?: unknown,
-    ) => ShowModalResult)
-  | void = findModuleChild((m) => {
-  if (typeof m !== 'object') return undefined;
-  for (let prop in m) {
-    if (
-      typeof m[prop] === 'function' &&
-      m[prop].toString().includes('props.bDisableBackgroundDismiss') &&
-      !m[prop]?.prototype?.Cancel
-    ) {
-      return m[prop];
-    }
-  }
-});
-
-const oldShowModalRaw: ((modal: ReactNode, parent?: EventTarget, props?: ShowModalProps) => ShowModalResult) | void =
-  findModuleChild((m) => {
-    if (typeof m !== 'object') return undefined;
-    for (let prop in m) {
-      if (typeof m[prop] === 'function' && m[prop].toString().includes('bHideMainWindowForPopouts:!0')) {
-        return m[prop];
-      }
-    }
-  });
+const showModalRaw: (
+  modal: ReactNode,
+  parent?: EventTarget,
+  title?: string,
+  props?: ShowModalProps,
+  unknown1?: unknown,
+  hideActions?: { bHideActions?: boolean },
+  modalManager?: unknown,
+) => ShowModalResult = findModuleExport(
+  (e: Export) =>
+    typeof e === 'function' && e.toString().includes('props.bDisableBackgroundDismiss') && !e?.prototype?.Cancel,
+);
 
 export const showModal = (
   modal: ReactNode,
@@ -70,15 +50,9 @@ export const showModal = (
     bHideMainWindowForPopouts: false,
   },
 ): ShowModalResult => {
-  if (showModalRaw) {
-    return showModalRaw(modal, parent || findSP(), props.strTitle, props, undefined, {
-      bHideActions: props.bHideActionIcons,
-    });
-  } else if (oldShowModalRaw) {
-    return oldShowModalRaw(modal, parent || findSP(), props);
-  } else {
-    throw new Error('[DFL:Modals]: Cannot find showModal function');
-  }
+  return showModalRaw(modal, parent || findSP() || window, props.strTitle, props, undefined, {
+    bHideActions: props.bHideActionIcons,
+  });
 };
 
 export interface ModalRootProps {
@@ -108,17 +82,11 @@ export interface ConfirmModalProps extends ModalRootProps {
   bMiddleDisabled?: boolean;
 }
 
-export const ConfirmModal = findModuleChild((m) => {
-  if (typeof m !== 'object') return undefined;
-  for (let prop in m) {
-    if (!m[prop]?.prototype?.OK && m[prop]?.prototype?.Cancel && m[prop]?.prototype?.render) {
-      return m[prop];
-    }
-  }
-}) as FC<ConfirmModalProps>;
+export const ConfirmModal = findModuleExport(
+  (e: Export) => !e?.prototype?.OK && e?.prototype?.Cancel && e?.prototype?.render,
+) as FC<ConfirmModalProps>;
 
-// new as of december 2022 on beta
-export const ModalRoot = (Object.values(
+export const ModalRoot = Object.values(
   findModule((m: any) => {
     if (typeof m !== 'object') return false;
 
@@ -130,83 +98,20 @@ export const ModalRoot = (Object.values(
 
     return false;
   }) || {},
-)?.find((x: any) => x?.type?.toString()?.includes('((function(){')) ||
-  // before december 2022 beta
-  Object.values(
-    findModule((m: any) => {
-      if (typeof m !== 'object') return false;
-
-      for (let prop in m) {
-        if (m[prop]?.toString()?.includes('"ModalManager","DialogWrapper"')) {
-          return true;
-        }
-      }
-
-      return false;
-    }) || {},
-  )?.find((x: any) => x?.type?.toString()?.includes('((function(){')) ||
-  // old
-  findModuleChild((m) => {
-    if (typeof m !== 'object') return undefined;
-    for (let prop in m) {
-      if (m[prop]?.prototype?.OK && m[prop]?.prototype?.Cancel && m[prop]?.prototype?.render) {
-        return m[prop];
-      }
-    }
-  })) as FC<ModalRootProps>;
+)?.find((x: any) => x?.type?.toString?.()?.includes('((function(){')) as FC<ModalRootProps>;
 
 interface SimpleModalProps {
   active?: boolean;
   children: ReactNode;
 }
 
-const ModalModule = findModule((mod: any) => {
-  if (typeof mod !== 'object') return false;
-  for (let prop in mod) {
-    if (Object.keys(mod).length > 4 && mod[prop]?.toString().includes('.ModalPosition,fallback:')) return true;
-  }
-  return false;
-});
+const [ModalModule, _ModalPosition] = findModuleDetailsByExport((e: Export) => e?.toString().includes('.ModalPosition'), 5)
 
 const ModalModuleProps = ModalModule ? Object.values(ModalModule) : [];
 
-export const SimpleModal = ModalModuleProps.find(prop => {
-  const string = prop?.toString()
-  return string?.includes(".ShowPortalModal()") && string?.includes(".OnElementReadyCallbacks.Register(")
+export const SimpleModal = ModalModuleProps.find((prop) => {
+  const string = prop?.toString();
+  return string?.includes('.ShowPortalModal()') && string?.includes('.OnElementReadyCallbacks.Register(');
 }) as FC<SimpleModalProps>;
 
-export const ModalPosition = ModalModuleProps.find(prop => prop?.toString().includes(".ModalPosition,fallback:")) as FC<SimpleModalProps>;
-
-export enum MessageBoxResult {
-  close,
-  okay
-}
-
-interface MessageBoxProps {
-  props: ConfirmModalProps
-  close(type: MessageBoxResult): void
-}
-
-const RenderMessageBox: FC<MessageBoxProps> = ({ props, close }) => {
-  return (
-    <ConfirmModal 
-      onCancel={() => close(MessageBoxResult.close)}
-      onOK={() => close(MessageBoxResult.okay)}
-      {...props}
-    />    
-  )
-}
-
-export const ShowMessageBox = (modalProps: ShowModalProps, messageProps: ConfirmModalProps): Promise<MessageBoxResult> => {
-
-  const windowOptions: ShowModalProps = modalProps
-
-  return new Promise<MessageBoxResult>((resolve, _) => {
-      const modal: ShowModalResult = showModal(
-        <RenderMessageBox 
-          props={messageProps} 
-          close={(type: MessageBoxResult) => { resolve(type); modal.Close() }}
-        />, 
-      window, windowOptions);
-  })
-}
+export const ModalPosition = _ModalPosition as FC<SimpleModalProps>;
