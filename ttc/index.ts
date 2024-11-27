@@ -52,8 +52,8 @@ const StartCompilerModule = () => {
 const Initialize = () => {
     global.PerfStartTime = performance.now();
 
-    CheckModuleUpdates().then(() => {
-        StartCompilerModule()
+    CheckModuleUpdates().then((needsUpdate: boolean) => {
+        needsUpdate ? process.exit() : StartCompilerModule()
     })
 }
 

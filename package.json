@@ -12,7 +12,8 @@
   },
   "scripts": {
     "start": "./dist/ttc/index.js",
-    "build": "shx rm -rf dist && tsc -b && cd ./ttc && rollup -c"
+    "build": "shx rm -rf dist && tsc -b && cd ./ttc && rollup -c",
+    "dev-link": "npm run build && npm link"
   },
   "files": [
     "/lib",

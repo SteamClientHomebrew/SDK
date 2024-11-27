@@ -125,6 +125,23 @@ function GetPluginComponents(props: TranspilerProps) {
 	return pluginList
 }
 
+function GetWebkitPluginComponents(props: TranspilerProps) {
+	const pluginList = [
+        InsertMillennium(props), typescript(), nodeResolve(), commonjs(), json(),
+        replace({
+			preventAssignment: true,
+			// replace callServerMethod with wrapped replacement function. 
+			'Millennium.callServerMethod': `wrappedCallServerMethod`,
+			delimiters: ['', ''],
+		}),
+	]
+	
+	if (props.bTersePlugin) {
+		pluginList.push(terser())
+	}
+	return pluginList
+}
+
 const GetFrontEndDirectory = () => {
     const pluginJsonPath = './plugin.json';
 
@@ -141,7 +158,7 @@ const GetFrontEndDirectory = () => {
 
 export const TranspilerPluginComponent = async (props: TranspilerProps) => {
     
-    const rollupConfig: RollupOptions = {
+    const frontendRollupConfig: RollupOptions = {
         input: `./${GetFrontEndDirectory()}/index.tsx`,
         plugins: GetPluginComponents(props),
         context: 'window',
@@ -158,13 +175,30 @@ export const TranspilerPluginComponent = async (props: TranspilerProps) => {
         }
     }
 
+    const webkitRollupConfig: RollupOptions = {
+        input: `./webkit/index.ts`,
+        plugins: GetWebkitPluginComponents(props),
+        context: 'window',
+        output: {
+            name: "millennium_main",
+            file: ".millennium/Dist/webkit.js",
+            exports: 'named',
+            format: 'iife'
+        }
+    }
+
     Logger.Info("Starting build; this may take a few moments...")
     // Load the Rollup configuration file
     try {
-        const bundle = await rollup(rollupConfig);
-        const outputOptions = rollupConfig.output as OutputOptions;
+        const bundle = await rollup(frontendRollupConfig);
+        const outputOptions = frontendRollupConfig.output as OutputOptions;
     
         await bundle.write(outputOptions);
+
+        const bundle1 = await rollup(webkitRollupConfig);
+        const outputOptions1 = webkitRollupConfig.output as OutputOptions;
+    
+        await bundle1.write(outputOptions1);
     
         Logger.Info('Build succeeded!', Number((performance.now() - global.PerfStartTime).toFixed(3)), 'ms elapsed.')
     }
