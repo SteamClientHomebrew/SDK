@@ -195,11 +195,16 @@ export const TranspilerPluginComponent = async (props: TranspilerProps) => {
     
         await bundle.write(outputOptions);
 
-        const bundle1 = await rollup(webkitRollupConfig);
-        const outputOptions1 = webkitRollupConfig.output as OutputOptions;
-    
-        await bundle1.write(outputOptions1);
-    
+        // check if the webkit file exists
+        if (fs.existsSync(`./webkit/index.ts`)) {
+            Logger.Info("Compiling webkit module...")
+
+            const bundle1 = await rollup(webkitRollupConfig);
+            const outputOptions1 = webkitRollupConfig.output as OutputOptions;
+        
+            await bundle1.write(outputOptions1);
+        }
+        
         Logger.Info('Build succeeded!', Number((performance.now() - global.PerfStartTime).toFixed(3)), 'ms elapsed.')
     }
     catch (exception) {
