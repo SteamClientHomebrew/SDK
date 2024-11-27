@@ -57,6 +57,17 @@ function ExecutePluginModule() {
 }
 
 /**
+ * @description Append the active plugin to the global plugin 
+ * list and notify that the frontend Loaded.
+ */
+function ExecuteWebkitModule() {
+	// Assign the plugin on plugin list. 
+	Object.assign(window.PLUGIN_LIST[pluginName], millennium_main)
+	// Run the rolled up plugins default exported function 
+	millennium_main["default"]();
+}
+
+/**
  * @description Simple bootstrap function that initializes PLUGIN_LIST 
  * for current plugin given that is doesnt exist. 
  */
@@ -102,6 +113,35 @@ function InsertMillennium(props: TranspilerProps)
     };
 }
 
+function InsertWebkitMillennium(props: TranspilerProps) 
+{
+    const ContructFunctions = (parts: any) => { return parts.join('\n'); }
+
+    const generateBundle = (_: unknown, bundle: any) => {	
+
+		for (const fileName in bundle) 
+		{
+			if (bundle[fileName].type != 'chunk') {
+				continue 
+			}
+            Logger.Info("Injecting Millennium shims into webkit module... " + chalk.green.bold("okay"))
+
+			bundle[fileName].code = ContructFunctions([    
+                // define the plugin name at the top of the bundle, so it can be used in wrapped functions
+				`const pluginName = "${props.strPluginInternalName}";`,
+                // insert the bootstrap function and call it
+                InitializePlugins.toString(), InitializePlugins.name + "()",
+				wrappedCallServerMethod.toString(), bundle[fileName].code,
+				ExecuteWebkitModule.toString(), ExecuteWebkitModule.name + "()"
+			])
+		}
+    }
+
+    return {
+        name: 'add-plugin-main', generateBundle
+    };
+}
+
 function GetPluginComponents(props: TranspilerProps) {
 	const pluginList = [
         /**
@@ -127,7 +167,7 @@ function GetPluginComponents(props: TranspilerProps) {
 
 function GetWebkitPluginComponents(props: TranspilerProps) {
 	const pluginList = [
-        InsertMillennium(props), typescript(), nodeResolve(), commonjs(), json(),
+        InsertWebkitMillennium(props), typescript(), nodeResolve(), commonjs(), json(),
         replace({
 			preventAssignment: true,
 			// replace callServerMethod with wrapped replacement function. 
