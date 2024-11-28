@@ -8,6 +8,7 @@ declare global {
     }
 }
 
+type IPC_types = (string | number | boolean)
 /**
  * Steam window popup manager. 
  */
@@ -122,7 +123,19 @@ window.Millennium = {
  Global Millennium API for developers. 
 */
 type Millennium = {
-    /* call a backend server method */
+    /**
+     * @brief Call a method on the backend
+     * @deprecated Use `callable` instead. 
+     * Example usage: 
+     * ```typescript
+     * // before
+     * const result = await Millennium.callServerMethod('methodName', { arg1: 'value' });
+     * // after
+     * const method = callable<[{ arg1: string }]>("methodName");
+     * 
+     * const result1 = await method({ arg1: 'value1' });
+     * const result2 = await method({ arg1: 'value2' });
+     */
     callServerMethod: (methodName: string, kwargs?: object) => Promise<any>,
     AddWindowCreateHook: (callback: (context: object) => void) => void,
     findElement: (privateDocument: Document,  querySelector: string, timeOut?: number) => Promise<NodeListOf<Element>>,
@@ -130,6 +143,11 @@ type Millennium = {
     exposeObj: <T extends object>(obj: T) => any
 };
 
+const callable = <Args extends any[] = [], Return = (void | IPC_types)>(
+    route: string
+): ((...args: Args) => Promise<Return>) => {
+    return (...args: Args) => Millennium.callServerMethod(route, ...args);
+};
 
 const m_private_context: any = undefined
 
@@ -146,4 +164,4 @@ const m_private_context: any = undefined
 const pluginSelf: any = m_private_context
 const Millennium: Millennium = window.Millennium
 
-export { Millennium, pluginSelf }
+export { Millennium, pluginSelf, callable }
