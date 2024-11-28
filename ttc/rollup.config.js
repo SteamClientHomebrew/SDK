@@ -9,7 +9,7 @@ export default {
   output: {
     file: '../dist/ttc/index.js'
   },
-  plugins: [commonjs(), typescript(), json(), terser()],
+  plugins: [commonjs(), typescript(), json()],
   external: [
     "chalk", 
     "path", 
