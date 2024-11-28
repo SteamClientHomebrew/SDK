@@ -1,6 +1,7 @@
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import json from '@rollup/plugin-json';
+import terser from '@rollup/plugin-terser';
 
 export default {
   input: 'index.ts',
@@ -8,7 +9,7 @@ export default {
   output: {
     file: '../dist/ttc/index.js'
   },
-  plugins: [commonjs(), typescript(), json()],
+  plugins: [commonjs(), typescript(), json(), terser()],
   external: [
     "chalk", 
     "path", 

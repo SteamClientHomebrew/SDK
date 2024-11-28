@@ -1,6 +1,6 @@
 {
   "name": "millennium-lib",
-  "version": "3.6.8",
+  "version": "3.6.9",
   "description": "A support library for creating plugins with Millennium.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,9 +28,22 @@
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.9",
     "@types/react": "16.14.0",
-    "@types/react-router": "5.1.18",
+    "@types/react-router": "5.1.18"
+  },
+  "dependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.5",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "chalk": "^4.1.0",
+    "fs": "0.0.1-security",
+    "path": "^0.12.7",
+    "rollup": "^4.17.2",
     "shx": "^0.3.4",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "url": "^0.11.4"
   },
   "pnpm": {
     "peerDependencyRules": {
@@ -54,16 +67,6 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
-    "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-replace": "^5.0.5",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^11.1.6",
-    "chalk": "^4.1.0",
-    "rollup": "^4.17.2"
   },
   "keywords": [
     "steam",
