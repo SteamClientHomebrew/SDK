@@ -22,13 +22,24 @@ jobs:
     - name: Install pnpm
       run: npm install -g pnpm
       
-    - name: Install dependencies
-      run: pnpm install
+    - name: (@steambrew/client) Install dependencies
+      run: cd client && pnpm install
 
-    - name: Build project
-      run: pnpm run build
+    - name: (@steambrew/client) Build project
+      run: cd client && pnpm run build
 
-    - name: Publish to npm
+    - name: (@steambrew/client) Publish to npm
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: npm publish
+      run: cd client && npm publish
+
+    - name: (@steambrew/webkit) Install dependencies
+      run: cd webkit && pnpm install
+
+    - name: (@steambrew/webkit) Build project
+      run: cd webkit && pnpm run build
+
+    - name: (@steambrew/webkit) Publish to npm
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: cd webkit && npm publish

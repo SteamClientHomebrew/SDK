@@ -62,6 +62,11 @@ export const findModule = (filter: FilterFn) => {
   }
 };
 
+if (typeof window.SP_REACT === 'undefined') {
+  window.SP_REACTDOM = findModule((module) => module.createPortal && module.createRoot && module.flushSync)
+  window.SP_REACT    = findModule((module) => module.Component && module.PureComponent && module.useLayoutEffect);
+}
+
 export const findModuleDetailsByExport = (
   filter: ExportFilterFn,
   minExports?: number,
