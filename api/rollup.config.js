@@ -13,9 +13,10 @@ function __api_module__() {
         generateBundle(_, bundle) {
             for (const fileName in bundle) {
                 if (bundle[fileName].type === 'chunk') {
-                    const shimPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'dist/shim.js');
-                    const shimCode = fs.readFileSync(shimPath, 'utf-8'); fs.unlinkSync(shimPath);
-                    bundle[fileName].code = `${shimCode.replace("({}, window.SP_REACT)", "")}\n${bundle[fileName].code}`;
+                    const millenniumAPI = fs.readFileSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'build/webkit.js'), 'utf-8')
+                    const shimCode      = fs.readFileSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'build/shim.js'  ), 'utf-8');
+
+                    bundle[fileName].code = `${shimCode.replace("({}, window.SP_REACT)", "")}${millenniumAPI.replace("})({})", "})")}\n${bundle[fileName].code}`;
                 }
             }
         }
@@ -30,7 +31,7 @@ function __webkit_api_module__() {
         generateBundle(_, bundle) {
             for (const fileName in bundle) {
                 if (bundle[fileName].type === 'chunk') {
-                    const shimPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'dist/webkit.js')
+                    const shimPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'build/webkit.js')
                     const shimCode = fs.readFileSync(shimPath, 'utf-8'); fs.unlinkSync(shimPath);
                     bundle[fileName].code = `${shimCode.replace("})({})", "})")}\n${bundle[fileName].code}`;
                 }
@@ -39,12 +40,28 @@ function __webkit_api_module__() {
     };
 }
 
-const rollupAPI = {
-    input: 'dist/index.js',
+const ConstructSteamComponents = {
+    input: '../build/client/index.js',
     context: 'window',
     external: ['react', 'react-dom'],
     output: {
-        file: 'dist/shim.js',
+        file: 'build/shim.js',
+        format: 'iife',
+        name: 'steam_client_components',
+        globals: {
+            react: "window.SP_REACT",
+            "react-dom": "window.SP_REACTDOM"
+        },
+    },
+    plugins: [resolve({ extensions: ['.js'] })]
+};
+
+const ConstructMillenniumAPI = {
+    input: 'build/api/src/index.js',
+    context: 'window',
+    external: ['react', 'react-dom'],
+    output: {
+        file: 'build/webkit.js',
         format: 'iife',
         name: 'millennium_api_components',
         globals: {
@@ -56,11 +73,11 @@ const rollupAPI = {
 };
 
 const rollupPreload = {
-    input: 'src/preload.ts',
+    input: 'build/api/src/preload.js',
     context: 'window',
     external: ['react', 'react-dom'],
     output: {
-        file: 'dist/preload.js',
+        file: 'build/client_api.js',
         format: 'iife',
         name: 'millennium_components',
         globals: {
@@ -71,29 +88,12 @@ const rollupPreload = {
     plugins: [resolve({ extensions: ['.js'] }), typescript(), __api_module__()]
 };
 
-
-const rollupWebkitAPI = {
-    input: 'dist/api/index.js',
-    context: 'window',
-    external: ['react', 'react-dom'],
-    output: {
-        file: 'dist/webkit.js',
-        format: 'iife',
-        name: 'millennium_webkit_components',
-        globals: {
-            react: "window.SP_REACT",
-            "react-dom": "window.SP_REACTDOM"
-        },
-    },
-    plugins: [resolve({ extensions: ['.js'] })]
-};
-
 const rollupWebkitPreload = {
-    input: 'src/preload.ts',
+    input: 'build/api/src/preload.js',
     context: 'window',
     external: ['react', 'react-dom'],
     output: {
-        file: 'dist/webkit_preload.js',
+        file: 'build/webkit_api.js',
         format: 'iife',
         name: 'millennium_components',
         globals: {
@@ -104,4 +104,4 @@ const rollupWebkitPreload = {
     plugins: [resolve({ extensions: ['.js'] }), typescript(), __webkit_api_module__()]
 };
 
-export default [rollupAPI, rollupPreload, rollupWebkitAPI, rollupWebkitPreload];
+export default [ConstructSteamComponents, ConstructMillenniumAPI, rollupPreload, rollupWebkitPreload];

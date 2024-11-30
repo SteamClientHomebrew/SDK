@@ -1,19 +1,21 @@
 import React from "react";
-import Logger from "./logger";
+import Logger from "../../client/src/logger";
 
 const logger = new Logger('Core');
 const isSharedJSContext = window.location.hostname === 'steamloopback.host';
 
 declare global {
 	interface Window {
-	  SP_REACT: typeof React;
-	  SP_REACTDOM: any;
-	  MILLENNIUM_IPC_PORT: number;
+		MILLENNIUM_API: object;
+		SP_REACT: typeof React;
+		SP_REACTDOM: any;
+		MILLENNIUM_IPC_PORT: number;
+		webpackChunksteamui?: any;
 	}
 }
 
-declare const millennium_api_components: (module: any, react: typeof React) => void;
-declare const millennium_webkit_components: (module: any) => void;
+declare const steam_client_components: (module: any, react: typeof React) => object;
+declare const millennium_api_components: (module: any) => object;
 
 // export * from './deck-libs';
 const CreateWebSocket = (url: string): Promise<WebSocket> => {
@@ -48,7 +50,11 @@ const WaitForSocket = (socket: WebSocket) => {
 }
 
 const InjectLegacyReactGlobals = async () => {
-	(window as any).MILLENNIUM_API = millennium_api_components({}, window.SP_REACT);
+	window.MILLENNIUM_API = {
+		...window.MILLENNIUM_API,
+		...millennium_api_components({}),
+		...steam_client_components({}, window.SP_REACT)
+	};
 }
 
 const WaitForSPReactDOM = () => {
@@ -77,7 +83,7 @@ const StartPreloader = (port: number, shimList?: string[]) => {
 		logger.groupEnd("Ready to inject shims...");
 
 		if (!isSharedJSContext) 
-			(window as any).MILLENNIUM_API = millennium_webkit_components({});
+			(window as any).MILLENNIUM_API = millennium_api_components({});
 
 		shimList?.forEach((shim) => {
 			!document.querySelectorAll(`script[src='${shim}'][type='module']`).length 

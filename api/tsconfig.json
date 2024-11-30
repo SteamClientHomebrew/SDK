@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "../build/webkit",
+    "outDir": "build",
     "module": "ESNext",
     "target": "ES2020",
     "jsx": "react",
@@ -18,6 +18,6 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true
   },
-  "include": ["index.ts"],
+  "include": ["src"],
   "exclude": ["node_modules"]
 }
