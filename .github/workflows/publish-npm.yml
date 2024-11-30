@@ -26,6 +26,8 @@ jobs:
       run: cd client && pnpm install
 
     - name: (@steambrew/client) Build project
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: cd client && pnpm run build
 
     - name: (@steambrew/client) Publish to npm
@@ -37,6 +39,8 @@ jobs:
       run: cd webkit && pnpm install
 
     - name: (@steambrew/webkit) Build project
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: cd webkit && pnpm run build
 
     - name: (@steambrew/webkit) Publish to npm
@@ -48,6 +52,8 @@ jobs:
       run: cd api && pnpm install
 
     - name: (@steambrew/api) Build project
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} 
       run: cd api && pnpm run build
 
     - name: (@steambrew/api) Publish to npm
