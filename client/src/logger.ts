@@ -1,8 +1,11 @@
 const bgStyle1 = 'background: #8a16a2; color: white;';
+const isSharedJSContext = window.location.hostname === 'steamloopback.host';
+
+const moduleName = isSharedJSContext ? "@steambrew/client" : "@steambrew/webkit"
 
 export const log = (name: string, ...args: any[]) => {
   console.log(
-    `%c millennium-lib %c ${name} %c`,
+    `%c ${moduleName} %c ${name} %c`,
     bgStyle1,
     'background: #b11cce; color: white;',
     'background: transparent;',
@@ -12,7 +15,7 @@ export const log = (name: string, ...args: any[]) => {
 
 export const group = (name: string, ...args: any[]) => {
   console.group(
-    `%c millennium-lib %c ${name} %c`,
+    `%c ${moduleName} %c ${name} %c`,
     bgStyle1,
     'background: #b11cce; color: white;',
     'background: transparent;',
@@ -24,7 +27,7 @@ export const groupEnd = (name: string, ...args: any[]) => {
   console.groupEnd();
   if (args?.length > 0)
     console.log(
-      `^ %c millennium-lib %c ${name} %c`,
+      `^ %c ${moduleName} %c ${name} %c`,
       bgStyle1,
       'background: #b11cce; color: white;',
       'background: transparent;',
@@ -33,15 +36,15 @@ export const groupEnd = (name: string, ...args: any[]) => {
 };
 
 export const debug = (name: string, ...args: any[]) => {
-  console.debug(`%c millennium-lib %c ${name} %c`, bgStyle1, 'background: #1abc9c; color: white;', 'color: blue;', ...args);
+  console.debug(`%c ${moduleName} %c ${name} %c`, bgStyle1, 'background: #1abc9c; color: white;', 'color: blue;', ...args);
 };
 
 export const warn = (name: string, ...args: any[]) => {
-  console.warn(`%c millennium-lib %c ${name} %c`, bgStyle1, 'background: #ffbb00; color: white;', 'color: blue;', ...args);
+  console.warn(`%c ${moduleName} %c ${name} %c`, bgStyle1, 'background: #ffbb00; color: white;', 'color: blue;', ...args);
 };
 
 export const error = (name: string, ...args: any[]) => {
-  console.error(`%c millennium-lib %c ${name} %c`, bgStyle1, 'background: #FF0000;', 'background: transparent;', ...args);
+  console.error(`%c ${moduleName} %c ${name} %c`, bgStyle1, 'background: #FF0000;', 'background: transparent;', ...args);
 };
 
 class Logger {

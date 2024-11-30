@@ -9,7 +9,7 @@ type IPC_types = (string | number | boolean)
 /*
  Global Millennium API for developers. 
 */
-declare type Millennium = {
+type Millennium = {
     /**
      * @brief Call a method on the backend
      * @deprecated Use `callable` instead. 
@@ -33,4 +33,11 @@ declare const callable: <Args extends any[] = [], Return = void | IPC_types>(
     route: string
 ) => (...args: Args) => Promise<Return>;
 
+declare global {
+    interface Window {
+        Millennium: Millennium;
+    }
+}
+
+const Millennium: Millennium = window.Millennium;
 export { Millennium, callable };

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "../build/client",
+    "outDir": "build",
     "module": "ESNext",
     "target": "ES2020",
     "jsx": "react",

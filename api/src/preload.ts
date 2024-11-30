@@ -73,14 +73,14 @@ const WaitForSPReactDOM = () => {
 
 const StartPreloader = (port: number, shimList?: string[]) => {
 	window.MILLENNIUM_IPC_PORT = port;
-	logger.group(`Injecting ${isSharedJSContext ? 'client' : 'webkit'} shims...`);
+	logger.log(`Successfully bound to ${isSharedJSContext ? 'client' : 'webkit'} DOM...`);
 
 	CreateWebSocket('ws://localhost:' + port).then(async (socket: WebSocket) => {
 		window.MILLENNIUM_IPC_SOCKET = socket;
 		window.CURRENT_IPC_CALL_COUNT = 0;
 	
 		await Promise.all([ WaitForSocket(socket), ...(isSharedJSContext ? [WaitForSPReactDOM()] : []) ]);
-		logger.groupEnd("Ready to inject shims...");
+		logger.log("Ready to inject shims...");
 
 		if (!isSharedJSContext) 
 			(window as any).MILLENNIUM_API = millennium_api_components({});

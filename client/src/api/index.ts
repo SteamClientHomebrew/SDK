@@ -4,7 +4,7 @@ type IPC_types = (string | number | boolean)
 /*
  Global Millennium API for developers. 
 */
-declare type Millennium = {
+type Millennium = {
     /**
      * @brief Call a method on the backend
      * @deprecated Use `callable` instead. 
@@ -48,4 +48,12 @@ declare const callable: <Args extends any[] = [], Return = void | IPC_types>(
 const m_private_context: any = undefined;
 export const pluginSelf = m_private_context;
 
+
+declare global {
+    interface Window {
+        Millennium: Millennium;
+    }
+}
+
+const Millennium: Millennium = window.Millennium;
 export { Millennium, callable };

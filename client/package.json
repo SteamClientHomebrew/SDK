@@ -2,19 +2,19 @@
   "name": "@steambrew/client",
   "version": "3.7.11",
   "description": "A support library for creating plugins with Millennium.",
-  "main": "../build/client/index.js",
-  "types": "../build/client/index.d.ts",
-  "module": "../build/client/index.js",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "module": "./build/index.js",
   "type": "module",
   "license": "LGPL-2.1-only",
   "scripts": {
-    "build": "shx rm -rf ../build/client && tsc -b",
+    "build": "shx rm -rf ./build && tsc -b",
     "dev-link": "npm run build && npm link"
   },
   "files": [
     "/lib",
     "/src",
-    "/dist"
+    "/build"
   ],
   "repository": {
     "type": "git",
