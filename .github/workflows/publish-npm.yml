@@ -31,7 +31,9 @@ jobs:
         echo "NEXT_VERSION=$version" >> $GITHUB_ENV
 
     - name: Run bump.sh to update version in package.json
-      run: ./script/bump.sh ${{ env.NEXT_VERSION }}
+      run: |
+        chmod +x ./script/bump.sh
+        ./script/bump.sh ${{ env.NEXT_VERSION }}
 
     - name: Print updated version
       run: |
