@@ -1,3 +1,10 @@
+## [4.1.1](https://github.com/shdwmtr/plugutil/compare/v4.1.0...v4.1.1) (2024-12-01)
+
+
+### Bug Fixes
+
+* Fix CI versioning ([cb969e3](https://github.com/shdwmtr/plugutil/commit/cb969e326b723aad4d172d09cf7178194d8b32b8))
+
 # [4.1.0](https://github.com/shdwmtr/plugutil/compare/v4.0.0...v4.1.0) (2024-12-01)
 
 

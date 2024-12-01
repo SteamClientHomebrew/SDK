@@ -1,6 +1,6 @@
 {
   "name": "plugutil",
-  "version": "1.0.0",
+  "version": "4.1.1",
   "description": "A utility library for creating plugins with Millennium.",
   "main": "index.js",
   "devDependencies": {
