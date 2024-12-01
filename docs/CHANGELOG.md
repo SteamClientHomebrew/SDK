@@ -1,3 +1,17 @@
+# [4.1.0](https://github.com/shdwmtr/plugutil/compare/v4.0.0...v4.1.0) (2024-12-01)
+
+
+### Bug Fixes
+
+* Bug fixes ([b7e9e58](https://github.com/shdwmtr/plugutil/commit/b7e9e58a83a1d11d0b8ac6f9a0913a932ac3ec27))
+* update bump perms ([de880c0](https://github.com/shdwmtr/plugutil/commit/de880c0a11a5c95eb9980af9dbac3a85f375ffa0))
+* Update dependencies ([f406d73](https://github.com/shdwmtr/plugutil/commit/f406d736cac3ba72696eaba1822d1254bc2c668c))
+
+
+### Features
+
+* Add auto version bump ([cd0fac6](https://github.com/shdwmtr/plugutil/commit/cd0fac6b4aacf6b9269f9e1bc9dbb83d3d7e2a99))
+
 # 1.0.0 (2024-12-01)
 
 
