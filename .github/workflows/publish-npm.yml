@@ -27,11 +27,12 @@ jobs:
     - name: Bump versions
       id: dry-run
       run: |
-        version=$(npx semantic-release --dry-run | grep "Next release version:" | awk '{print $4}')
-        echo "::set-output name=NEXT_VERSION::$version"
+        VERSION=$(npx semantic-release --dry-run | grep -oP 'The next release version is \K[0-9.]+')
+        echo "Version: $VERSION"
+        echo "::set-output name=version::$VERSION"
 
         chmod +x ./scripts/bump.sh
-        ./scripts/bump.sh $version
+        ./scripts/bump.sh $VERSION
 
     - name: Print updated version
       run: |
