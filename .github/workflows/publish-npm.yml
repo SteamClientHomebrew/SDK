@@ -28,12 +28,13 @@ jobs:
       id: dry-run
       run: |
         version=$(npx semantic-release --dry-run | grep "Next release version:" | awk '{print $4}')
-        echo "NEXT_VERSION=$version" >> $GITHUB_ENV
-
+        echo "::set-output name=NEXT_VERSION::$version"
+    
     - name: Run bump.sh to update version in package.json
       run: |
         chmod +x ./script/bump.sh
-        ./script/bump.sh ${{ env.NEXT_VERSION }}
+        ./script/bump.sh ${{ steps.dry-run.outputs.NEXT_VERSION }}
+      
 
     - name: Print updated version
       run: |
