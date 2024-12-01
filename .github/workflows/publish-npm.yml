@@ -20,7 +20,9 @@ jobs:
         node-version: '20'
         
     - name: Install pnpm
-      run: npm install -g pnpm
+      run: | 
+        npm install -g pnpm
+        pnpm install 
 
     - name: Get next version via Semantic Release dry run
       id: dry-run
@@ -35,7 +37,7 @@ jobs:
       run: |
         updated_version=$(jq -r .version ./package/package.json)
         echo "Updated version in package.json: $updated_version"
-        
+
     # - name: (@steambrew/client) Install dependencies
     #   run: cd client && pnpm install
 
@@ -79,6 +81,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: | 
-        export NPM_TOKEN=${{ secrets.NPM_TOKEN }}
-        pnpm install
         npx semantic-release
