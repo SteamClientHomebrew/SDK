@@ -1,12 +1,14 @@
 {
-  "dependencies": {
-    "semantic-release": "^24.2.0"
-  },
   "name": "plugutil",
   "version": "1.0.0",
   "description": "A utility library for creating plugins with Millennium.",
   "main": "index.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "semantic-release": "^24.2.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
