@@ -22,6 +22,20 @@ jobs:
     - name: Install pnpm
       run: npm install -g pnpm
 
+    - name: Get next version via Semantic Release dry run
+      id: dry-run
+      run: |
+        version=$(npx semantic-release --dry-run | grep "Next release version:" | awk '{print $4}')
+        echo "NEXT_VERSION=$version" >> $GITHUB_ENV
+
+    - name: Run bump.sh to update version in package.json
+      run: ./script/bump.sh ${{ env.NEXT_VERSION }}
+
+    - name: Print updated version
+      run: |
+        updated_version=$(jq -r .version ./package/package.json)
+        echo "Updated version in package.json: $updated_version"
+        
     # - name: (@steambrew/client) Install dependencies
     #   run: cd client && pnpm install
 
