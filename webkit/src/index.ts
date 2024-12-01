@@ -5,7 +5,7 @@ declare global {
 }
 
 /** Returnable IPC types */
-type IPC_types = (string | number | boolean)
+type IPC_types = (string | number | boolean | void)
 /*
  Global Millennium API for developers. 
 */
@@ -29,9 +29,7 @@ type Millennium = {
 };
 
 // callable function definition
-declare const callable: <Args extends any[] = [], Return = void | IPC_types>(
-    route: string
-) => (...args: Args) => Promise<Return>;
+declare const callable: <Args extends any[] = [], T = IPC_types>(route: string) => (...args: Args) => Promise<T>;
 
 declare global {
     interface Window {

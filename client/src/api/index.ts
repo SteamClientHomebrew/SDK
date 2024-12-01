@@ -40,10 +40,7 @@ type Millennium = {
  *    pass
  * ```
  */
-declare const callable: <Args extends any[] = [], Return = void | IPC_types>(
-    route: string
-) => (...args: Args) => Promise<Return>;
-
+declare const callable: <Args extends any[] = [], T = IPC_types>(route: string) => (...args: Args) => Promise<T>;
 
 const m_private_context: any = undefined;
 export const pluginSelf = m_private_context;

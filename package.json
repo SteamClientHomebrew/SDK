@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "semantic-release": "^24.2.0"
+  },
+  "name": "plugutil",
+  "version": "1.0.0",
+  "description": "A utility library for creating plugins with Millennium.",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
