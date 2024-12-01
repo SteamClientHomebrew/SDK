@@ -23,9 +23,13 @@ jobs:
       run: npm install -g pnpm
 
     - name: Install dependencies
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: | 
         pnpm install
         npx semantic-release --dry-run
+      
       
     # - name: (@steambrew/client) Install dependencies
     #   run: cd client && pnpm install
