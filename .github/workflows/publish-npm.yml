@@ -28,7 +28,7 @@ jobs:
       run: | 
         export NPM_TOKEN=${{ secrets.NPM_TOKEN }}
         pnpm install
-        npx semantic-release --dry-run
+        npx semantic-release
       
       
     # - name: (@steambrew/client) Install dependencies
