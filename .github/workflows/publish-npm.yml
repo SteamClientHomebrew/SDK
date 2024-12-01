@@ -24,9 +24,9 @@ jobs:
 
     - name: Install dependencies
       env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: | 
+        export NPM_TOKEN=${{ secrets.NPM_TOKEN }}
         pnpm install
         npx semantic-release --dry-run
       
