@@ -16,7 +16,8 @@
                     "docs/CHANGELOG.md",
                     "api/package.json",
                     "client/package.json",
-                    "webkit/package.json"
+                    "webkit/package.json",
+                    "package.json"
                 ]
             }
         ]

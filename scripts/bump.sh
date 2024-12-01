@@ -10,6 +10,7 @@ if [ -z "$NEW_VERSION" ]; then
 fi
 
 # Update the version in package.json
+jq --arg version "$NEW_VERSION" '.version = $version' ./package.json > temp.json && mv temp.json ./package.json
 jq --arg version "$NEW_VERSION" '.version = $version' ./api/package.json > temp.json && mv temp.json ./api/package.json
 jq --arg version "$NEW_VERSION" '.version = $version' ./client/package.json > temp.json && mv temp.json ./client/package.json
 jq --arg version "$NEW_VERSION" '.version = $version' ./webkit/package.json > temp.json && mv temp.json ./webkit/package.json
