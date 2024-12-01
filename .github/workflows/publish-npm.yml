@@ -30,8 +30,8 @@ jobs:
         version=$(npx semantic-release --dry-run | grep "Next release version:" | awk '{print $4}')
         echo "::set-output name=NEXT_VERSION::$version"
 
-        chmod +x ./script/bump.sh
-        ./script/bump.sh $version
+        chmod +x ./scripts/bump.sh
+        ./scripts/bump.sh $version
 
     - name: Print updated version
       run: |
