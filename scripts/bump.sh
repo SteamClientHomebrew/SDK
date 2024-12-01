@@ -14,4 +14,4 @@ jq --arg version "$NEW_VERSION" '.version = $version' ./api/package.json > temp.
 jq --arg version "$NEW_VERSION" '.version = $version' ./client/package.json > temp.json && mv temp.json ./client/package.json
 jq --arg version "$NEW_VERSION" '.version = $version' ./webkit/package.json > temp.json && mv temp.json ./webkit/package.json
 
-echo "Version updated to $NEW_VERSION in package.json"
+echo "Updated version to $NEW_VERSION"

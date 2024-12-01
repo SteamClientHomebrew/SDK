@@ -34,11 +34,6 @@ jobs:
         chmod +x ./scripts/bump.sh
         ./scripts/bump.sh $VERSION
 
-    - name: Print updated version
-      run: |
-        updated_version=$(jq -r .version ./package/package.json)
-        echo "Updated version in package.json: $updated_version"
-
     # - name: (@steambrew/client) Install dependencies
     #   run: cd client && pnpm install
 
