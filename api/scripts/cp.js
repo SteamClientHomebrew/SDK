@@ -8,10 +8,7 @@ if (!destinationFolder) {
     process.exit(1);
 }
 
-const sourceFiles = [
-    './dist/client_api.js',
-    './dist/webkit_api.js'
-];
+const sourceFiles = ['./dist/client_api.js', './dist/webkit_api.js'];
 
 sourceFiles.forEach(file => {
     const fileName = path.basename(file);
