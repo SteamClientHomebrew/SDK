@@ -8,14 +8,16 @@
   "type": "module",
   "license": "LGPL-2.1-only",
   "bin": {
-    "make-millennium-api": "scripts/build.js"
+    "make-millennium-api": "scripts/cp.js"
   },
   "scripts": {
     "start": "./dist/ttc/index.js",
     "build-client": "cd ../client && npm run build",
     "build-webkit": "cd ../webkit && npm run build",
     "build-api": "shx rm -rf dist && tsc -b && rollup -c && mkdir dist && shx cp build/client_api.js dist/client_api.js && shx cp build/webkit_api.js dist/webkit_api.js && shx rm -rf build",
-    "build": "npm run build-client && npm run build-webkit && npm run build-api",
+    "minify-client": "terser dist/client_api.js --compress --mangle --output dist/client_api.js",
+    "minify-webkit": "terser dist/webkit_api.js --compress --mangle --output dist/webkit_api.js",
+    "build": "npm run build-client && npm run build-webkit && npm run build-api && npm run minify-client && npm run minify-webkit",
     "dev-link": "npm run build && npm link"
   },
   "files": [
