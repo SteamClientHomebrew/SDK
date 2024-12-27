@@ -26,6 +26,10 @@ const CreateWebSocket = (url: string): Promise<WebSocket> => {
 				logger.log('Successfully connected to IPC server.');
 				resolve(socket);
 			});
+			socket.addEventListener('error', () => {
+				console.log('Failed to connect to IPC server:', url);
+				window.location.reload();
+			});
 			socket.addEventListener('close', () => {
 				setTimeout(() => {
 					CreateWebSocket(url).then(resolve).catch(reject);
