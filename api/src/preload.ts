@@ -75,6 +75,35 @@ const WaitForSPReactDOM = () => {
 	});
 }
 
+const AddStyleSheetFromText = (document: Document, innerStyle: string, id?: string) => {
+	if (document.querySelectorAll(`style[id='${id}']`).length) return 
+	
+	document.head.appendChild(Object.assign(document.createElement('style'), { id: id })).innerText = innerStyle
+}
+
+const AppendAccentColor = async () => {
+	// @ts-ignore
+	const systemColors = JSON.parse(await Millennium.callServerMethod("core", "_webkit_accent_color"))
+
+	AddStyleSheetFromText(document, `
+	:root {
+        --SystemAccentColor: ${systemColors.accent}; 
+        --SystemAccentColor-RGB: ${systemColors.accentRgb}; 
+        --SystemAccentColorLight1: ${systemColors.light1}; 
+        --SystemAccentColorLight1-RGB: ${systemColors.light1Rgb}; 
+        --SystemAccentColorLight2: ${systemColors.light2}; 
+        --SystemAccentColorLight2-RGB: ${systemColors.light2Rgb}; 
+        --SystemAccentColorLight3: ${systemColors.light3};
+        --SystemAccentColorLight3-RGB: ${systemColors.light3Rgb};
+        --SystemAccentColorDark1: ${systemColors.dark1};
+        --SystemAccentColorDark1-RGB: ${systemColors.dark1Rgb};
+        --SystemAccentColorDark2: ${systemColors.dark2};
+        --SystemAccentColorDark2-RGB: ${systemColors.dark2Rgb};
+         --SystemAccentColorDark3: ${systemColors.dark3};
+         --SystemAccentColorDark3-RGB: ${systemColors.dark3Rgb};
+    }`, 'SystemAccentColorInject');
+}
+
 const StartPreloader = (port: number, shimList?: string[]) => {
 	window.MILLENNIUM_IPC_PORT = port;
 	logger.log(`Successfully bound to ${isSharedJSContext ? 'client' : 'webkit'} DOM...`);
@@ -86,8 +115,10 @@ const StartPreloader = (port: number, shimList?: string[]) => {
 		await Promise.all([ WaitForSocket(socket), ...(isSharedJSContext ? [WaitForSPReactDOM()] : []) ]);
 		logger.log("Ready to inject shims...");
 
-		if (!isSharedJSContext) 
+		if (!isSharedJSContext) {
 			(window as any).MILLENNIUM_API = millennium_api_components({});
+			AppendAccentColor();
+		}
 
 		shimList?.forEach((shim) => {
 			!document.querySelectorAll(`script[src='${shim}'][type='module']`).length 
