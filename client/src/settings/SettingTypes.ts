@@ -15,6 +15,7 @@ type SliderOptions = {
 
 type SettingMetadata = {
     name: string;
+    description: string | null;
     type: SettingType;
     options: Partial<SliderOptions>;
 }

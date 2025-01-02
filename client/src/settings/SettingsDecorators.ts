@@ -13,14 +13,15 @@ function resolveSettingType(type: any): SettingType {
     }
 }
 
-export function DefineSetting<T>(name: string, type: T) {
+export function DefineSetting<T>(name: string, description: string|null, type: T) {
     return function (target: SettingsData<any>, propertyKey: string) {
         if (!target.metadata) {
             target.metadata = {};
         }
 
         target.metadata[propertyKey] = {
-            name: name,
+            name,
+            description,
             type: resolveSettingType(type),
             options: {},
         };
@@ -54,8 +55,12 @@ export function DefineSetting<T>(name: string, type: T) {
         // Define actual setter that triggers a save on set
         Object.defineProperty(target, propertyKey, {
             set(value: any) {
+                const calledFromConstructor = !this.hasOwnProperty(`#${propertyKey}`);
                 this[`#${propertyKey}`] = value;
-                target.save();
+
+                if (!calledFromConstructor) {
+                    target.save();
+                }
             },
             get() {
                 return this[`#${propertyKey}`];
