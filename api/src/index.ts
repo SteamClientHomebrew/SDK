@@ -80,13 +80,28 @@ window.Millennium = {
                 exports[key] = obj[key];
             }
         },
+        exposeSettings: function(exports: any, settings: object): void {
+            exports.settings = settings;
+        },
         AddWindowCreateHook: (callback: any) => {
             // used to have extended functionality but removed since it was shotty
             g_PopupManager.AddPopupCreatedCallback((e: any) => {
                 callback(e)
             });
         }
-    } : {})
+    } : {
+        getSettings: (pluginName: string)=> new Promise((resolve, reject) => {
+            const query = { pluginName };
+
+            window.MILLENNIUM_BACKEND_IPC.postMessage(2, query).then((response: any) => {
+                if (response?.failedRequest) {
+                    return reject(`IPC call failed [plugin: ${pluginName}] -> ${response.failMessage}`);
+                }
+
+                resolve(JSON.parse(response.settings.value));
+            })
+        }),
+    })
 }
 
 /*
@@ -109,7 +124,7 @@ type Millennium = {
      */
     callServerMethod: (methodName: string, kwargs?: object) => Promise<any>,
     findElement: (privateDocument: Document, querySelector: string, timeOut?: number) => Promise<NodeListOf<Element>>,
-    exposeObj?: <T extends object>(obj: T) => any,
+    exposeObj?: <T extends object>(obj: T) => void,
     AddWindowCreateHook?: (callback: (context: object) => void) => void
 };
 
