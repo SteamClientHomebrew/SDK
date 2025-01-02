@@ -20,14 +20,18 @@ type SettingMetadata = {
     options: Partial<SliderOptions>;
 }
 
+type MetaDataRecord<T> = Record<NonFunctionKeys<T, 'metadata'>|string, SettingMetadata>;
+
+type NonFunctionKeys<T, M extends string> = { [K in keyof T]: T[K] extends Function ? never : K }[keyof Omit<T, M>]
+
 interface SettingsData<T> {
-    metadata: Record<keyof Omit<T, 'metadata' | 'serialize'>, SettingMetadata>;
+    metadata: MetaDataRecord<T>;
     save(): void;
     serialize(): string;
 }
 
 abstract class MillenniumModuleSettings<T extends object = any> implements SettingsData<T> {
-    public metadata!: Record<keyof Omit<T, 'metadata' | 'serialize'>, SettingMetadata>;
+    public metadata!: MetaDataRecord<T>;
 
     save(): void {
         console.error('Save not implemented. This should have been overridden by millennium.');

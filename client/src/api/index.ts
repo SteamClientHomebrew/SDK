@@ -24,7 +24,7 @@ type Millennium = {
     callServerMethod: (methodName: string, kwargs?: object) => Promise<any>,
     findElement: (privateDocument: Document, querySelector: string, timeOut?: number) => Promise<NodeListOf<Element>>,
     exposeObj?: <T extends object>(obj: T) => void,
-    exposeSettings?: (settings: MillenniumModuleSettings) => void,
+    exposeSettings?: <T extends MillenniumModuleSettings>(settings: T) => T,
     AddWindowCreateHook?: (callback: (context: object) => void) => void
 };
 

@@ -80,8 +80,9 @@ window.Millennium = {
                 exports[key] = obj[key];
             }
         },
-        exposeSettings: function(exports: any, settings: object): void {
+        exposeSettings: function(exports: any, settings: object): object {
             exports.settings = settings;
+            return settings;
         },
         AddWindowCreateHook: (callback: any) => {
             // used to have extended functionality but removed since it was shotty
