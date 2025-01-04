@@ -53,6 +53,19 @@ abstract class MillenniumSettingTabs<T extends object = any> {
     public metadata!: MetaDataRecord<T, TabMetadata>
 
     [key: string]: MillenniumModuleSettings;
+
+    // @ts-ignore
+    serialize(): string {
+        let serialized: Record<string, string> = {};
+        for (let key in this) {
+            if (!(this[key] instanceof MillenniumModuleSettings)) {
+                continue;
+            }
+
+            serialized[key] = JSON.parse(this[key].serialize());
+        }
+        return JSON.stringify(serialized);
+    }
 }
 
 export { SettingType, SettingMetadata, SettingsData, MillenniumModuleSettings, MillenniumSettingTabs, SliderOptions };
