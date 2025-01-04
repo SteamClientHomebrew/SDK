@@ -1,4 +1,5 @@
 import Logger from './logger';
+import { Icons } from './globals/modules';
 
 declare global {
   interface Window {
@@ -135,7 +136,7 @@ export const CommonUIModule = modules.find((m: Module) => {
   return false;
 });
 
-export const IconsModule = findModuleByExport(
+export const IconsModule: Icons = findModuleByExport(
   (e) => e?.toString && /Spinner\)}\)?,.\.createElement\(\"path\",{d:\"M18 /.test(e.toString()),
 );
 

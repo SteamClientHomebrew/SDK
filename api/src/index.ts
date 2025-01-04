@@ -13,10 +13,16 @@ declare global {
 /** Returnable IPC types */
 type IPC_types = (string | number | boolean)
 
+enum IPC_method {
+    CALL_SERVER_METHOD = 0,
+    FRONT_END_LOADED = 1,
+    GET_FRONTEND_SETTINGS = 2,
+}
+
 declare const g_PopupManager: any;
 
 window.MILLENNIUM_BACKEND_IPC = {
-    postMessage: (messageId: number, contents: string) => new Promise((resolve) => {
+    postMessage: (messageId: IPC_method, contents: string) => new Promise((resolve) => {
         const message = { id: messageId, iteration: window.CURRENT_IPC_CALL_COUNT++, data: contents };
 
         const messageHandler = (data: MessageEvent) => {
@@ -44,7 +50,7 @@ window.Millennium = {
     callServerMethod: (pluginName: string, methodName: string, kwargs: any) =>  new Promise((resolve, reject) => {
         const query = { pluginName, methodName, ...(kwargs && { argumentList: kwargs }) };
 
-        window.MILLENNIUM_BACKEND_IPC.postMessage(0, query).then((response: any) => {
+        window.MILLENNIUM_BACKEND_IPC.postMessage(IPC_method.CALL_SERVER_METHOD, query).then((response: any) => {
             if (response?.failedRequest) {
                 return reject(`IPC call failed [plugin: ${pluginName}, method: ${methodName}] -> ${response.failMessage}`);
             }
@@ -80,13 +86,29 @@ window.Millennium = {
                 exports[key] = obj[key];
             }
         },
+        exposeSettings: function(exports: any, settings: object): object {
+            exports.settings = settings;
+            return settings;
+        },
         AddWindowCreateHook: (callback: any) => {
             // used to have extended functionality but removed since it was shotty
             g_PopupManager.AddPopupCreatedCallback((e: any) => {
                 callback(e)
             });
         }
-    } : {})
+    } : {
+        getSettings: (pluginName: string)=> new Promise((resolve, reject) => {
+            const query = { pluginName };
+
+            window.MILLENNIUM_BACKEND_IPC.postMessage(IPC_method.GET_FRONTEND_SETTINGS, query).then((response: any) => {
+                if (response?.failedRequest) {
+                    return reject(`IPC call failed [plugin: ${pluginName}] -> ${response.failMessage}`);
+                }
+
+                resolve(JSON.parse(response.settings.value));
+            })
+        }),
+    })
 }
 
 /*
@@ -109,7 +131,7 @@ type Millennium = {
      */
     callServerMethod: (methodName: string, kwargs?: object) => Promise<any>,
     findElement: (privateDocument: Document, querySelector: string, timeOut?: number) => Promise<NodeListOf<Element>>,
-    exposeObj?: <T extends object>(obj: T) => any,
+    exposeObj?: <T extends object>(obj: T) => void,
     AddWindowCreateHook?: (callback: (context: object) => void) => void
 };
 

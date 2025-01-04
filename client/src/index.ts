@@ -9,6 +9,7 @@ export * from './webpack';
 export * from './utils';
 export * from './class-mapper';
 export * from './api';
+export * from './settings';
 
 /**
  * @deprecated use @decky/api instead
