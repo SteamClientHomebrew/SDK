@@ -13,10 +13,16 @@ declare global {
 /** Returnable IPC types */
 type IPC_types = (string | number | boolean)
 
+enum IPC_method {
+    CALL_SERVER_METHOD = 0,
+    FRONT_END_LOADED = 1,
+    GET_FRONTEND_SETTINGS = 2,
+}
+
 declare const g_PopupManager: any;
 
 window.MILLENNIUM_BACKEND_IPC = {
-    postMessage: (messageId: number, contents: string) => new Promise((resolve) => {
+    postMessage: (messageId: IPC_method, contents: string) => new Promise((resolve) => {
         const message = { id: messageId, iteration: window.CURRENT_IPC_CALL_COUNT++, data: contents };
 
         const messageHandler = (data: MessageEvent) => {
@@ -44,7 +50,7 @@ window.Millennium = {
     callServerMethod: (pluginName: string, methodName: string, kwargs: any) =>  new Promise((resolve, reject) => {
         const query = { pluginName, methodName, ...(kwargs && { argumentList: kwargs }) };
 
-        window.MILLENNIUM_BACKEND_IPC.postMessage(0, query).then((response: any) => {
+        window.MILLENNIUM_BACKEND_IPC.postMessage(IPC_method.CALL_SERVER_METHOD, query).then((response: any) => {
             if (response?.failedRequest) {
                 return reject(`IPC call failed [plugin: ${pluginName}, method: ${methodName}] -> ${response.failMessage}`);
             }
@@ -94,7 +100,7 @@ window.Millennium = {
         getSettings: (pluginName: string)=> new Promise((resolve, reject) => {
             const query = { pluginName };
 
-            window.MILLENNIUM_BACKEND_IPC.postMessage(2, query).then((response: any) => {
+            window.MILLENNIUM_BACKEND_IPC.postMessage(IPC_method.GET_FRONTEND_SETTINGS, query).then((response: any) => {
                 if (response?.failedRequest) {
                     return reject(`IPC call failed [plugin: ${pluginName}] -> ${response.failMessage}`);
                 }
