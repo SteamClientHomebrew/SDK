@@ -1,3 +1,5 @@
+import { SidebarNavigationPage } from '../components';
+
 enum SettingType {
     Unknown = 'Unknown',
     NumberInput = 'NumberInput',
@@ -20,19 +22,21 @@ type SettingMetadata = {
     options: Partial<SliderOptions>;
 }
 
-type MetaDataRecord<T> = Record<NonFunctionKeys<T, 'metadata'>|string, SettingMetadata>;
+type MetaDataRecord<T, V> = Record<NonFunctionKeys<T, 'metadata'>|string, V>;
 
 type NonFunctionKeys<T, M extends string> = { [K in keyof T]: T[K] extends Function ? never : K }[keyof Omit<T, M>]
 
 interface SettingsData<T> {
-    metadata: MetaDataRecord<T>;
+    metadata: MetaDataRecord<T, SettingMetadata>;
     save(): void;
     serialize(): string;
 }
 
 abstract class MillenniumModuleSettings<T extends object = any> implements SettingsData<T> {
-    public metadata!: MetaDataRecord<T>;
+    public metadata!: MetaDataRecord<T, SettingMetadata>;
 
+    [key: string]: any;
+    
     save(): void {
         console.error('Save not implemented. This should have been overridden by millennium.');
     }
@@ -42,4 +46,13 @@ abstract class MillenniumModuleSettings<T extends object = any> implements Setti
     }
 }
 
-export { SettingType, SettingMetadata, SettingsData, MillenniumModuleSettings, SliderOptions };
+type TabMetadata = Omit<SidebarNavigationPage, 'content'>;
+
+abstract class MillenniumSettingTabs<T extends object = any> {
+    // @ts-ignore
+    public metadata!: MetaDataRecord<T, TabMetadata>
+
+    [key: string]: MillenniumModuleSettings;
+}
+
+export { SettingType, SettingMetadata, SettingsData, MillenniumModuleSettings, MillenniumSettingTabs, SliderOptions };

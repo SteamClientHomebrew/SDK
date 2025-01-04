@@ -1,4 +1,4 @@
-import { MillenniumModuleSettings } from '../settings';
+import { MillenniumModuleSettings, MillenniumSettingTabs } from '../settings';
 
 /** Returnable IPC types */
 type IPC_types = (string | number | boolean)
@@ -24,7 +24,7 @@ type Millennium = {
     callServerMethod: (methodName: string, kwargs?: object) => Promise<any>,
     findElement: (privateDocument: Document, querySelector: string, timeOut?: number) => Promise<NodeListOf<Element>>,
     exposeObj?: <T extends object>(obj: T) => void,
-    exposeSettings?: <T extends MillenniumModuleSettings>(settings: T) => T,
+    exposeSettings?: <T extends (MillenniumModuleSettings|MillenniumSettingTabs)>(settings: T) => T,
     AddWindowCreateHook?: (callback: (context: object) => void) => void
 };
 

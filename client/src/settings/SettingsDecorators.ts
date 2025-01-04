@@ -1,4 +1,5 @@
-import { SettingsData, SettingType, SliderOptions } from './SettingTypes';
+import { MillenniumSettingTabs, SettingsData, SettingType, SliderOptions } from './SettingTypes';
+import { SidebarNavigationPage } from '../components';
 
 function resolveSettingType(type: any): SettingType {
     switch (type) {
@@ -68,6 +69,16 @@ export function DefineSetting<T>(name: string, description: string|null, type: T
             configurable: true,
             enumerable: true,
         });
+    };
+}
+
+export function DefineTab(tabOptions: Omit<SidebarNavigationPage, 'content'>) {
+    return function (target: MillenniumSettingTabs, propertyKey: string) {
+        if (!target.metadata) {
+            target.metadata = {};
+        }
+
+        target.metadata[propertyKey] = tabOptions
     };
 }
 
