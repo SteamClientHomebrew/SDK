@@ -1,5 +1,4 @@
 import { AppDetails, LogoPosition, SteamAppOverview } from './SteamClient';
-import { WindowRouter } from '../modules';
 declare global {
   interface Window {
     LocalizationManager: {
@@ -46,9 +45,6 @@ declare global {
       GetAppDetails: (appId: number) => AppDetails | null;
       GetCustomLogoPosition: (app: SteamAppOverview) => LogoPosition | null;
       SaveCustomLogoPosition: (app: SteamAppOverview, logoPositions: LogoPosition) => any;
-    };
-    SteamUIStore: {
-      GetFocusedWindowInstance: () => WindowRouter;
     };
   }
 }
