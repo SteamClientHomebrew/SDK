@@ -17,9 +17,8 @@ declare global {
 declare const steam_client_components: (module: any, react: typeof React) => object;
 declare const millennium_api_components: (module: any) => object;
 
-// export * from './deck-libs';
 const CreateWebSocket = (url: string): Promise<WebSocket> => {
-	return new Promise((resolve, reject) => {
+	return new Promise((resolve) => {
 		try {
 			let socket = new WebSocket(url);
 			socket.addEventListener('open', () => {
@@ -29,11 +28,6 @@ const CreateWebSocket = (url: string): Promise<WebSocket> => {
 			socket.addEventListener('error', () => {
 				console.log('Failed to connect to IPC server:', url);
 				window.location.reload();
-			});
-			socket.addEventListener('close', () => {
-				setTimeout(() => {
-					CreateWebSocket(url).then(resolve).catch(reject);
-				}, 100);
 			});
 		} 
 		catch (error) {
