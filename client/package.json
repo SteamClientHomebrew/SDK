@@ -1,6 +1,6 @@
 {
   "name": "@steambrew/client",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "description": "A support library for creating plugins with Millennium.",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
