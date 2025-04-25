@@ -9,7 +9,7 @@ setup(
     version=package_info.get('version'),
     author='Steam Client Homebrew',
     description='A support library for creating plugins with Millennium.',
-    long_description=open('../README.md').read(),
+    long_description=open('../../README.md').read(),
     long_description_content_type='text/markdown',
     url='https://github.com/SteamClientHomebrew/PluginComponents',
     packages=find_packages(),
