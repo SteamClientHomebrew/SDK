@@ -1,5 +1,5 @@
-import React from "react";
-import Logger from "../../client/src/logger";
+import React from 'react';
+import Logger from '../../client/src/logger';
 
 const logger = new Logger('Core');
 const isSharedJSContext = window.location.hostname === 'steamloopback.host';
@@ -29,12 +29,11 @@ const CreateWebSocket = (url: string): Promise<WebSocket> => {
 				console.log('Failed to connect to IPC server:', url);
 				window.location.reload();
 			});
-		} 
-		catch (error) {
+		} catch (error) {
 			console.warn('Failed to connect to IPC server:', error);
-		} 
+		}
 	});
-}
+};
 
 const WaitForSocket = (socket: WebSocket) => {
 	return new Promise<void>((resolve, reject) => {
@@ -45,41 +44,44 @@ const WaitForSocket = (socket: WebSocket) => {
 			socket.addEventListener('error', () => reject());
 		}
 	});
-}
+};
 
 const InjectLegacyReactGlobals = async () => {
 	window.MILLENNIUM_API = {
 		...window.MILLENNIUM_API,
 		...millennium_api_components({}),
-		...steam_client_components({}, window.SP_REACT)
+		...steam_client_components({}, window.SP_REACT),
 	};
-}
+};
 
 const WaitForSPReactDOM = () => {
 	return new Promise<void>((resolve) => {
-		const CallBack = (module: any) => {
-			if (module?.length >= 5) {
+		const CallBack = () => {
+			// @ts-expect-error
+			if (window.App?.BFinishedInitStageOne()) {
 				InjectLegacyReactGlobals();
 				clearInterval(interval);
 				resolve();
 			}
-		}
+		};
 
-		const interval = setInterval(() => CallBack(window?.webpackChunksteamui), 100);
+		const interval = setInterval(() => CallBack(), 0);
 	});
-}
+};
 
 const AddStyleSheetFromText = (document: Document, innerStyle: string, id?: string) => {
-	if (document.querySelectorAll(`style[id='${id}']`).length) return 
-	
-	document.head.appendChild(Object.assign(document.createElement('style'), { id: id })).innerText = innerStyle
-}
+	if (document.querySelectorAll(`style[id='${id}']`).length) return;
+
+	document.head.appendChild(Object.assign(document.createElement('style'), { id: id })).innerText = innerStyle;
+};
 
 const AppendAccentColor = async () => {
 	// @ts-ignore
-	const systemColors = JSON.parse(await Millennium.callServerMethod("core", "_webkit_accent_color"))
+	const systemColors = JSON.parse(await Millennium.callServerMethod('core', 'GetSystemColors'));
 
-	AddStyleSheetFromText(document, `
+	AddStyleSheetFromText(
+		document,
+		`
 	:root {
         --SystemAccentColor: ${systemColors.accent}; 
         --SystemAccentColor-RGB: ${systemColors.accentRgb}; 
@@ -95,31 +97,34 @@ const AppendAccentColor = async () => {
         --SystemAccentColorDark2-RGB: ${systemColors.dark2Rgb};
          --SystemAccentColorDark3: ${systemColors.dark3};
          --SystemAccentColorDark3-RGB: ${systemColors.dark3Rgb};
-    }`, 'SystemAccentColorInject');
-}
+    }`,
+		'SystemAccentColorInject',
+	);
+};
 
 const StartPreloader = (port: number, shimList?: string[]) => {
 	window.MILLENNIUM_IPC_PORT = port;
 	logger.log(`Successfully bound to ${isSharedJSContext ? 'client' : 'webkit'} DOM...`);
 
-	CreateWebSocket('ws://localhost:' + port).then(async (socket: WebSocket) => {
-		window.MILLENNIUM_IPC_SOCKET = socket;
-		window.CURRENT_IPC_CALL_COUNT = 0;
-	
-		await Promise.all([ WaitForSocket(socket), ...(isSharedJSContext ? [WaitForSPReactDOM()] : []) ]);
-		logger.log("Ready to inject shims...");
+	CreateWebSocket('ws://localhost:' + port)
+		.then(async (socket: WebSocket) => {
+			window.MILLENNIUM_IPC_SOCKET = socket;
+			window.CURRENT_IPC_CALL_COUNT = 0;
 
-		if (!isSharedJSContext) {
-			(window as any).MILLENNIUM_API = millennium_api_components({});
-			AppendAccentColor();
-		}
+			await Promise.all([WaitForSocket(socket), ...(isSharedJSContext ? [WaitForSPReactDOM()] : [])]);
+			logger.log('Ready to inject shims...');
 
-		shimList?.forEach((shim) => {
-			!document.querySelectorAll(`script[src='${shim}'][type='module']`).length 
-				&& document.head.appendChild(Object.assign(document.createElement('script'), { src: shim, type: 'module', id: 'millennium-injected' }));
-		});
-	}).catch((error) => 
-		console.error('Initial WebSocket connection failed:', error));
-}
+			if (!isSharedJSContext) {
+				(window as any).MILLENNIUM_API = millennium_api_components({});
+				AppendAccentColor();
+			}
+
+			shimList?.forEach((shim) => {
+				!document.querySelectorAll(`script[src='${shim}'][type='module']`).length &&
+					document.head.appendChild(Object.assign(document.createElement('script'), { src: shim, type: 'module', id: 'millennium-injected' }));
+			});
+		})
+		.catch((error) => console.error('Initial WebSocket connection failed:', error));
+};
 
 export default StartPreloader;
