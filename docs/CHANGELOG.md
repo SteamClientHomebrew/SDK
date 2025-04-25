@@ -1,3 +1,22 @@
+# [4.2.0](https://github.com/shdwmtr/plugutil/compare/v4.1.1...v4.2.0) (2025-04-25)
+
+
+### Bug Fixes
+
+* Add terser module ([e1fe763](https://github.com/shdwmtr/plugutil/commit/e1fe7637d6335bf9c23a140505bc13a8d720f19d))
+* bump version ([54c6aba](https://github.com/shdwmtr/plugutil/commit/54c6aba9eebaaa837dddeb8f819e1bd148e09085))
+* Bump version ([912cada](https://github.com/shdwmtr/plugutil/commit/912cadabc31d9a84b59cc5e2f30b5333c7a840f9))
+* Bump version tags ([bceadbb](https://github.com/shdwmtr/plugutil/commit/bceadbb27abb09236822ee78ca24fe1d717a308d))
+* Fix webkit preloader on UNIX ([6b8efb5](https://github.com/shdwmtr/plugutil/commit/6b8efb533d571b60028f9d9210d8cfa4f618ac37))
+* Reload on CPS errors. ([0d81b75](https://github.com/shdwmtr/plugutil/commit/0d81b752057ed35baf908b06f2a84f671336ab99))
+
+
+### Features
+
+* Add core utils for plugin settings ([eff09e0](https://github.com/shdwmtr/plugutil/commit/eff09e05c36bf31c1ad087cc76db58f6c2f49dcc))
+* Add system accent color to webkit ([b52230e](https://github.com/shdwmtr/plugutil/commit/b52230e3bd417b9353d983856323dee8a90c4f70))
+* Added shim minification & build scripts. ([32f98a0](https://github.com/shdwmtr/plugutil/commit/32f98a021d6f3bc6b7df839098f0c4d06221632a))
+
 ## [4.1.1](https://github.com/shdwmtr/plugutil/compare/v4.1.0...v4.1.1) (2024-12-01)
 
 
