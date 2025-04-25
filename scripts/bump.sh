@@ -1,18 +1,17 @@
 #!/bin/bash
 
-# Get the new version passed as an argument
-NEW_VERSION=$1
+# Extract the version from the root package.json
+NEW_VERSION=$(jq -r '.version' ./package.json)
 
-# Check if version argument is provided
-if [ -z "$NEW_VERSION" ]; then
-  echo "Error: No version provided"
+# Check if the version was successfully extracted
+if [ -z "$NEW_VERSION" ] || [ "$NEW_VERSION" == "null" ]; then
+  echo "Error: Failed to extract version from ./package.json"
   exit 1
 fi
 
-# Update the version in package.json
-jq --arg version "$NEW_VERSION" '.version = $version' ./package.json > temp.json && mv temp.json ./package.json
-jq --arg version "$NEW_VERSION" '.version = $version' ./api/package.json > temp.json && mv temp.json ./api/package.json
-jq --arg version "$NEW_VERSION" '.version = $version' ./client/package.json > temp.json && mv temp.json ./client/package.json
-jq --arg version "$NEW_VERSION" '.version = $version' ./webkit/package.json > temp.json && mv temp.json ./webkit/package.json
+# Update the version in all package.json files
+for file in ./api/package.json ./client/package.json ./webkit/package.json; do
+  jq --arg version "$NEW_VERSION" '.version = $version' "$file" > temp.json && mv temp.json "$file"
+done
 
-echo "Updated version to $NEW_VERSION"
+echo "Updated all package.json files to version $NEW_VERSION"
