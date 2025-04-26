@@ -53,5 +53,31 @@ declare global {
 
 declare const BindPluginSettings: () => any;
 
+interface FileInfo {
+	content: string;
+	filePath: string;
+	fileName: string;
+}
+
+interface SingleFileExprProps {
+	basePath?: string;
+	encoding?: BufferEncoding;
+}
+
+interface MultiFileExprProps {
+	basePath?: string;
+	include?: string; // A regex pattern to include files
+	encoding?: BufferEncoding;
+}
+
+/**
+ * @brief Create a compile time filesystem expression.
+ * This function will evaluate a file path at compile time, and embed a files content statically into the bundle.
+ */
+declare const constSysfsExpr: {
+	(fileName: string, props: SingleFileExprProps): FileInfo;
+	(props: MultiFileExprProps): FileInfo[];
+};
+
 const Millennium: Millennium = window.Millennium;
-export { Millennium, callable, BindPluginSettings };
+export { Millennium, callable, BindPluginSettings, constSysfsExpr };
