@@ -1,80 +1,76 @@
 name: Publish NPM package
 
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
+    publish:
+        runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        registry-url: 'https://registry.npmjs.org'
-        node-version: '20'
-        
-    - name: Install pnpm
-      run: | 
-        npm install -g pnpm
-        pnpm install 
+            - name: Setup Node.js
+              uses: actions/setup-node@v2
+              with:
+                  registry-url: 'https://registry.npmjs.org'
+                  node-version: '20'
 
-    - name: Bump versions
-      id: dry-run
-      run: |
-        VERSION=$(npx semantic-release --dry-run | grep -oP 'The next release version is \K[0-9.]+')
-        echo "Version: $VERSION"
-        echo "::set-output name=version::$VERSION"
+            - name: Install pnpm
+              run: |
+                  npm install -g pnpm
+                  pnpm install
 
-        chmod +x ./scripts/bump.sh
-        ./scripts/bump.sh $VERSION
+            - name: Bump versions
+              id: dry-run
+              run: |
+                  chmod +x ./scripts/bump.sh
+                  ./scripts/bump.sh
 
-    - name: (@steambrew/client) Install dependencies
-      run: cd client && pnpm install
+            - name: (@steambrew/client) Install dependencies
+              run: cd client && pnpm install
 
-    - name: (@steambrew/client) Build project
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: cd client && pnpm run build
+            - name: (@steambrew/client) Build project
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+              run: cd client && pnpm run build
 
-    - name: (@steambrew/client) Publish to npm
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: cd client && npm publish
+            - name: (@steambrew/client) Publish to npm
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+              run: cd client && npm publish
 
-    - name: (@steambrew/webkit) Install dependencies
-      run: cd webkit && pnpm install
+            - name: (@steambrew/webkit) Install dependencies
+              run: cd webkit && pnpm install
 
-    - name: (@steambrew/webkit) Build project
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: cd webkit && pnpm run build
+            - name: (@steambrew/webkit) Build project
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+              run: cd webkit && pnpm run build
 
-    - name: (@steambrew/webkit) Publish to npm
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: cd webkit && npm publish
+            - name: (@steambrew/webkit) Publish to npm
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+              run: cd webkit && npm publish
 
-    - name: (@steambrew/api) Install dependencies
-      run: cd api && pnpm install
+            - name: (@steambrew/api) Install dependencies
+              run: cd api && pnpm install
 
-    - name: (@steambrew/api) Build project
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} 
-      run: cd api && pnpm run build
+            - name: (@steambrew/api) Build project
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+              run: cd api && pnpm run build
 
-    - name: (@steambrew/api) Publish to npm
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: cd api && npm publish
+            - name: (@steambrew/api) Publish to npm
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+              run: cd api && npm publish
 
-    - name: (semantic-release) Release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: | 
-        npx semantic-release
+            - name: (semantic-release) Release
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  npx semantic-release
