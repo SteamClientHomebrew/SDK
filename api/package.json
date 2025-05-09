@@ -1,86 +1,29 @@
 {
-  "name": "@steambrew/api",
-  "version": "5.2.2",
-  "description": "A support library for creating plugins with Millennium.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "module": "dist/index.js",
-  "type": "module",
-  "license": "LGPL-2.1-only",
-  "bin": {
-    "make-millennium-api": "scripts/cp.js"
-  },
-  "scripts": {
-    "start": "./dist/ttc/index.js",
-    "build-client": "cd ../client && npm run build",
-    "build-webkit": "cd ../webkit && npm run build",
-    "build-api": "shx rm -rf dist && tsc -b && rollup -c && mkdir dist && shx cp build/client_api.js dist/client_api.js && shx cp build/webkit_api.js dist/webkit_api.js && shx rm -rf build",
-    "minify-client": "terser dist/client_api.js --compress --mangle --output dist/client_api.js",
-    "minify-webkit": "terser dist/webkit_api.js --compress --mangle --output dist/webkit_api.js",
-    "build": "npm run build-client && npm run build-webkit && npm run build-api && npm run minify-client && npm run minify-webkit",
-    "dev-link": "npm run build && npm link"
-  },
-  "files": [
-    "/lib",
-    "/src",
-    "/dist"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SteamClientHomebrew/PluginComponents.git"
-  },
-  "devDependencies": {
-    "@rollup/plugin-typescript": "^12.1.1",
-    "@types/jest": "^29.5.12",
-    "@types/node": "^20.14.9",
-    "@types/react": "16.14.0",
-    "@types/react-router": "5.1.18",
-    "typescript": "^5.7.2"
-  },
-  "dependencies": {
-    "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-replace": "^5.0.5",
-    "@rollup/plugin-terser": "^0.4.4",
-    "rollup": "^4.17.2",
-    "shx": "^0.3.4",
-    "terser": "^5.36.0",
-    "tslib": "^2.8.1",
-    "url": "^0.11.4"
-  },
-  "pnpm": {
-    "peerDependencyRules": {
-      "ignoreMissing": [
-        "react",
-        "react-dom"
-      ]
-    },
-    "updateConfig": {
-      "ignoreDependencies": [
-        "react",
-        "react-dom"
-      ]
-    }
-  },
-  "importSort": {
-    ".js, .jsx, .ts, .tsx": {
-      "style": "module",
-      "parser": "typescript"
-    }
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "keywords": [
-    "steam",
-    "steam-client",
-    "millennium",
-    "ui-components"
-  ],
-  "author": "SteamClientHomebrew",
-  "bugs": {
-    "url": "https://github.com/SteamClientHomebrew/PluginComponents/issues"
-  },
-  "homepage": "https://github.com/SteamClientHomebrew/PluginComponents#readme"
+	"type": "module",
+	"license": "LGPL-2.1-only",
+	"scripts": {
+		"build": "rollup -c"
+	},
+	"devDependencies": {
+		"@types/jest": "^29.5.12",
+		"@types/node": "^20.14.9",
+		"@types/react": "16.14.0",
+		"@types/react-router": "5.1.18"
+	},
+	"dependencies": {
+		"@rollup/plugin-commonjs": "^25.0.7",
+		"@rollup/plugin-json": "^6.1.0",
+		"@rollup/plugin-node-resolve": "^15.2.3",
+		"@rollup/plugin-replace": "^5.0.5",
+		"@rollup/plugin-terser": "^0.4.4",
+		"@rollup/plugin-typescript": "^12.1.1",
+		"@steambrew/client": "file:../client",
+		"rollup": "^4.17.2",
+		"rollup-plugin-external-globals": "^0.13.0",
+		"shx": "^0.3.4",
+		"terser": "^5.36.0",
+		"tslib": "^2.8.1",
+		"typescript": "^5.8.3",
+		"url": "^0.11.4"
+	}
 }

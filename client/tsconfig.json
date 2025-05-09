@@ -1,23 +1,23 @@
 {
-  "compilerOptions": {
-    "outDir": "build",
-    "module": "ESNext",
-    "target": "ES2020",
-    "jsx": "react",
-    "jsxFactory": "window.SP_REACT.createElement",
-    "declaration": true,
-    "moduleResolution": "node",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "esModuleInterop": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
-    "strict": true,
-    "ignoreDeprecations": "5.0",
-    "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true
-  },
-  "include": ["src", "src/globals.d.ts"],
-  "exclude": ["node_modules"]
+	"compilerOptions": {
+		"module": "ESNext",
+		"target": "ES2020",
+		"jsx": "react",
+		"jsxFactory": "window.SP_REACT.createElement",
+		"jsxFragmentFactory": "window.SP_REACT.Fragment",
+		"declaration": true,
+		"moduleResolution": "node",
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"esModuleInterop": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noImplicitAny": true,
+		"strict": true,
+		"ignoreDeprecations": "5.0",
+		"allowSyntheticDefaultImports": true,
+		"skipLibCheck": true
+	},
+	"include": ["**/*"],
+	"exclude": ["node_modules"]
 }

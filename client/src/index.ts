@@ -9,13 +9,3 @@ export * from './webpack';
 export * from './utils';
 export * from './class-mapper';
 export * from './api';
-
-/**
- * @deprecated use @decky/api instead
- */
-export const definePlugin = (fn: any): any => {
-  return (...args: any[]) => {
-    // TODO: Maybe wrap this
-    return fn(...args);
-  };
-};
