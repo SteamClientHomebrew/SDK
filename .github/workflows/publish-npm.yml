@@ -57,7 +57,7 @@ jobs:
               run: cd webkit && npm publish
 
             - name: (@steambrew/api) Install dependencies
-              run: ls -l ../client && ls -l ../client/build && cd api && pnpm install
+              run: ls -l ./client && ls -l ./client/build && cd api && pnpm install
 
             - name: (@steambrew/api) Build project
               env:
