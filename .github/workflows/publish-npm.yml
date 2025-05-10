@@ -1,63 +1,36 @@
-name: Publish NPM package
+name: Lerna Release & Publish
 
 on:
     push:
-        branches:
-            - main
+        tags:
+            - 'v*' # Trigger the workflow when a version tag is pushed (e.g., v1.0.0)
 
 jobs:
-    publish:
-        runs-on: ubuntu-latest
+    release:
+        runs-on: ubuntu-latest # Use the latest Ubuntu for the environment
 
         steps:
+            # Step 1: Checkout the repository
             - name: Checkout code
               uses: actions/checkout@v2
 
-            - name: Setup Node.js
+            # Step 2: Set up Node.js
+            - name: Set up Node.js
               uses: actions/setup-node@v2
               with:
-                  registry-url: 'https://registry.npmjs.org'
-                  node-version: '20'
+                  node-version: '20' # Specify the Node.js version to use
 
-            - name: Install pnpm
-              run: |
-                  npm install -g pnpm
-                  pnpm install
+            # Step 3: Install dependencies
+            - name: Install dependencies
+              run: npm ci # Uses package-lock.json to ensure exact versions
 
-            - name: Bump versions
-              id: dry-run
-              run: |
-                  chmod +x ./scripts/bump.sh
-                  ./scripts/bump.sh
+            # Step 4: Run Lerna version to bump versions and create tags
+            - name: Run Lerna Version
+              run: npx lerna version --conventional-commits --yes # Automatically bump version using Conventional Commits
 
-            - name: (@steambrew/client) Install dependencies
-              run: cd client && pnpm install
+            # Step 5: Publish packages with Lerna
+            - name: Publish packages
+              run: npx lerna publish from-git --yes # Publish the packages with the new version
 
-            - name: (@steambrew/client) Build project
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-              run: cd client && pnpm run build
-
-            - name: (@steambrew/client) Publish to npm
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-              run: cd client && npm publish
-
-            - name: (@steambrew/webkit) Install dependencies
-              run: cd webkit && pnpm install
-
-            - name: (@steambrew/webkit) Build project
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-              run: cd webkit && pnpm run build
-
-            - name: (@steambrew/webkit) Publish to npm
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-              run: cd webkit && npm publish
-
-            - name: (semantic-release) Release
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: |
-                  npx semantic-release
