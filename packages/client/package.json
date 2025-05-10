@@ -1,6 +1,6 @@
 {
 	"name": "@steambrew/client",
-	"version": "5.2.2",
+	"version": "5.2.11",
 	"description": "A support library for creating plugins with Millennium.",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
@@ -9,7 +9,7 @@
 	"license": "LGPL-2.1-only",
 	"scripts": {
 		"build": "shx rm -rf ./build && tsc -b",
-		"dev-link": "npm run build && npm link"
+		"prepare": "npm run build"
 	},
 	"files": [
 		"/lib",

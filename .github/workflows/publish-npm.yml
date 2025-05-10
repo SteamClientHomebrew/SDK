@@ -56,19 +56,6 @@ jobs:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
               run: cd webkit && npm publish
 
-            - name: (@steambrew/api) Install dependencies
-              run: cd client && pnpm run build && cd ../api && pnpm install
-
-            - name: (@steambrew/api) Build project
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-              run: cd api && pnpm run build
-
-            - name: (@steambrew/api) Publish to npm
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-              run: cd api && npm publish
-
             - name: (semantic-release) Release
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

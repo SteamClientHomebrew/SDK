@@ -1,19 +1,11 @@
 {
-	"name": "plugutil",
-	"version": "5.2.8",
-	"description": "A utility library for creating plugins with Millennium.",
-	"main": "index.js",
+	"name": "steambrew-monorepo",
+	"version": "1.0.0",
+	"private": true,
+	"workspaces": [
+		"packages/*"
+	],
 	"devDependencies": {
-		"@semantic-release/changelog": "^6.0.3",
-		"@semantic-release/exec": "^6.0.3",
-		"@semantic-release/git": "^10.0.1",
-		"semantic-release": "^24.2.0"
-	},
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"prepare": "bash ./scripts/bump.sh"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC"
+		"lerna": "^8.2.2"
+	}
 }

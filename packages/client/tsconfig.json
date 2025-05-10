@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"outDir": "build",
 		"module": "ESNext",
 		"target": "ES2020",
 		"jsx": "react",
@@ -19,5 +20,5 @@
 		"skipLibCheck": true
 	},
 	"include": ["**/*"],
-	"exclude": ["node_modules"]
+	"exclude": ["node_modules", "build"]
 }
