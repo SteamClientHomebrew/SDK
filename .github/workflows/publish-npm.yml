@@ -1,12 +1,14 @@
-name: Lerna Versioning
+name: Lerna Versioning and Publish
 
 on:
     push:
         branches:
-            - main # Trigger when pushing to main branch
+            - main # Trigger on push to the main branch
+        tags:
+            - 'v*' # Trigger on version tags (e.g., v1.0.0)
 
 jobs:
-    versioning:
+    versioning-and-publishing:
         runs-on: ubuntu-latest
 
         steps:
@@ -16,7 +18,7 @@ jobs:
             - name: Set up Node.js
               uses: actions/setup-node@v2
               with:
-                  node-version: '16'
+                  node-version: '20'
 
             - name: Install dependencies
               run: |
@@ -32,7 +34,11 @@ jobs:
               run: |
                   npx lerna version --conventional-commits --yes  # Auto version bump based on commit messages
 
+            - name: Publish to npm
+              run: |
+                  npx lerna publish from-package --yes  # Publish the updated packages to npm
+
             - name: Push commit and tag
               run: |
                   git push origin main  # Push the version bump commit to main
-                  git push origin --tags  # Push the tag created by lerna version
+                  git push origin --tags  # Push the new tag created by lerna version
