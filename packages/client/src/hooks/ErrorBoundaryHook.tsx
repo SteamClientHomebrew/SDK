@@ -74,7 +74,7 @@ class ErrorBoundaryHook extends Logger {
 				console.log('FORCE RERENDERING', this.state._deckyForceRerender);
 				const stateClone = { ...this.state, _deckyForceRerender: null };
 				this.setState(stateClone);
-				return;
+				return callOriginal;
 			}
 			// yoinked from valve error boundary
 			if (this.state.error && this.props.errorKey == this.state.lastErrorKey) {

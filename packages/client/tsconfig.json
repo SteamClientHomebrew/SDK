@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"outDir": "build",
 		"module": "ESNext",
-		"target": "ES2020",
+		"target": "ES2021",
 		"jsx": "react",
 		"jsxFactory": "window.SP_REACT.createElement",
 		"jsxFragmentFactory": "window.SP_REACT.Fragment",

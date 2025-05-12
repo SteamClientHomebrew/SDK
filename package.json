@@ -2,17 +2,29 @@
 	"name": "steambrew-monorepo",
 	"version": "1.0.0",
 	"private": true,
-	"workspaces": [
-		"packages/*"
-	],
 	"scripts": {
 		"prepare": "husky",
-		"test": ""
+		"test": "lerna run test",
+		"build": "lerna run build"
 	},
 	"devDependencies": {
 		"@commitlint/config-conventional": "^19.8.1",
 		"commitlint": "^19.8.1",
 		"husky": "^9.1.7",
 		"lerna": "^8.2.2"
+	},
+	"pnpm": {
+		"peerDependencyRules": {
+			"ignoreMissing": [
+				"react",
+				"react-dom"
+			]
+		},
+		"updateConfig": {
+			"ignoreDependencies": [
+				"react",
+				"react-dom"
+			]
+		}
 	}
 }
