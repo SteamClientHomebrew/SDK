@@ -147,6 +147,7 @@ class RouterHook extends Logger {
 			const errorBoundaryNode = findInTree(routerNode, (e) => e?.stateNode?._deckyForceRerender, {
 				walkable: ['return'],
 			});
+			console.log('errorBoundaryNode', errorBoundaryNode, errorBoundaryNode?.stateNode?._deckyForceRerender);
 			errorBoundaryNode?.stateNode?._deckyForceRerender?.();
 		}
 	}
