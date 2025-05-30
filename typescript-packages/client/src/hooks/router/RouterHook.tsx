@@ -97,8 +97,7 @@ class RouterHook extends Logger {
 		await this.waitForUnlock();
 		let routerNode = findRouterNode();
 		while (!routerNode) {
-			this.warn('Failed to find GamepadUI Router node, reattempting in 5 seconds.');
-			await sleep(5000);
+			await sleep(1);
 			await this.waitForUnlock();
 			routerNode = findRouterNode();
 		}
@@ -133,7 +132,6 @@ class RouterHook extends Logger {
 			});
 		let routerNode = findRouterNode();
 		while (!routerNode) {
-			this.warn('Failed to find DesktopUI Router node, reattempting in 5 seconds.');
 			await sleep(1);
 			routerNode = findRouterNode();
 		}
