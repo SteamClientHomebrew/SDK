@@ -6,6 +6,14 @@ import typescript from '@rollup/plugin-typescript';
 import externalGlobals from 'rollup-plugin-external-globals';
 import del from 'rollup-plugin-del';
 
+import client from '../client/package.json' assert { type: 'json' };
+import browser from '../browser/package.json' assert { type: 'json' };
+
+import injectProcessEnv from 'rollup-plugin-inject-process-env';
+
+const clientVersion = client.version;
+const browserVersion = browser.version;
+
 export default {
 	input: 'src/index.ts',
 	context: 'window',
@@ -28,6 +36,11 @@ export default {
 		del({
 			targets: ['build/*', 'build/.*'],
 			runOnce: true,
+		}),
+		injectProcessEnv({
+			MILLENNIUM_FRONTEND_LIB_VERSION: clientVersion,
+			MILLENNIUM_BROWSER_LIB_VERSION: browserVersion,
+			MILLENNIUM_LOADER_BUILD_DATE: new Date().toISOString(),
 		}),
 		resolve(),
 		commonjs(),

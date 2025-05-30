@@ -134,7 +134,7 @@ class RouterHook extends Logger {
 		let routerNode = findRouterNode();
 		while (!routerNode) {
 			this.warn('Failed to find DesktopUI Router node, reattempting in 5 seconds.');
-			await sleep(5000);
+			await sleep(1);
 			routerNode = findRouterNode();
 		}
 		if (routerNode) {

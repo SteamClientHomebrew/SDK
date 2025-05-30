@@ -8,6 +8,9 @@ declare global {
 		MILLENNIUM_API: object;
 		SP_REACTDOM: any;
 		MILLENNIUM_IPC_PORT: number;
+		MILLENNIUM_FRONTEND_LIB_VERSION: string;
+		MILLENNIUM_BROWSER_LIB_VERSION: string;
+		MILLENNIUM_LOADER_BUILD_DATE: string;
 	}
 }
 
@@ -85,6 +88,10 @@ class Bootstrap {
 		window.MILLENNIUM_IPC_PORT = port;
 		window.MILLENNIUM_IPC_SOCKET = await this.connectMillenniumBackend(port);
 		window.CURRENT_IPC_CALL_COUNT = 0;
+
+		window.MILLENNIUM_FRONTEND_LIB_VERSION = process.env.MILLENNIUM_FRONTEND_LIB_VERSION || 'unknown';
+		window.MILLENNIUM_BROWSER_LIB_VERSION = process.env.MILLENNIUM_FRONTEND_LIB_VERSION || 'unknown';
+		window.MILLENNIUM_LOADER_BUILD_DATE = process.env.MILLENNIUM_LOADER_BUILD_DATE || 'unknown';
 
 		switch (this.ctx) {
 			case Context.Client: {
