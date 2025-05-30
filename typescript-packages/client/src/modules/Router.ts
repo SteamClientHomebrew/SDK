@@ -107,7 +107,9 @@ try {
 			}
 			if (!win) {
 				logger.warn('Navigation interface could not find any focused window. Falling back to Main Window Instance');
-				win = Router.WindowStore?.GamepadUIMainWindowInstance || Router?.WindowStore?.SteamUIWindows?.[0];
+				win =
+					Router.WindowStore?.GamepadUIMainWindowInstance ||
+					Router?.WindowStore?.SteamUIWindows?.find((window) => window?.BrowserWindow?.name === 'SP Desktop_uid0');
 			}
 
 			if (win) {
@@ -138,8 +140,6 @@ try {
 		CloseSideMenus: createNavigationFunction('CloseSideMenus', (win) => win.MenuStore),
 		OpenPowerMenu: Router.OpenPowerMenu?.bind(Router),
 	} as Navigation;
-
-	logger.debug('Navigation interface initialized', newNavigation);
 
 	Object.assign(Navigation, newNavigation);
 } catch (e) {
