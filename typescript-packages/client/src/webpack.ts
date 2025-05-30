@@ -61,15 +61,6 @@ export const findModule = (filter: FilterFn) => {
 	}
 };
 
-Object.assign(
-	window.SP_REACTDOM,
-	findModule((module) => module.createPortal && module.createRoot && module.flushSync),
-);
-Object.assign(
-	window.SP_REACT,
-	findModule((module) => module.Component && module.PureComponent && module.useLayoutEffect),
-);
-
 export const findModuleDetailsByExport = (
 	filter: ExportFilterFn,
 	minExports?: number,

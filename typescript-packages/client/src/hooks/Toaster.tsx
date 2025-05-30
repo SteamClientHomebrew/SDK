@@ -1,4 +1,4 @@
-import { Patch, callOriginal, findModuleExport, injectFCTrampoline, replacePatch } from '..';
+import { ErrorBoundary, Patch, callOriginal, findModuleExport, injectFCTrampoline, replacePatch } from '..';
 
 import Toast from '../components/Toast';
 import Logger from '../logger';
@@ -62,9 +62,9 @@ class Toaster extends Logger {
 		this.toastPatch = replacePatch(patchedRenderer, 'component', (args: any[]) => {
 			if (args?.[0]?.group?.decky || args?.[0]?.group?.notifications?.[0]?.decky) {
 				return args[0].group.notifications.map((notification: any) => (
-					// <ErrorBoundary>
-					<Toast toast={notification.data} newIndicator={notification.bNewIndicator} location={args?.[0]?.location} />
-					// </ErrorBoundary>
+					<ErrorBoundary>
+						<Toast toast={notification.data} newIndicator={notification.bNewIndicator} location={args?.[0]?.location} />
+					</ErrorBoundary>
 				));
 			}
 			return callOriginal;
@@ -92,8 +92,7 @@ class Toaster extends Logger {
 			nNotificationID: window.NotificationStore.m_nNextTestNotificationID++,
 			bNewIndicator: toast.showNewIndicator,
 			rtCreated: Date.now(),
-			eType: toast.eType || 12,
-			eFeature: 0,
+			eType: toast.eType || 16,
 			eSource: 1, // Client
 			nToastDurationMS: toast.duration || (toast.duration = 5e3),
 			data: toast,

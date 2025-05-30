@@ -2,7 +2,6 @@ const isClient = window.location.hostname === 'steamloopback.host';
 
 declare global {
 	interface Window {
-		Millennium: any;
 		PLUGIN_LIST: any;
 		MILLENNIUM_BACKEND_IPC: typeof backendIPC;
 		MILLENNIUM_IPC_SOCKET: WebSocket;
@@ -81,6 +80,7 @@ export const Millennium = {
 	}),
 };
 
+// @ts-expect-error. The types don't have pluginName on callServerMethod, but it is used in the client.
 window.Millennium = Millennium;
 
 // Callable wrapper

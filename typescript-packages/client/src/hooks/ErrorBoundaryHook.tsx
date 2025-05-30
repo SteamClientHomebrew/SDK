@@ -67,36 +67,26 @@ class ErrorBoundaryHook extends Logger {
 			return;
 		}
 
-		console.log('ERROR BOUNDARY', ErrorBoundary);
+		console.debug('Patching ErrorBoundary', ErrorBoundary);
 
 		this.errorBoundaryPatch = replacePatch(ErrorBoundary.prototype, 'render', function (this: any) {
 			if (this.state._deckyForceRerender) {
-				console.log('FORCE RERENDERING', this.state);
-				this.setState({ ...this.state, _deckyForceRerender: null });
-				return null;
+				console.debug('Forcing rerender');
+				const stateClone = { ...this.state, _deckyForceRerender: null };
+				this.setState(stateClone);
+				return;
 			}
-			// yoinked from valve error boundary
-			// if (this.state.error && this.props.errorKey == this.state.lastErrorKey) {
-			// 	// const store = Object.getPrototypeOf(this)?.constructor?.sm_ErrorReportingStore || errorReportingStore;
-
-			// 	return void 0 !== this.props.fallback ? (
-			// 		'function' == typeof this.props.fallback ? (
-			// 			this.props.fallback(this.state.error.error)
-			// 		) : (
-			// 			this.props.fallback
-			// 		)
-			// 	) : (
-			// 		// <DeckyErrorBoundary
-			// 		// 	error={this.state.error}
-			// 		// 	errorKey={this.props.errorKey}
-			// 		// 	identifier={`${store.product}_${store.version}_${this.state.identifierHash}`}
-			// 		// 	reset={() => this.Reset()}
-			// 		// />
-			// 		<div>An error occurred while rendering this content</div>
-			// 	);
+			// if (this.state.error) {
+			//   const store = Object.getPrototypeOf(this)?.constructor?.sm_ErrorReportingStore || errorReportingStore;
+			//   return (
+			//     <DeckyErrorBoundary
+			//       error={this.state.error}
+			//       errorKey={this.props.errorKey}
+			//       identifier={`${store.product}_${store.version}_${this.state.identifierHash}`}
+			//       reset={() => this.Reset()}
+			//     />
+			//   );
 			// }
-
-			console.log('returning callOriginal', this.state);
 			return callOriginal;
 		});
 		// Small hack that gives us a lot more flexibility to force rerenders.
@@ -110,7 +100,7 @@ class ErrorBoundaryHook extends Logger {
 		if (this.disableReportingTimer) {
 			clearTimeout(this.disableReportingTimer);
 		}
-		setTimeout(() => {
+		this.disableReportingTimer = setTimeout(() => {
 			this.debug('Reporting re-enabled after 30s timeout.');
 			this.disableReportingTimer = 0;
 		}, 30000);

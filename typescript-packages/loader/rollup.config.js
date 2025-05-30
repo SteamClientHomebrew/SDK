@@ -26,7 +26,8 @@ export default {
 	},
 	plugins: [
 		del({
-			targets: ['build/**/*'],
+			targets: ['build/*', 'build/.*'],
+			runOnce: true,
 		}),
 		resolve(),
 		commonjs(),
