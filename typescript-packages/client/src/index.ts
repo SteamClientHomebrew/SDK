@@ -7,5 +7,12 @@ export * from './globals';
 export * from './webpack';
 export * from './utils';
 export * from './class-mapper';
-export * from './api';
-export * from './init';
+export * from './millennium-api';
+
+import ErrorBoundaryHook from './hooks/ErrorBoundaryHook';
+import RouterHook from './hooks/router/RouterHook';
+import Toaster from './hooks/Toaster';
+
+export const errorBoundaryHook: ErrorBoundaryHook = new ErrorBoundaryHook();
+export const routerHook: RouterHook = new RouterHook();
+export const toaster: Toaster = new Toaster();

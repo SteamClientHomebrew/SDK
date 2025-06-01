@@ -1,8 +1,9 @@
-import { ErrorBoundary, Patch, callOriginal, findModuleExport, injectFCTrampoline, replacePatch } from '..';
-
 import Toast from '../components/Toast';
 import Logger from '../logger';
 import { ReactNode } from 'react';
+import { callOriginal, injectFCTrampoline, Patch, replacePatch } from '../utils';
+import { findModuleExport } from '../webpack';
+import { ErrorBoundary } from '../components';
 
 // TODO export
 enum ToastType {
@@ -60,7 +61,7 @@ class Toaster extends Logger {
 		// TODO find a way to undo this if possible?
 		const patchedRenderer = injectFCTrampoline(ValveToastRenderer);
 		this.toastPatch = replacePatch(patchedRenderer, 'component', (args: any[]) => {
-			if (args?.[0]?.group?.decky || args?.[0]?.group?.notifications?.[0]?.decky) {
+			if (args?.[0]?.group?.millennium || args?.[0]?.group?.notifications?.[0]?.millennium) {
 				return args[0].group.notifications.map((notification: any) => (
 					<ErrorBoundary>
 						<Toast toast={notification.data} newIndicator={notification.bNewIndicator} location={args?.[0]?.location} />
@@ -92,11 +93,11 @@ class Toaster extends Logger {
 			nNotificationID: window.NotificationStore.m_nNextTestNotificationID++,
 			bNewIndicator: toast.showNewIndicator,
 			rtCreated: Date.now(),
-			eType: toast.eType || 16,
+			eType: toast.eType || 12,
 			eSource: 1, // Client
 			nToastDurationMS: toast.duration || (toast.duration = 5e3),
 			data: toast,
-			decky: true,
+			millennium: true,
 		};
 		let group: any;
 		function fnTray(toast: any, tray: any) {
@@ -119,6 +120,7 @@ class Toaster extends Logger {
 		const toastResult: ToastNotification = {
 			data: toast,
 			dismiss() {
+				self.debug('Dismissing toast', toast);
 				// it checks against the id of notifications[0]
 				try {
 					expirationTimeout && clearTimeout(expirationTimeout);
@@ -130,6 +132,7 @@ class Toaster extends Logger {
 		};
 		if (toast.expiration) {
 			expirationTimeout = setTimeout(() => {
+				self.debug('Dismissing expired toast', toast);
 				try {
 					group && window.NotificationStore.RemoveGroupFromTray(group);
 				} catch (e) {

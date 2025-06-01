@@ -15,11 +15,11 @@ import { SteamSpinner } from './SteamSpinner';
  * `footer` Sets up button handlers and labels
  */
 export interface Tab {
-  id: string;
-  title: string;
-  renderTabAddon?: () => ReactNode;
-  content: ReactNode;
-  footer?: FooterLegendProps;
+	id: string;
+	title: string;
+	renderTabAddon?: () => ReactNode;
+	content: ReactNode;
+	footer?: FooterLegendProps;
 }
 
 /**
@@ -59,69 +59,65 @@ export interface Tab {
  * };
  */
 export interface TabsProps {
-  tabs: Tab[];
-  activeTab: string;
-  onShowTab: (tab: string) => void;
-  autoFocusContents?: boolean;
+	tabs: Tab[];
+	activeTab: string;
+	onShowTab: (tab: string) => void;
+	autoFocusContents?: boolean;
 }
 
 let tabsComponent: any;
 
 const getTabs = async () => {
-  if (tabsComponent) return tabsComponent;
-  // @ts-ignore
-  while (!window?.DeckyPluginLoader?.routerHook?.routes) {
-    console.debug('[DFL:Tabs]: Waiting for Decky router...');
-    await sleep(500);
-  }
-  return (tabsComponent = fakeRenderComponent(
-    () => {
-      return findInReactTree(
-        findInReactTree(
-          // @ts-ignore
-          window.DeckyPluginLoader.routerHook.routes
-            .find((x: any) => x.props.path == '/library/app/:appid/achievements')
-            .props.children.type(),
-          (x) => x?.props?.scrollTabsTop,
-        ).type({ appid: 1 }),
-        (x) => x?.props?.tabs,
-      ).type;
-    },
-    {
-      useRef: () => ({ current: { reaction: { track: () => {} } } }),
-      useContext: () => ({ match: { params: { appid: 1 } } }),
-      useMemo: () => ({ data: {} }),
-    },
-  ));
+	if (tabsComponent) return tabsComponent;
+	// @ts-ignore
+	while (!window?.DeckyPluginLoader?.routerHook?.routes) {
+		console.debug('[Millennium:Tabs]: Waiting for Millennium router...');
+		await sleep(500);
+	}
+	return (tabsComponent = fakeRenderComponent(
+		() => {
+			return findInReactTree(
+				findInReactTree(
+					// @ts-ignore
+					window.DeckyPluginLoader.routerHook.routes.find((x: any) => x.props.path == '/library/app/:appid/achievements').props.children.type(),
+					(x) => x?.props?.scrollTabsTop,
+				).type({ appid: 1 }),
+				(x) => x?.props?.tabs,
+			).type;
+		},
+		{
+			useRef: () => ({ current: { reaction: { track: () => {} } } }),
+			useContext: () => ({ match: { params: { appid: 1 } } }),
+			useMemo: () => ({ data: {} }),
+		},
+	));
 };
 
 let oldTabs: any;
 
 try {
-  const oldTabsModule = findModuleByExport((e: Export) => e.Unbleed);
-  if (oldTabsModule)
-    oldTabs = Object.values(oldTabsModule).find((x: any) => x?.type?.toString()?.includes('((function(){'));
+	const oldTabsModule = findModuleByExport((e: Export) => e.Unbleed);
+	if (oldTabsModule) oldTabs = Object.values(oldTabsModule).find((x: any) => x?.type?.toString()?.includes('((function(){'));
 } catch (e) {
-  console.error('Error finding oldTabs:', e);
+	console.error('Error finding oldTabs:', e);
 }
 
 /**
  * Tabs component as used in the library and media tabs. See {@link TabsProps}.
- * Unlike other components in `decky-frontend-lib`, this requires Decky Loader to be running.
  */
 export const Tabs = (oldTabs ||
-  ((props: TabsProps) => {
-    const found = tabsComponent;
-    const [tc, setTC] = useState<FC<TabsProps>>(found);
-    useEffect(() => {
-      if (found) return;
-      (async () => {
-        console.debug('[DFL:Tabs]: Finding component...');
-        const t = await getTabs();
-        console.debug('[DFL:Tabs]: Found!');
-        setTC(t);
-      })();
-    }, []);
-    console.log('tc', tc);
-    return tc ? createElement(tc, props) : <SteamSpinner />;
-  })) as FC<TabsProps>;
+	((props: TabsProps) => {
+		const found = tabsComponent;
+		const [tc, setTC] = useState<FC<TabsProps>>(found);
+		useEffect(() => {
+			if (found) return;
+			(async () => {
+				console.debug('[DFL:Tabs]: Finding component...');
+				const t = await getTabs();
+				console.debug('[DFL:Tabs]: Found!');
+				setTC(t);
+			})();
+		}, []);
+		console.log('tc', tc);
+		return tc ? createElement(tc, props) : <SteamSpinner />;
+	})) as FC<TabsProps>;

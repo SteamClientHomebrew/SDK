@@ -155,18 +155,6 @@ importers:
         specifier: 5.1.18
         version: 5.1.18
 
-  typescript-packages/webkit:
-    dependencies:
-      shx:
-        specifier: ^0.3.4
-        version: 0.3.4
-      tslib:
-        specifier: ^2.8.1
-        version: 2.8.1
-      typescript:
-        specifier: ^4.9.5
-        version: 4.9.5
-
 packages:
 
   '@babel/code-frame@7.27.1':

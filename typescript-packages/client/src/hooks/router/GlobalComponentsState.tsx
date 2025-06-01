@@ -1,11 +1,11 @@
 import { FC, ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { EUIMode } from '../../globals/steam-client/shared';
 
-interface PublicDeckyGlobalComponentsState {
+interface PublicMillenniumGlobalComponentsState {
 	components: Map<EUIMode, Map<string, FC>>;
 }
 
-export class DeckyGlobalComponentsState {
+export class MillenniumGlobalComponentsState {
 	// TODO a set would be better
 	private _components = new Map<EUIMode, Map<string, FC>>([
 		[EUIMode.GamePad, new Map()],
@@ -14,7 +14,7 @@ export class DeckyGlobalComponentsState {
 
 	public eventBus = new EventTarget();
 
-	publicState(): PublicDeckyGlobalComponentsState {
+	publicState(): PublicMillenniumGlobalComponentsState {
 		return { components: this._components };
 	}
 
@@ -39,41 +39,41 @@ export class DeckyGlobalComponentsState {
 	}
 }
 
-interface DeckyGlobalComponentsContext extends PublicDeckyGlobalComponentsState {
+interface MillenniumGlobalComponentsContext extends PublicMillenniumGlobalComponentsState {
 	addComponent(path: string, component: FC, uiMode: EUIMode): void;
 	removeComponent(path: string, uiMode: EUIMode): void;
 }
 
-const DeckyGlobalComponentsContext = createContext<DeckyGlobalComponentsContext>(null as any);
+const MillenniumGlobalComponentsContext = createContext<MillenniumGlobalComponentsContext>(null as any);
 
-export const useDeckyGlobalComponentsState = () => useContext(DeckyGlobalComponentsContext);
+export const useMillenniumGlobalComponentsState = () => useContext(MillenniumGlobalComponentsContext);
 
 interface Props {
-	deckyGlobalComponentsState: DeckyGlobalComponentsState;
+	millenniumGlobalComponentsState: MillenniumGlobalComponentsState;
 	children: ReactNode;
 }
 
-export const DeckyGlobalComponentsStateContextProvider: FC<Props> = ({ children, deckyGlobalComponentsState: deckyGlobalComponentsState }) => {
-	const [publicDeckyGlobalComponentsState, setPublicDeckyGlobalComponentsState] = useState<PublicDeckyGlobalComponentsState>({
-		...deckyGlobalComponentsState.publicState(),
+export const MillenniumGlobalComponentsStateContextProvider: FC<Props> = ({ children, millenniumGlobalComponentsState: millenniumGlobalComponentsState }) => {
+	const [publicMillenniumGlobalComponentsState, setPublicMillenniumGlobalComponentsState] = useState<PublicMillenniumGlobalComponentsState>({
+		...millenniumGlobalComponentsState.publicState(),
 	});
 
 	useEffect(() => {
 		function onUpdate() {
-			setPublicDeckyGlobalComponentsState({ ...deckyGlobalComponentsState.publicState() });
+			setPublicMillenniumGlobalComponentsState({ ...millenniumGlobalComponentsState.publicState() });
 		}
 
-		deckyGlobalComponentsState.eventBus.addEventListener('update', onUpdate);
+		millenniumGlobalComponentsState.eventBus.addEventListener('update', onUpdate);
 
-		return () => deckyGlobalComponentsState.eventBus.removeEventListener('update', onUpdate);
+		return () => millenniumGlobalComponentsState.eventBus.removeEventListener('update', onUpdate);
 	}, []);
 
-	const addComponent = deckyGlobalComponentsState.addComponent.bind(deckyGlobalComponentsState);
-	const removeComponent = deckyGlobalComponentsState.removeComponent.bind(deckyGlobalComponentsState);
+	const addComponent = millenniumGlobalComponentsState.addComponent.bind(millenniumGlobalComponentsState);
+	const removeComponent = millenniumGlobalComponentsState.removeComponent.bind(millenniumGlobalComponentsState);
 
 	return (
-		<DeckyGlobalComponentsContext.Provider value={{ ...publicDeckyGlobalComponentsState, addComponent, removeComponent }}>
+		<MillenniumGlobalComponentsContext.Provider value={{ ...publicMillenniumGlobalComponentsState, addComponent, removeComponent }}>
 			{children}
-		</DeckyGlobalComponentsContext.Provider>
+		</MillenniumGlobalComponentsContext.Provider>
 	);
 };

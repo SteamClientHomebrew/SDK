@@ -9,12 +9,12 @@ export interface RouterEntry {
 
 export type RoutePatch = (route: RouteProps) => RouteProps;
 
-interface PublicDeckyRouterState {
+interface PublicMillenniumRouterState {
 	routes: Map<string, RouterEntry>;
 	routePatches: Map<EUIMode, Map<string, Set<RoutePatch>>>;
 }
 
-export class DeckyRouterState {
+export class MillenniumRouterState {
 	private _routes = new Map<string, RouterEntry>();
 	// Update when support for new UIModes is added
 	private _routePatches = new Map<EUIMode, Map<string, Set<RoutePatch>>>([
@@ -24,7 +24,7 @@ export class DeckyRouterState {
 
 	public eventBus = new EventTarget();
 
-	publicState(): PublicDeckyRouterState {
+	publicState(): PublicMillenniumRouterState {
 		return { routes: this._routes, routePatches: this._routePatches };
 	}
 
@@ -67,41 +67,45 @@ export class DeckyRouterState {
 	}
 }
 
-interface DeckyRouterStateContext extends PublicDeckyRouterState {
+interface MillenniumRouterStateContext extends PublicMillenniumRouterState {
 	addRoute(path: string, component: RouterEntry['component'], props: RouterEntry['props']): void;
 	addPatch(path: string, patch: RoutePatch, uiMode?: EUIMode): RoutePatch;
 	removePatch(path: string, patch: RoutePatch, uiMode?: EUIMode): void;
 	removeRoute(path: string): void;
 }
 
-const DeckyRouterStateContext = createContext<DeckyRouterStateContext>(null as any);
+const MillenniumRouterStateContext = createContext<MillenniumRouterStateContext>(null as any);
 
-export const useDeckyRouterState = () => useContext(DeckyRouterStateContext);
+export const useMillenniumRouterState = () => useContext(MillenniumRouterStateContext);
 
 interface Props {
-	deckyRouterState: DeckyRouterState;
+	millenniumRouterState: MillenniumRouterState;
 	children: ReactNode;
 }
 
-export const DeckyRouterStateContextProvider: FC<Props> = ({ children, deckyRouterState }) => {
-	const [publicDeckyRouterState, setPublicDeckyRouterState] = useState<PublicDeckyRouterState>({
-		...deckyRouterState.publicState(),
+export const MillenniumRouterStateContextProvider: FC<Props> = ({ children, millenniumRouterState: millenniumRouterState }) => {
+	const [publicMillenniumRouterState, setPublicMillenniumRouterState] = useState<PublicMillenniumRouterState>({
+		...millenniumRouterState.publicState(),
 	});
 
 	useEffect(() => {
 		function onUpdate() {
-			setPublicDeckyRouterState({ ...deckyRouterState.publicState() });
+			setPublicMillenniumRouterState({ ...millenniumRouterState.publicState() });
 		}
 
-		deckyRouterState.eventBus.addEventListener('update', onUpdate);
+		millenniumRouterState.eventBus.addEventListener('update', onUpdate);
 
-		return () => deckyRouterState.eventBus.removeEventListener('update', onUpdate);
+		return () => millenniumRouterState.eventBus.removeEventListener('update', onUpdate);
 	}, []);
 
-	const addRoute = deckyRouterState.addRoute.bind(deckyRouterState);
-	const addPatch = deckyRouterState.addPatch.bind(deckyRouterState);
-	const removePatch = deckyRouterState.removePatch.bind(deckyRouterState);
-	const removeRoute = deckyRouterState.removeRoute.bind(deckyRouterState);
+	const addRoute = millenniumRouterState.addRoute.bind(millenniumRouterState);
+	const addPatch = millenniumRouterState.addPatch.bind(millenniumRouterState);
+	const removePatch = millenniumRouterState.removePatch.bind(millenniumRouterState);
+	const removeRoute = millenniumRouterState.removeRoute.bind(millenniumRouterState);
 
-	return <DeckyRouterStateContext.Provider value={{ ...publicDeckyRouterState, addRoute, addPatch, removePatch, removeRoute }}>{children}</DeckyRouterStateContext.Provider>;
+	return (
+		<MillenniumRouterStateContext.Provider value={{ ...publicMillenniumRouterState, addRoute, addPatch, removePatch, removeRoute }}>
+			{children}
+		</MillenniumRouterStateContext.Provider>
+	);
 };

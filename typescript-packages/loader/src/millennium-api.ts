@@ -76,7 +76,13 @@ export const Millennium = {
 
 	...(isClient && {
 		exposeObj: <T extends object>(exports: any, obj: T) => Object.assign(exports, obj),
-		AddWindowCreateHook: (cb: any) => g_PopupManager.AddPopupCreatedCallback(cb),
+		AddWindowCreateHook: (cb: any) => {
+			for (const popup of g_PopupManager.GetPopups()) {
+				console.log(popup)
+			}
+
+			g_PopupManager.AddPopupCreatedCallback(cb)
+		}
 	}),
 };
 

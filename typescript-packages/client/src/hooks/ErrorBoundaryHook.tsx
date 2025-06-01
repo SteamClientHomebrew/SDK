@@ -1,8 +1,8 @@
-// import DeckyErrorBoundary from './components/DeckyErrorBoundary';
-import { ErrorBoundary, findModuleExport, replacePatch, Patch, callOriginal } from '..';
+import { ErrorBoundary } from '../components';
 import Logger from '../logger';
+import { callOriginal, Patch, replacePatch } from '../utils';
+import { findModuleExport } from '../webpack';
 import { getLikelyErrorSourceFromValveError } from './Errors';
-// import { getLikelyErrorSourceFromValveError } from './utils/errors';
 
 declare global {
 	interface Window {
@@ -63,16 +63,16 @@ class ErrorBoundaryHook extends Logger {
 		});
 
 		if (!ErrorBoundary) {
-			this.error('@decky/ui could not find ErrorBoundary, skipping patch');
+			this.error('@steambrew/client could not find ErrorBoundary, skipping patch');
 			return;
 		}
 
 		console.debug('Patching ErrorBoundary', ErrorBoundary);
 
 		this.errorBoundaryPatch = replacePatch(ErrorBoundary.prototype, 'render', function (this: any) {
-			if (this.state._deckyForceRerender) {
+			if (this.state._millenniumForceRerender) {
 				console.debug('Forcing rerender');
-				const stateClone = { ...this.state, _deckyForceRerender: null };
+				const stateClone = { ...this.state, _millenniumForceRerender: null };
 				this.setState(stateClone);
 				return;
 			}
@@ -90,8 +90,8 @@ class ErrorBoundaryHook extends Logger {
 			return callOriginal;
 		});
 		// Small hack that gives us a lot more flexibility to force rerenders.
-		ErrorBoundary.prototype._deckyForceRerender = function (this: any) {
-			this.setState({ ...this.state, _deckyForceRerender: true });
+		ErrorBoundary.prototype._millenniumForceRerender = function (this: any) {
+			this.setState({ ...this.state, _millenniumForceRerender: true });
 		};
 	}
 

@@ -1,11 +1,13 @@
-import { ErrorBoundary, Patch, afterPatch, findInReactTree, findInTree, findModuleByExport, getReactRoot, injectFCTrampoline, sleep, wrapReactType } from '../..';
 import { FC, ReactElement, ReactNode, cloneElement, createElement } from 'react';
 import type { Route } from 'react-router';
 
-import { DeckyGlobalComponentsState, DeckyGlobalComponentsStateContextProvider, useDeckyGlobalComponentsState } from './GlobalComponentsState';
-import { DeckyRouterState, DeckyRouterStateContextProvider, RoutePatch, RouterEntry, useDeckyRouterState } from './RouterState';
+import { MillenniumGlobalComponentsState, MillenniumGlobalComponentsStateContextProvider, useMillenniumGlobalComponentsState } from './GlobalComponentsState';
+import { MillenniumRouterState, MillenniumRouterStateContextProvider, RoutePatch, RouterEntry, useMillenniumRouterState } from './RouterState';
 import Logger from '../../logger';
 import { EUIMode } from '../../globals/steam-client/shared';
+import { afterPatch, findInReactTree, findInTree, getReactRoot, injectFCTrampoline, Patch, sleep, wrapReactType } from '../../utils';
+import { findModuleByExport } from '../../webpack';
+import { ErrorBoundary } from '../../components';
 
 declare global {
 	interface Window {
@@ -16,8 +18,8 @@ declare global {
 const isPatched = Symbol('is patched');
 
 class RouterHook extends Logger {
-	private routerState: DeckyRouterState = new DeckyRouterState();
-	private globalComponentsState: DeckyGlobalComponentsState = new DeckyGlobalComponentsState();
+	private routerState: MillenniumRouterState = new MillenniumRouterState();
+	private globalComponentsState: MillenniumGlobalComponentsState = new MillenniumGlobalComponentsState();
 	private renderedComponents = new Map<EUIMode, ReactElement[]>([
 		[EUIMode.GamePad, []],
 		[EUIMode.Desktop, []],
@@ -25,9 +27,9 @@ class RouterHook extends Logger {
 	private Route: any;
 	private DesktopRoute: any;
 	private wrappedDesktopLibraryMemo?: any;
-	private DeckyGamepadRouterWrapper = this.gamepadRouterWrapper.bind(this);
-	private DeckyDesktopRouterWrapper = this.desktopRouterWrapper.bind(this);
-	private DeckyGlobalComponentsWrapper = this.globalComponentsWrapper.bind(this);
+	private MillenniumGamepadRouterWrapper = this.gamepadRouterWrapper.bind(this);
+	private MillenniumDesktopRouterWrapper = this.desktopRouterWrapper.bind(this);
+	private MillenniumGlobalComponentsWrapper = this.globalComponentsWrapper.bind(this);
 	private toReplace = new Map<string, ReactNode>();
 	private desktopRouterPatch?: Patch;
 	private gamepadRouterPatch?: Patch;
@@ -110,10 +112,11 @@ class RouterHook extends Logger {
 				routerNode.alternate.type = routerNode.type;
 			}
 			// Force a full rerender via our custom error boundary
-			const errorBoundaryNode = findInTree(routerNode, (e) => e?.stateNode?._deckyForceRerender, {
+			const errorBoundaryNode = findInTree(routerNode, (e) => e?.stateNode?._millenniumForceRerender, {
 				walkable: ['return'],
 			});
-			errorBoundaryNode?.stateNode?._deckyForceRerender?.();
+
+			errorBoundaryNode?.stateNode?._millenniumForceRerender?.();
 		}
 	}
 
@@ -142,11 +145,13 @@ class RouterHook extends Logger {
 			const patchedRenderer = injectFCTrampoline(routerNode.elementType);
 			this.desktopRouterPatch = afterPatch(patchedRenderer, 'component', this.handleDesktopRouterRender.bind(this));
 			// Force a full rerender via our custom error boundary
-			const errorBoundaryNode = findInTree(routerNode, (e) => e?.stateNode?._deckyForceRerender, {
+			const errorBoundaryNode = findInTree(routerNode, (e) => e?.stateNode?._millenniumForceRerender, {
 				walkable: ['return'],
 			});
-			console.log('errorBoundaryNode', errorBoundaryNode, errorBoundaryNode?.stateNode?._deckyForceRerender);
-			errorBoundaryNode?.stateNode?._deckyForceRerender?.();
+
+			// @ts-ignore
+			window.MILLENNIUM_STEAM_FORCE_RERENDER = () => errorBoundaryNode?.stateNode?._millenniumForceRerender?.();
+			errorBoundaryNode?.stateNode?._millenniumForceRerender?.();
 		}
 	}
 
@@ -161,58 +166,50 @@ class RouterHook extends Logger {
 	}
 
 	public handleDesktopRouterRender(_: any, ret: any) {
-		const DeckyDesktopRouterWrapper = this.DeckyDesktopRouterWrapper;
-		const DeckyGlobalComponentsWrapper = this.DeckyGlobalComponentsWrapper;
+		const MillenniumDesktopRouterWrapper = this.MillenniumDesktopRouterWrapper;
+		const MillenniumGlobalComponentsWrapper = this.MillenniumGlobalComponentsWrapper;
 		this.debug('desktop router render', ret);
-		if (ret._decky) {
+		if (ret._millennium) {
 			return ret;
 		}
 		const returnVal = (
 			<>
-				<DeckyRouterStateContextProvider deckyRouterState={this.routerState}>
-					<style>
-						{`
-                .deckyDesktopDialogPaddingHack + * .DialogContent_InnerWidth {
-                  max-width: unset !important;
-                }
-              `}
-					</style>
-					<div className="deckyDesktopDialogPaddingHack" />
-					<DeckyDesktopRouterWrapper>{ret}</DeckyDesktopRouterWrapper>
-				</DeckyRouterStateContextProvider>
-				<DeckyGlobalComponentsStateContextProvider deckyGlobalComponentsState={this.globalComponentsState}>
-					<DeckyGlobalComponentsWrapper uiMode={EUIMode.Desktop} />
-				</DeckyGlobalComponentsStateContextProvider>
+				<MillenniumRouterStateContextProvider millenniumRouterState={this.routerState}>
+					<MillenniumDesktopRouterWrapper>{ret}</MillenniumDesktopRouterWrapper>
+				</MillenniumRouterStateContextProvider>
+				<MillenniumGlobalComponentsStateContextProvider millenniumGlobalComponentsState={this.globalComponentsState}>
+					<MillenniumGlobalComponentsWrapper uiMode={EUIMode.Desktop} />
+				</MillenniumGlobalComponentsStateContextProvider>
 			</>
 		);
-		(returnVal as any)._decky = true;
+		(returnVal as any)._millennium = true;
 		return returnVal;
 	}
 
 	public handleGamepadRouterRender(_: any, ret: any) {
-		const DeckyGamepadRouterWrapper = this.DeckyGamepadRouterWrapper;
-		const DeckyGlobalComponentsWrapper = this.DeckyGlobalComponentsWrapper;
+		const MillenniumGamepadRouterWrapper = this.MillenniumGamepadRouterWrapper;
+		const MillenniumGlobalComponentsWrapper = this.MillenniumGlobalComponentsWrapper;
 		console.log('gamepad router render', ret);
 
-		if (ret._decky) {
+		if (ret._millennium) {
 			return ret;
 		}
 		const returnVal = (
 			<>
-				<DeckyRouterStateContextProvider deckyRouterState={this.routerState}>
-					<DeckyGamepadRouterWrapper>{ret}</DeckyGamepadRouterWrapper>
-				</DeckyRouterStateContextProvider>
-				<DeckyGlobalComponentsStateContextProvider deckyGlobalComponentsState={this.globalComponentsState}>
-					<DeckyGlobalComponentsWrapper uiMode={EUIMode.GamePad} />
-				</DeckyGlobalComponentsStateContextProvider>
+				<MillenniumRouterStateContextProvider millenniumRouterState={this.routerState}>
+					<MillenniumGamepadRouterWrapper>{ret}</MillenniumGamepadRouterWrapper>
+				</MillenniumRouterStateContextProvider>
+				<MillenniumGlobalComponentsStateContextProvider millenniumGlobalComponentsState={this.globalComponentsState}>
+					<MillenniumGlobalComponentsWrapper uiMode={EUIMode.GamePad} />
+				</MillenniumGlobalComponentsStateContextProvider>
 			</>
 		);
-		(returnVal as any)._decky = true;
+		(returnVal as any)._millennium = true;
 		return returnVal;
 	}
 
 	private globalComponentsWrapper({ uiMode }: { uiMode: EUIMode }) {
-		const { components } = useDeckyGlobalComponentsState();
+		const { components } = useMillenniumGlobalComponentsState();
 		const componentsForMode = components.get(uiMode);
 		if (!componentsForMode) {
 			this.warn(`Couldn't find global components map for uimode ${uiMode}`);
@@ -231,7 +228,7 @@ class RouterHook extends Logger {
 	private gamepadRouterWrapper({ children }: { children: ReactElement }) {
 		// Used to store the new replicated routes we create to allow routes to be unpatched.
 
-		const { routes, routePatches } = useDeckyRouterState();
+		const { routes, routePatches } = useMillenniumRouterState();
 		// TODO make more redundant
 		if (!children?.props?.children?.[0]?.props?.children) {
 			this.debug('routerWrapper wrong component?', children);
@@ -248,7 +245,9 @@ class RouterHook extends Logger {
 
 	private desktopRouterWrapper({ children }: { children: ReactElement }) {
 		// Used to store the new replicated routes we create to allow routes to be unpatched.
-		const { routes, routePatches } = useDeckyRouterState();
+		const { routes, routePatches } = useMillenniumRouterState();
+		console.log('desktopRouterWrapper', children, routes, routePatches);
+
 		const mainRouteList = findInReactTree(children, (node) => node?.length > 2 && node?.find((elem: any) => elem?.props?.path == '/console'));
 		if (!mainRouteList) {
 			this.debug('routerWrapper wrong component?', children);
@@ -256,11 +255,14 @@ class RouterHook extends Logger {
 		}
 		this.processList(mainRouteList, routes, routePatches.get(EUIMode.Desktop), true, this.DesktopRoute);
 		const libraryRouteWrapper = mainRouteList.find((r: any) => r?.props && 'cm' in r.props && 'bShowDesktopUIContent' in r.props);
+		console.log('libraryRouteWrapper', libraryRouteWrapper, mainRouteList);
+
 		if (!this.wrappedDesktopLibraryMemo) {
 			wrapReactType(libraryRouteWrapper);
 			afterPatch(libraryRouteWrapper.type, 'type', (_, ret) => {
-				const { routePatches } = useDeckyRouterState();
+				const { routePatches } = useMillenniumRouterState();
 				const libraryRouteList = findInReactTree(ret, (node) => node?.length > 1 && node?.find((elem: any) => elem?.props?.path == '/library/downloads'));
+				console.log('libraryRouteList', libraryRouteList, ret);
 				if (!libraryRouteList) {
 					this.warn('failed to find library route list', ret);
 					return ret;
@@ -301,32 +303,40 @@ class RouterHook extends Logger {
 				routeList[routerIndex] = newRouterArray;
 			}
 		}
-		routePatches &&
-			routeList.forEach((route: Route, index: number) => {
-				const replaced = this.toReplace.get(route?.props?.path as string);
-				if (replaced) {
-					routeList[index].props.children = replaced;
-					this.toReplace.delete(route?.props?.path as string);
-				}
-				if (route?.props?.path && routePatches.has(route.props.path as string)) {
-					this.toReplace.set(
-						route?.props?.path as string,
-						// @ts-ignore
-						routeList[index].props.children,
-					);
-					routePatches.get(route.props.path as string)?.forEach((patch) => {
-						const oType = routeList[index].props.children.type;
-						routeList[index].props.children = patch({
-							...routeList[index].props,
-							children: {
-								...cloneElement(routeList[index].props.children),
-								type: routeList[index].props.children[isPatched] ? oType : (props) => createElement(oType, props),
-							},
-						}).children;
-						routeList[index].props.children[isPatched] = true;
-					});
-				}
-			});
+
+		// if (!routePatches) {
+		// 	return;
+		// }
+
+		routeList.forEach((route: Route, index: number) => {
+			console.log(this.toReplace, route, index, routeList);
+
+			const replaced = this.toReplace.get(route?.props?.path as string);
+			if (replaced) {
+				routeList[index].props.children = replaced;
+				this.toReplace.delete(route?.props?.path as string);
+			}
+
+			if (route?.props?.path && routePatches?.has(route.props.path as string)) {
+				this.toReplace.set(
+					route?.props?.path as string,
+					// @ts-ignore
+					routeList[index].props.children,
+				);
+				routePatches?.get(route.props.path as string)?.forEach((patch) => {
+					const oType = routeList[index].props.children.type;
+					console.log('Patching route', routeList[index], 'with patch', patch);
+					routeList[index].props.children = patch({
+						...routeList[index].props,
+						children: {
+							...cloneElement(routeList[index].props.children),
+							type: routeList[index].props.children[isPatched] ? oType : (props) => createElement(oType, props),
+						},
+					}).children;
+					routeList[index].props.children[isPatched] = true;
+				});
+			}
+		});
 	}
 
 	addRoute(path: string, component: RouterEntry['component'], props: RouterEntry['props'] = {}) {

@@ -53,7 +53,7 @@ const GamepadUIPopupToast: FC<Omit<ToastProps, 'newIndicator'>> = memo(({ toast 
 		<div
 			style={{ '--toast-duration': `${toast.duration}ms` } as React.CSSProperties}
 			onClick={toast.onClick}
-			className={joinClassNames(templateClasses.ShortTemplate, toast.className || '', 'DeckyGamepadUIPopupToast')}
+			className={joinClassNames(templateClasses.ShortTemplate, toast.className || '', 'MillenniumGamepadUIPopupToast')}
 		>
 			{toast.logo && <div className={templateClasses.StandardLogoDimensions}>{toast.logo}</div>}
 			<div className={joinClassNames(templateClasses.Content, toast.contentClassName || '')}>
@@ -75,7 +75,7 @@ const GamepadUIQAMToast: FC<ToastProps> = memo(({ toast, newIndicator }) => {
 				toast.onClick?.();
 				Navigation.CloseSideMenus();
 			}}
-			className={joinClassNames(templateClasses.StandardTemplateContainer, toast.className || '', 'DeckyGamepadUIQAMToast')}
+			className={joinClassNames(templateClasses.StandardTemplateContainer, toast.className || '', 'MillenniumGamepadUIQAMToast')}
 		>
 			<div className={templateClasses.StandardTemplate}>
 				{toast.logo && <div className={templateClasses.StandardLogoDimensions}>{toast.logo}</div>}

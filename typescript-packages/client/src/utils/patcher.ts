@@ -1,6 +1,6 @@
 // TODO: implement storing patches as an option so we can offer unpatchAll selectively
 // Return this in a replacePatch to call the original method (can still modify args).
-export let callOriginal = Symbol('DECKY_CALL_ORIGINAL');
+export let callOriginal = Symbol('MILLENNIUM_CALL_ORIGINAL');
 
 export interface PatchOptions {
 	singleShot?: boolean;
@@ -72,7 +72,7 @@ function processPatch(object: any, property: any, handler: GenericPatchHandler, 
 	object[property].toString = () => original.toString();
 
 	// HACK: for compatibility, remove when all plugins are using new patcher
-	Object.defineProperty(object[property], '__deckyOrig', {
+	Object.defineProperty(object[property], '__millenniumOrig', {
 		get: () => patch.original,
 		set: (val: any) => (patch.original = val),
 	});
@@ -88,7 +88,7 @@ function processPatch(object: any, property: any, handler: GenericPatchHandler, 
 		unpatch: () => unpatch(patch),
 	};
 
-	object[property].__deckyPatch = patch;
+	object[property].__millenniumPatch = patch;
 
 	return patch;
 }
@@ -111,7 +111,7 @@ function unpatch(patch: Patch): void {
 
 	// If another patch has been applied to this function after this one, move down until we find the correct patch
 	while (realObject[realProp] && realObject[realProp] !== patchedFunction) {
-		realObject = realObject[realProp].__deckyPatch;
+		realObject = realObject[realProp].__millenniumPatch;
 		realProp = 'original';
 		console.debug('[Patcher] moved to next', {
 			realObject,
@@ -125,7 +125,7 @@ function unpatch(patch: Patch): void {
 		});
 	}
 
-	realObject[realProp] = realObject[realProp].__deckyPatch.original;
+	realObject[realProp] = realObject[realProp].__millenniumPatch.original;
 
 	patch.hasUnpatched = true;
 	console.debug('[Patcher] unpatched', {

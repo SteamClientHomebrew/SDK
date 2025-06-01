@@ -21,10 +21,8 @@ export default {
 	output: {
 		dir: 'build',
 		format: 'esm',
-		entryFileNames: 'preload.js',
-		chunkFileNames: (chunkInfo) => {
-			return 'chunk-[hash].js';
-		},
+		entryFileNames: `millennium-pre.c${clientVersion}.b${browserVersion}.js`,
+		chunkFileNames: 'chunks/[hash].js',
 		sourcemap: true,
 	},
 	preserveEntrySignatures: true,

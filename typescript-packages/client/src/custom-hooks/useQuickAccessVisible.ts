@@ -3,10 +3,8 @@ import { useEffect, useState } from 'react';
 import { getGamepadNavigationTrees } from '../utils';
 
 function getQuickAccessWindow(): Window | null {
-  const navTrees = getGamepadNavigationTrees();
-  return (
-    navTrees.find((tree: any) => tree?.id === 'QuickAccess-NA')?.m_Root?.m_element?.ownerDocument.defaultView ?? null
-  );
+	const navTrees = getGamepadNavigationTrees();
+	return navTrees.find((tree: any) => tree?.id === 'QuickAccess-NA')?.m_Root?.m_element?.ownerDocument.defaultView ?? null;
 }
 
 /**
@@ -16,7 +14,7 @@ function getQuickAccessWindow(): Window | null {
  *
  * @example
  * import { FC, useEffect } from "react";
- * import { useQuickAccessVisible } from "decky-frontend-lib";
+ * import { useQuickAccessVisible } from "@steambrew/client";
  *
  * export const PluginPanelView: FC<{}> = ({ }) => {
  *   const isVisible = useQuickAccessVisible();
@@ -40,24 +38,24 @@ function getQuickAccessWindow(): Window | null {
  * };
  */
 export function useQuickAccessVisible(): boolean {
-  // By default we say that document is not hidden, unless we know otherwise.
-  // This would cover the cases when Valve breaks something and the quick access window
-  // cannot be accessed anymore - the plugins that use this would continue working somewhat.
-  const [isHidden, setIsHidden] = useState(getQuickAccessWindow()?.document.hidden ?? false);
+	// By default we say that document is not hidden, unless we know otherwise.
+	// This would cover the cases when Valve breaks something and the quick access window
+	// cannot be accessed anymore - the plugins that use this would continue working somewhat.
+	const [isHidden, setIsHidden] = useState(getQuickAccessWindow()?.document.hidden ?? false);
 
-  useEffect(() => {
-    const quickAccessWindow = getQuickAccessWindow();
-    if (quickAccessWindow === null) {
-      console.error('Could not get window of QuickAccess menu!');
-      return;
-    }
+	useEffect(() => {
+		const quickAccessWindow = getQuickAccessWindow();
+		if (quickAccessWindow === null) {
+			console.error('Could not get window of QuickAccess menu!');
+			return;
+		}
 
-    const onVisibilityChange = () => setIsHidden(quickAccessWindow.document.hidden);
-    quickAccessWindow.addEventListener('visibilitychange', onVisibilityChange);
-    return () => {
-      quickAccessWindow.removeEventListener('visibilitychange', onVisibilityChange);
-    };
-  }, []);
+		const onVisibilityChange = () => setIsHidden(quickAccessWindow.document.hidden);
+		quickAccessWindow.addEventListener('visibilitychange', onVisibilityChange);
+		return () => {
+			quickAccessWindow.removeEventListener('visibilitychange', onVisibilityChange);
+		};
+	}, []);
 
-  return !isHidden;
+	return !isHidden;
 }
