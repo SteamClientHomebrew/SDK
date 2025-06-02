@@ -27,5 +27,5 @@
 		"typescript": "^5.8.3"
 	},
 	"name": "@steambrew/api",
-	"version": "5.2.18"
+	"version": "5.2.19"
 }
