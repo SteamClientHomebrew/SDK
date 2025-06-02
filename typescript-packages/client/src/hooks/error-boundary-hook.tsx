@@ -2,7 +2,7 @@ import { ErrorBoundary } from '../components';
 import Logger from '../logger';
 import { callOriginal, Patch, replacePatch } from '../utils';
 import { findModuleExport } from '../webpack';
-import { getLikelyErrorSourceFromValveError } from './Errors';
+import { getLikelyErrorSourceFromValveError } from './error-from-source';
 
 declare global {
 	interface Window {

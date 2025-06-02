@@ -9,9 +9,9 @@ export * from './utils';
 export * from './class-mapper';
 export * from './millennium-api';
 
-import ErrorBoundaryHook from './hooks/ErrorBoundaryHook';
-import RouterHook from './hooks/router/RouterHook';
-import Toaster from './hooks/Toaster';
+import ErrorBoundaryHook from './hooks/error-boundary-hook';
+import RouterHook from './hooks/router/router-hook';
+import Toaster from './hooks/toaster-hook';
 
 export const errorBoundaryHook: ErrorBoundaryHook = new ErrorBoundaryHook();
 export const routerHook: RouterHook = new RouterHook();

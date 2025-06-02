@@ -1,8 +1,8 @@
-import { FC, ReactElement, ReactNode, cloneElement, createElement } from 'react';
+import { FC, ReactElement, ReactNode, cloneElement, createElement, useEffect } from 'react';
 import type { Route } from 'react-router';
 
 import { MillenniumGlobalComponentsState, MillenniumGlobalComponentsStateContextProvider, useMillenniumGlobalComponentsState } from './GlobalComponentsState';
-import { MillenniumRouterState, MillenniumRouterStateContextProvider, RoutePatch, RouterEntry, useMillenniumRouterState } from './RouterState';
+import { MillenniumRouterState, MillenniumRouterStateContextProvider, RoutePatch, RouterEntry, useMillenniumRouterState } from './MillenniumRouterState';
 import Logger from '../../logger';
 import { EUIMode } from '../../globals/steam-client/shared';
 import { afterPatch, findInReactTree, findInTree, getReactRoot, injectFCTrampoline, Patch, sleep, wrapReactType } from '../../utils';
@@ -36,6 +36,9 @@ class RouterHook extends Logger {
 	private modeChangeRegistration?: any;
 	private patchedModes = new Set<number>();
 	public routes?: any[];
+
+	private setupListeners: (() => void)[] = [];
+	private isSetupEmitted = false;
 
 	constructor() {
 		super('RouterHook');
@@ -155,6 +158,27 @@ class RouterHook extends Logger {
 		}
 	}
 
+	public async emitRouterSetup() {
+		this.debug('Emitting router setup');
+		if (this.setupListeners.length > 0) {
+			this.setupListeners.forEach((cb) => cb());
+			this.setupListeners = [];
+		} else {
+			this.debug('No router setup listeners registered');
+		}
+		this.isSetupEmitted = true;
+	}
+
+	public async registerForRouterSetup(callback: () => void) {
+		if (this.isSetupEmitted) {
+			callback();
+			return;
+		}
+
+		this.setupListeners.push(callback);
+		this.debug('Registered router setup listener');
+	}
+
 	public async waitForUnlock() {
 		try {
 			while (window?.securitystore?.IsLockScreenActive?.()) {
@@ -172,18 +196,27 @@ class RouterHook extends Logger {
 		if (ret._millennium) {
 			return ret;
 		}
-		const returnVal = (
-			<>
-				<MillenniumRouterStateContextProvider millenniumRouterState={this.routerState}>
-					<MillenniumDesktopRouterWrapper>{ret}</MillenniumDesktopRouterWrapper>
-				</MillenniumRouterStateContextProvider>
-				<MillenniumGlobalComponentsStateContextProvider millenniumGlobalComponentsState={this.globalComponentsState}>
-					<MillenniumGlobalComponentsWrapper uiMode={EUIMode.Desktop} />
-				</MillenniumGlobalComponentsStateContextProvider>
-			</>
-		);
-		(returnVal as any)._millennium = true;
-		return returnVal;
+
+		const component = () => {
+			useEffect(() => {
+				this.debug('Desktop router rendered, emitting setup');
+				setTimeout(this.emitRouterSetup.bind(this), 250);
+			}, []);
+
+			return (
+				<>
+					<MillenniumRouterStateContextProvider millenniumRouterState={this.routerState}>
+						<MillenniumDesktopRouterWrapper>{ret}</MillenniumDesktopRouterWrapper>
+					</MillenniumRouterStateContextProvider>
+					<MillenniumGlobalComponentsStateContextProvider millenniumGlobalComponentsState={this.globalComponentsState}>
+						<MillenniumGlobalComponentsWrapper uiMode={EUIMode.Desktop} />
+					</MillenniumGlobalComponentsStateContextProvider>
+				</>
+			);
+		};
+
+		(component() as any)._millennium = true;
+		return component();
 	}
 
 	public handleGamepadRouterRender(_: any, ret: any) {
