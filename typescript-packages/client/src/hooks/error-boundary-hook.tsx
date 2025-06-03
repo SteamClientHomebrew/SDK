@@ -67,8 +67,6 @@ class ErrorBoundaryHook extends Logger {
 			return;
 		}
 
-		console.debug('Patching ErrorBoundary', ErrorBoundary);
-
 		this.errorBoundaryPatch = replacePatch(ErrorBoundary.prototype, 'render', function (this: any) {
 			if (this.state._millenniumForceRerender) {
 				console.debug('Forcing rerender');
