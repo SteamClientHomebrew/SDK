@@ -1,6 +1,9 @@
 import { FC, memo, ReactNode } from 'react';
 import Logger from '../logger';
-import { findClassModule, Focusable, joinClassNames, Navigation } from '..';
+import { joinClassNames } from '../utils';
+import { findClassModule } from '../class-mapper';
+import { Focusable } from './Focusable';
+import { Navigation } from '../modules/Router';
 
 const logger = new Logger('ToastRenderer');
 
