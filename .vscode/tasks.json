@@ -2,14 +2,26 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"label": "Install Node Modules",
+			"type": "shell",
+			"command": "pnpm install --ignore-scripts",
+			"options": {
+				"cwd": "${workspaceFolder}/"
+			},
+			"presentation": {
+				"echo": false,
+				"clear": true
+			},
+			"problemMatcher": []
+		},
+		{
 			"type": "npm",
-			"script": "dev",
-			"problemMatcher": [
-				"$tsc-watch"
-			],
-			"label": "npm: dev",
-			"detail": "tsc -b -w",
-			"isBackground": true
+			"script": "build",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "Build Millennium SDK",
+			"detail": "build the Millennium software developement kit",
+			"dependsOn": ["Install Node Modules"]
 		}
 	]
 }

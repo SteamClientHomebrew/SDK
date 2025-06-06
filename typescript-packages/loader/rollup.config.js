@@ -1,18 +1,15 @@
+import fs from 'fs';
+import del from 'rollup-plugin-del';
 import replace from '@rollup/plugin-replace';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 import externalGlobals from 'rollup-plugin-external-globals';
-import del from 'rollup-plugin-del';
-
-import client from '../client/package.json' assert { type: 'json' };
-import browser from '../browser/package.json' assert { type: 'json' };
-
 import injectProcessEnv from 'rollup-plugin-inject-process-env';
 
-const clientVersion = client.version;
-const browserVersion = browser.version;
+const clientVersion = JSON.parse(fs.readFileSync(new URL('../client/package.json', import.meta.url))).version;
+const browserVersion = JSON.parse(fs.readFileSync(new URL('../browser/package.json', import.meta.url))).version;
 
 export default {
 	input: 'src/index.ts',
