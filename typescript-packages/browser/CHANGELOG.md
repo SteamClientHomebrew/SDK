@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.2.24 (2025-06-06)
+
+
+### Bug Fixes
+
+* webkit package not building in ci ([#4](https://github.com/SteamClientHomebrew/PluginComponents/issues/4)) ([917a0c3](https://github.com/SteamClientHomebrew/PluginComponents/commit/917a0c3ac3db53f658c1f1e4a6e3d7e78c3a3ade))
+
+
+
+
+
 ## 5.2.23 (2025-06-06)
 
 
