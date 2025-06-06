@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.2.23 (2025-06-06)
+
+
+### Bug Fixes
+
+* Fix circular dependency ([9d34395](https://github.com/SteamClientHomebrew/SDK/commit/9d34395acf707487ff264e448e2498dc937e5f52))
+
+
+
+
+
 ## 5.2.22 (2025-06-06)
 
 **Note:** Version bump only for package @steambrew/api
