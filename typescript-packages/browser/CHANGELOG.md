@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.2.25 (2025-06-07)
+
+
+### Bug Fixes
+
+* Fix auto-doc ([f5bd810](https://github.com/SteamClientHomebrew/PluginComponents/commit/f5bd810501117db775d5b119ee166ab73de350a1))
+
+
+
+
+
 ## 5.2.24 (2025-06-06)
 
 
