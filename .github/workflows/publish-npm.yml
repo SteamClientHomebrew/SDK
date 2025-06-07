@@ -35,16 +35,10 @@ jobs:
             - name: Run Lerna Version and Capture Tag
               id: version
               run: |
-                  # Save current tags before running lerna version
                   git tag > before_tags.txt
-
-                  # Run lerna version (will only bump if relevant commits exist)
                   npx lerna version --conventional-commits --yes --no-push
-
-                  # Save tags after lerna version
                   git tag > after_tags.txt
 
-                  # Compare tags before and after
                   if diff before_tags.txt after_tags.txt > /dev/null; then
                     echo "published=false" >> $GITHUB_OUTPUT
                   else
