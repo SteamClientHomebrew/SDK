@@ -1,8 +1,12 @@
 {
-	"entryPoints": ["typescript-packages/client/src/index.ts", "typescript-packages/browser/src/index.ts"], // change to your main entry point
+	"entryPoints": ["typescript-packages/client/src/index.ts", "typescript-packages/browser/src/index.ts"],
 	"out": "docs",
 	"plugin": ["typedoc-plugin-markdown"],
-	"readme": "README.md", // or "none"
+	"readme": "README.md",
 	"includeVersion": true,
-	"tsconfig": "tsconfig.base.json" // path to your tsconfig file
+	"tsconfig": "tsconfig.base.json",
+	"expandObjects": true,
+	"enumMembersFormat": "table",
+	"useCodeBlocks": true,
+	"expandParameters": false
 }
