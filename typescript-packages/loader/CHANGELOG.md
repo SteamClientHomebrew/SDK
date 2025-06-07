@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 5.3.0 (2025-06-07)
+
+
+### Features
+
+* Auto-doc docs website ([045aa80](https://github.com/SteamClientHomebrew/SDK/commit/045aa80d6e5b39d758688da6d2a315e5fe044eef))
+
+
+
+
+
 ## 5.2.25 (2025-06-07)
 
 
