@@ -11,7 +11,7 @@ type IPC_types = string | number | boolean | void;
 */
 type Millennium = {
 	/**
-	 * @brief Call a method on the backend
+	 * Call a method on the backend
 	 * @deprecated Use `callable` instead.
 	 * Example usage:
 	 * ```typescript

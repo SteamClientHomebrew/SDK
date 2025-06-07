@@ -13,7 +13,6 @@ declare global {
 /**
  * Create a Regular Expression to search for a React component that uses certain props in order.
  *
- * @export
  * @param {string[]} propList Ordererd list of properties to search for
  * @returns {RegExp} RegEx to call .test(component.toString()) on
  */

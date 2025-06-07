@@ -6,7 +6,7 @@ type IPC_types = string | number | boolean;
 */
 type Millennium = {
 	/**
-	 * @brief Call a method on the backend
+	 * Call a method on the backend
 	 * @deprecated Use `callable` instead.
 	 * Example usage:
 	 * ```typescript
@@ -73,7 +73,7 @@ interface MultiFileExprProps {
 }
 
 /**
- * @brief Create a compile time filesystem expression.
+ * Create a compile time filesystem expression.
  * This function will evaluate a file path at compile time, and embed a files content statically into the bundle.
  */
 declare const constSysfsExpr: {

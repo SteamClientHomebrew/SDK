@@ -1,0 +1,8 @@
+{
+	"entryPoints": ["typescript-packages/client/src/index.ts", "typescript-packages/browser/src/index.ts"], // change to your main entry point
+	"out": "docs",
+	"plugin": ["typedoc-plugin-markdown"],
+	"readme": "README.md", // or "none"
+	"includeVersion": true,
+	"tsconfig": "tsconfig.base.json" // path to your tsconfig file
+}
