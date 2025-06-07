@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.3.2 (2025-06-07)
+
+
+### Bug Fixes
+
+* Fix CI (test commit) ([59f9209](https://github.com/SteamClientHomebrew/PluginComponents/commit/59f920989b86290572360e361555e8ce71566531))
+
+
+
+
+
 ## 5.3.1 (2025-06-07)
 
 
