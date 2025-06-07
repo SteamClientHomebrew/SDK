@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.3.1 (2025-06-07)
+
+
+### Bug Fixes
+
+* Fix CI access token ([1d51cdb](https://github.com/SteamClientHomebrew/PluginComponents/commit/1d51cdbfa922f7175154e2690163e7f9b16da6d8))
+
+
+
+
+
 # 5.3.0 (2025-06-07)
 
 
