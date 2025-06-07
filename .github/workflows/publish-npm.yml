@@ -3,9 +3,9 @@ name: Lerna Versioning and Publish
 on:
     push:
         branches:
-            - main # Trigger on push to the main branch
+            - main
         tags:
-            - 'v*' # Trigger on version tags (e.g., v1.0.0)
+            - 'v*'
 
 jobs:
     versioning-and-publishing:
@@ -32,18 +32,42 @@ jobs:
                   git config --global user.name "GitHub Actions"
                   git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-            - name: Run Lerna Version
+            - name: Run Lerna Version and Capture Tag
+              id: version
               run: |
-                  npx lerna version --conventional-commits --yes  # Auto version bump based on commit messages
+                  # Save current tags before running lerna version
+                  git tag > before_tags.txt
+
+                  # Run lerna version (will only bump if relevant commits exist)
+                  npx lerna version --conventional-commits --yes --no-push
+
+                  # Save tags after lerna version
+                  git tag > after_tags.txt
+
+                  # Compare tags before and after
+                  if diff before_tags.txt after_tags.txt > /dev/null; then
+                    echo "published=false" >> $GITHUB_OUTPUT
+                  else
+                    echo "published=true" >> $GITHUB_OUTPUT
+                  fi
 
             - name: Publish to npm
+              if: steps.version.outputs.published == 'true'
               run: |
-                  npx lerna publish from-package --yes  # Publish the updated packages to npm
-
+                  npx lerna publish from-package --yes
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
             - name: Push commit and tag
+              if: steps.version.outputs.published == 'true'
               run: |
-                  git push origin main  # Push the version bump commit to main
-                  git push origin --tags  # Push the new tag created by lerna version
+                  git push origin main
+                  git push origin --tags
+
+            - name: Dispatch to Other Repo
+              if: steps.version.outputs.published == 'true'
+              uses: peter-evans/repository-dispatch@v2
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  repository: SteamClientHomebrew/SteamBrew
+                  event-type: on-millennium-sdk-updated
