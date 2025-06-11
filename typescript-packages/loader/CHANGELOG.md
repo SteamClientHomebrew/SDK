@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.3.5 (2025-06-11)
+
+**Note:** Version bump only for package @steambrew/api
+
+
+
+
+
 ## 5.3.4 (2025-06-08)
 
 **Note:** Version bump only for package @steambrew/api
