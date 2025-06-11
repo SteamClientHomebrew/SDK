@@ -28,6 +28,7 @@ export interface SliderFieldProps extends ItemProps {
 	className?: string;
 }
 
+/** @component React Components */
 export const SliderField = Object.values(CommonUIModule).find(
 	(mod: any) =>
 		// stable || beta as of oct 2 2024

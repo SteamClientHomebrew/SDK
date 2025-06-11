@@ -65,23 +65,32 @@ const MappedDialogDivs = new Map(
 	}),
 );
 
+/** @component React Components */
 export const DialogHeader = MappedDialogDivs.get('DialogHeader') as FC<DialogCommonProps>;
+/** @component React Components */
 export const DialogSubHeader = MappedDialogDivs.get('DialogSubHeader') as FC<DialogCommonProps>;
+/** @component React Components */
 export const DialogFooter = MappedDialogDivs.get('DialogFooter') as FC<DialogCommonProps>;
+/** @component React Components */
 export const DialogLabel = MappedDialogDivs.get('DialogLabel') as FC<DialogCommonProps>;
+/** @component React Components */
 export const DialogBodyText = MappedDialogDivs.get('DialogBodyText') as FC<DialogCommonProps>;
+/** @component React Components */
 export const DialogBody = MappedDialogDivs.get('DialogBody') as FC<DialogCommonProps>;
+/** @component React Components */
 export const DialogControlsSection = MappedDialogDivs.get('DialogControlsSection') as FC<DialogCommonProps>;
+/** @component React Components */
 export const DialogControlsSectionHeader = MappedDialogDivs.get('DialogControlsSectionHeader') as FC<DialogCommonProps>;
 
+/** @component React Components */
 export const DialogButtonPrimary = Object.values(CommonUIModule).find((mod: any) =>
 	mod?.render?.toString()?.includes('"DialogButton","_DialogLayout","Primary"'),
 ) as FC<DialogButtonProps>;
 
+/** @component React Components */
 export const DialogButtonSecondary = Object.values(CommonUIModule).find((mod: any) =>
 	mod?.render?.toString()?.includes('"DialogButton","_DialogLayout","Secondary"'),
 ) as FC<DialogButtonProps>;
 
-// This is the "main" button. The Primary can act as a submit button,
-// therefore secondary is chosen (also for backwards comp. reasons)
+/** @component React Components */
 export const DialogButton = DialogButtonSecondary;

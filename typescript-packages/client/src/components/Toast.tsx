@@ -105,6 +105,7 @@ const GamepadUIQAMToast: FC<ToastProps> = memo(({ toast, newIndicator }) => {
 	);
 });
 
+/** @hide This is not meant for external use */
 export const ToastRenderer: FC<ToastRendererProps> = memo(({ toast, location, newIndicator }) => {
 	switch (location) {
 		default:

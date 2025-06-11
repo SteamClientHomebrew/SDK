@@ -342,8 +342,6 @@ class RouterHook extends Logger {
 		// }
 
 		routeList.forEach((route: Route, index: number) => {
-			console.log(this.toReplace, route, index, routeList);
-
 			const replaced = this.toReplace.get(route?.props?.path as string);
 			if (replaced) {
 				routeList[index].props.children = replaced;
@@ -358,7 +356,6 @@ class RouterHook extends Logger {
 				);
 				routePatches?.get(route.props.path as string)?.forEach((patch) => {
 					const oType = routeList[index].props.children.type;
-					console.log('Patching route', routeList[index], 'with patch', patch);
 					routeList[index].props.children = patch({
 						...routeList[index].props,
 						children: {

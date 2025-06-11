@@ -4,5 +4,5 @@ import { DialogButton, DialogButtonProps } from './Dialog';
 
 export interface ButtonProps extends DialogButtonProps {}
 
-// Button isn't exported, so call DialogButton to grab it
+/** @component React Components */
 export const Button = (DialogButton as any)?.render({}).type as FC<ButtonProps>;

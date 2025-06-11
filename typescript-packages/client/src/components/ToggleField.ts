@@ -4,12 +4,11 @@ import { CommonUIModule } from '../webpack';
 import { ItemProps } from './Item';
 
 export interface ToggleFieldProps extends ItemProps {
-  highlightOnFocus?: boolean;
-  checked: boolean;
-  disabled?: boolean;
-  onChange?(checked: boolean): void;
+	highlightOnFocus?: boolean;
+	checked: boolean;
+	disabled?: boolean;
+	onChange?(checked: boolean): void;
 }
 
-export const ToggleField = Object.values(CommonUIModule).find((mod: any) =>
-  mod?.render?.toString()?.includes('ToggleField,fallback'),
-) as FC<ToggleFieldProps>;
+/** @component React Components */
+export const ToggleField = Object.values(CommonUIModule).find((mod: any) => mod?.render?.toString()?.includes('ToggleField,fallback')) as FC<ToggleFieldProps>;

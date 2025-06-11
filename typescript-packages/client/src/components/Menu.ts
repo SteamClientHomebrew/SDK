@@ -5,25 +5,23 @@ import { Export, findModuleExport } from '../webpack';
 import { FooterLegendProps } from './FooterLegend';
 
 export const showContextMenu: (children: ReactNode, parent?: EventTarget) => void = findModuleExport(
-  (e: Export) => typeof e === 'function' && e.toString().includes('GetContextMenuManagerFromWindow(')
-  && e.toString().includes('.CreateContextMenuInstance('),
+	(e: Export) => typeof e === 'function' && e.toString().includes('GetContextMenuManagerFromWindow(') && e.toString().includes('.CreateContextMenuInstance('),
 );
 
 export interface MenuProps extends FooterLegendProps {
-  label: string;
-  onCancel?(): void;
-  cancelText?: string;
-  children?: ReactNode;
+	label: string;
+	onCancel?(): void;
+	cancelText?: string;
+	children?: ReactNode;
 }
 
-export const Menu: FC<MenuProps> = findModuleExport(
-  (e: Export) => e?.prototype?.HideIfSubmenu && e?.prototype?.HideMenu,
-);
+/** @component React Components */
+export const Menu: FC<MenuProps> = findModuleExport((e: Export) => e?.prototype?.HideIfSubmenu && e?.prototype?.HideMenu);
 
 export interface MenuGroupProps {
-  label: string;
-  disabled?: boolean;
-  children?: ReactNode;
+	label: string;
+	disabled?: boolean;
+	children?: ReactNode;
 }
 
 // export const MenuGroup: FC<MenuGroupProps> = findModuleExport(
@@ -33,21 +31,21 @@ export interface MenuGroupProps {
 //     (e?.prototype?.RenderSubMenu && e?.prototype?.ShowSubMenu)
 // );
 export interface MenuItemProps extends FooterLegendProps {
-  bInteractableItem?: boolean;
-  onClick?(evt: Event): void;
-  onSelected?(evt: Event): void;
-  onMouseEnter?(evt: MouseEvent): void;
-  onMoveRight?(): void;
-  selected?: boolean;
-  disabled?: boolean;
-  bPlayAudio?: boolean;
-  tone?: 'positive' | 'emphasis' | 'destructive';
-  children?: ReactNode;
+	bInteractableItem?: boolean;
+	onClick?(evt: Event): void;
+	onSelected?(evt: Event): void;
+	onMouseEnter?(evt: MouseEvent): void;
+	onMoveRight?(): void;
+	selected?: boolean;
+	disabled?: boolean;
+	bPlayAudio?: boolean;
+	tone?: 'positive' | 'emphasis' | 'destructive';
+	children?: ReactNode;
 }
 
+/** @component React Components */
 export const MenuItem: FC<MenuItemProps> = findModuleExport(
-  (e: Export) =>
-    e?.render?.toString()?.includes('bPlayAudio:') || (e?.prototype?.OnOKButton && e?.prototype?.OnMouseEnter),
+	(e: Export) => e?.render?.toString()?.includes('bPlayAudio:') || (e?.prototype?.OnOKButton && e?.prototype?.OnMouseEnter),
 );
 
 /*

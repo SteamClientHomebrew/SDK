@@ -2,6 +2,7 @@
 import json, os
 import Millennium # type: ignore[import]
 import builtins
+import enum
 
 config_path = os.path.join(os.getenv("MILLENNIUM__CONFIG_PATH"), "plugins.json")
 
@@ -124,6 +125,9 @@ class Settings(type):
         else:
             raise Exception("Millennium only allows one instance of plugin settings.")
 
+    def __get_raw__(self, name):
+        return super().__getattribute__(name)
+
     def __getattribute__(self, name, *args, **kwargs):
         attributeValue = super().__getattribute__(name)
         returnValue = None
@@ -155,13 +159,28 @@ class Settings(type):
         return super().__setattr__(targetKey, newValue)
 
 
+class CallbackLocation(enum.Enum):
+    LOCAL = "local"
+    EXTERNAL = "external"
+
+class OnAfterChangeCallback:
+    def __init__(self, func):
+        self.func = func
+
+    def __call__(self, *args, **kwargs):
+        print("Before the function call")
+        result = self.func(*args, **kwargs)
+        print("After the function call")
+        return result
+
 class DefineSetting:
-    def __init__(self, name, description, style, default, step=None, range=None):
+    def __init__(self, name, style, default, description=None, configurable=None, step=None, range=None):
         self.name = name
-        self.desc = description
+        self.desc = description or "No description yet."
         self.type = type(style)
         self.instance = style
         self.default = default
+        self.configurable = configurable or True
 
     def _get_info(self):
         return (self.name, self.desc, self.type, self.range)
@@ -196,15 +215,31 @@ class DefineSetting:
             "type": self.type,
             "default": self.default,
             "instance": self.instance,
+            "configurable": self.configurable,
         }
 
         return hookedFunction
     
 
+
+
 def UpdateSettingsValue(name, value):
+    previousValue = getattr(__builtins__["__millennium_plugin_settings_do_not_use__"], name)()
+
+    def InvokeOnCallback():
+        pluginSettings = __builtins__["__millennium_plugin_settings_do_not_use__"]
+
+        for func_name in dir(pluginSettings):
+            func = getattr(pluginSettings, func_name)
+
+            if func.__class__ == OnAfterChangeCallback:
+                func(pluginSettings, name, value, previousValue, CallbackLocation.LOCAL)
+
     settingsStore = GetPluginSettingsStore()
     settingsStore[name] = value
     SetPluginSettingsStore(settingsStore)
+
+    InvokeOnCallback()
 
 builtins.__update_settings_value__ = UpdateSettingsValue
      
@@ -221,11 +256,13 @@ def ParsePluginSettings():
                 "name": attribute._metadata["name"],
                 "desc": attribute._metadata["desc"],
                 "value": attribute(),
-                "functionName": attributeName
+                "functionName": attributeName,
+                "configurable": attribute._metadata["configurable"],
             }
-            if isinstance(attribute._metadata["type"], tuple) and issubclass(attribute._metadata["type"][0], DropDown):
-                setting["options"] = attribute._metadata["type"][1]
-                setting["type"] = attribute._metadata["type"][0].__name__
+
+            if issubclass(attribute._metadata["type"], DropDown):
+                setting["options"] = attribute._metadata["instance"].items
+                setting["type"] = attribute._metadata["type"].__name__
 
             elif issubclass(attribute._metadata["type"], (NumberTextInput, FloatTextInput)):
                 setting["range"] = attribute._metadata["instance"].range

@@ -22,6 +22,14 @@
 			"label": "Build Millennium SDK",
 			"detail": "build the Millennium software developement kit",
 			"dependsOn": ["Install Node Modules"]
+		},
+		{
+			"type": "npm",
+			"script": "docs",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "Build Millennium SDK Docs",
+			"detail": "build the Millennium software developement kit documentation"
 		}
 	]
 }

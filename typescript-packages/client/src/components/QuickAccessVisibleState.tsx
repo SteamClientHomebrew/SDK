@@ -2,8 +2,10 @@ import { FC, ReactNode, createContext, useContext, useState } from 'react';
 
 const QuickAccessVisibleState = createContext<boolean>(false);
 
+/** @component React Components */
 export const useQuickAccessVisible = () => useContext(QuickAccessVisibleState);
 
+/** @component React Components */
 export const QuickAccessVisibleStateProvider: FC<{ tab: any; children: ReactNode }> = ({ children, tab }) => {
 	const initial = tab.initialVisibility;
 	const [visible, setVisible] = useState<boolean>(initial);

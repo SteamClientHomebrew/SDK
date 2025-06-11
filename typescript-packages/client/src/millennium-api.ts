@@ -48,6 +48,8 @@ export const pluginSelf = m_private_context;
 declare global {
 	interface Window {
 		Millennium: Millennium;
+		MILLENNIUM_CHROME_DEV_TOOLS_PROTOCOL_DO_NOT_USE_OR_OVERRIDE_ONMESSAGE: any;
+		CHROME_DEV_TOOLS_PROTOCOL_API_BINDING: MillenniumChromeDevToolsProtocol;
 	}
 }
 
@@ -81,5 +83,102 @@ declare const constSysfsExpr: {
 	(props: MultiFileExprProps): FileInfo[];
 };
 
+interface CDPMessage {
+	id?: number;
+	method: string;
+	params?: Record<string, any>;
+	sessionId?: string; // Optional session ID for targeted commands
+	result?: any;
+	error?: {
+		message: string;
+		code: number;
+	};
+}
+
+class MillenniumChromeDevToolsProtocol {
+	devTools: any;
+	currentId: number;
+	pendingRequests: Map<number, { resolve: (value: any) => void; reject: (reason?: any) => void }>;
+
+	constructor() {
+		this.devTools = window.MILLENNIUM_CHROME_DEV_TOOLS_PROTOCOL_DO_NOT_USE_OR_OVERRIDE_ONMESSAGE;
+		this.currentId = 0;
+		this.pendingRequests = new Map();
+
+		// Override the onmessage callback to handle responses
+		this.devTools.onmessage = (message: any) => {
+			this.handleMessage(message);
+		};
+	}
+
+	handleMessage(message: any) {
+		const data = typeof message === 'string' ? JSON.parse(message) : message;
+
+		// Check if this is a response to one of our requests
+		if (data.id !== undefined && this.pendingRequests.has(data.id)) {
+			const pending = this.pendingRequests.get(data.id);
+			this.pendingRequests.delete(data.id);
+
+			if (pending) {
+				const { resolve, reject } = pending;
+				if (data.error) {
+					reject(new Error(`CDP Error: ${data.error.message} (${data.error.code})`));
+				} else {
+					resolve(data.result);
+				}
+			}
+		}
+	}
+
+	send(method: string, params: any = {}, sessionId?: string) {
+		return new Promise((resolve, reject) => {
+			const id = this.currentId++;
+
+			// Store the promise resolvers
+			this.pendingRequests.set(id, { resolve, reject });
+
+			// Prepare the message
+			const message: CDPMessage = {
+				id: id,
+				method: method,
+			};
+
+			// Only add params if they're provided and not empty
+			if (params && Object.keys(params).length > 0) {
+				message.params = params;
+			}
+
+			// If a sessionId is provided, include it in the message
+			if (sessionId) {
+				message.sessionId = sessionId;
+			}
+
+			// Send the message
+			try {
+				this.devTools.send(JSON.stringify(message));
+			} catch (error) {
+				// Clean up if send fails
+				this.pendingRequests.delete(id);
+				reject(error);
+			}
+		});
+	}
+
+	// Helper method to send without waiting for response (fire and forget)
+	sendNoResponse(method: string, params = {}) {
+		const message: CDPMessage = {
+			id: this.currentId++,
+			method: method,
+		};
+
+		if (params && Object.keys(params).length > 0) {
+			message.params = params;
+		}
+
+		this.devTools.send(JSON.stringify(message));
+	}
+}
+
+const ChromeDevToolsProtocol: MillenniumChromeDevToolsProtocol = new MillenniumChromeDevToolsProtocol();
 const Millennium: Millennium = window.Millennium;
-export { Millennium, callable, BindPluginSettings, constSysfsExpr };
+export { ChromeDevToolsProtocol, Millennium, callable, BindPluginSettings, constSysfsExpr };

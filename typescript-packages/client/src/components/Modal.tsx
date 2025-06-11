@@ -39,6 +39,7 @@ const showModalRaw: (
 	modalManager?: unknown,
 ) => ShowModalResult = findModuleExport((e: Export) => typeof e === 'function' && e.toString().includes('props.bDisableBackgroundDismiss') && !e?.prototype?.Cancel);
 
+/** @component Popup Modals */
 export const showModal = (
 	modal: ReactNode,
 	parent?: EventTarget,
@@ -78,9 +79,10 @@ export interface ConfirmModalProps extends ModalRootProps {
 	bAlertDialog?: boolean; // This will open a modal with only OK button enabled
 	bMiddleDisabled?: boolean;
 }
-
+/** @component React Components */
 export const ConfirmModal = findModuleExport((e: Export) => !e?.prototype?.OK && e?.prototype?.Cancel && e?.prototype?.render) as FC<ConfirmModalProps>;
 
+/** @component React Components */
 export const ModalRoot = Object.values(
 	findModule((m: any) => {
 		if (typeof m !== 'object') return false;
@@ -104,9 +106,11 @@ const [ModalModule, _ModalPosition] = findModuleDetailsByExport((e: Export) => e
 
 const ModalModuleProps = ModalModule ? Object.values(ModalModule) : [];
 
+/** @component React Components */
 export const SimpleModal = ModalModuleProps.find((prop) => {
 	const string = prop?.toString();
 	return string?.includes('.ShowPortalModal()') && string?.includes('.OnElementReadyCallbacks.Register(');
 }) as FC<SimpleModalProps>;
 
+/** @component React Components */
 export const ModalPosition = _ModalPosition as FC<SimpleModalProps>;

@@ -9,18 +9,18 @@ import { Export, findModuleDetailsByExport } from '../webpack';
 // });
 
 export interface PanelSectionProps {
-  title?: string;
-  spinner?: boolean;
-  children?: ReactNode;
+	title?: string;
+	spinner?: boolean;
+	children?: ReactNode;
 }
 
 const [mod, panelSection] = findModuleDetailsByExport((e: Export) => e.toString()?.includes('.PanelSection'));
 
+/** @component React Components */
 export const PanelSection = panelSection as FC<PanelSectionProps>;
 
 export interface PanelSectionRowProps {
-  children?: ReactNode;
+	children?: ReactNode;
 }
-export const PanelSectionRow = Object.values(mod).filter(
-  (exp: any) => !exp?.toString()?.includes('.PanelSection'),
-)[0] as FC<PanelSectionRowProps>;
+/** @component React Components */
+export const PanelSectionRow = Object.values(mod).filter((exp: any) => !exp?.toString()?.includes('.PanelSection'))[0] as FC<PanelSectionRowProps>;
