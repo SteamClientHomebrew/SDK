@@ -279,7 +279,6 @@ class RouterHook extends Logger {
 	private desktopRouterWrapper({ children }: { children: ReactElement }) {
 		// Used to store the new replicated routes we create to allow routes to be unpatched.
 		const { routes, routePatches } = useMillenniumRouterState();
-		console.log('desktopRouterWrapper', children, routes, routePatches);
 
 		const mainRouteList = findInReactTree(children, (node) => node?.length > 2 && node?.find((elem: any) => elem?.props?.path == '/console'));
 		if (!mainRouteList) {
@@ -288,14 +287,13 @@ class RouterHook extends Logger {
 		}
 		this.processList(mainRouteList, routes, routePatches.get(EUIMode.Desktop), true, this.DesktopRoute);
 		const libraryRouteWrapper = mainRouteList.find((r: any) => r?.props && 'cm' in r.props && 'bShowDesktopUIContent' in r.props);
-		console.log('libraryRouteWrapper', libraryRouteWrapper, mainRouteList);
 
 		if (!this.wrappedDesktopLibraryMemo) {
 			wrapReactType(libraryRouteWrapper);
 			afterPatch(libraryRouteWrapper.type, 'type', (_, ret) => {
 				const { routePatches } = useMillenniumRouterState();
 				const libraryRouteList = findInReactTree(ret, (node) => node?.length > 1 && node?.find((elem: any) => elem?.props?.path == '/library/downloads'));
-				console.log('libraryRouteList', libraryRouteList, ret);
+
 				if (!libraryRouteList) {
 					this.warn('failed to find library route list', ret);
 					return ret;
