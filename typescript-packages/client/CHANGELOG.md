@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.3.6 (2025-06-12)
+
+**Note:** Version bump only for package @steambrew/client
+
+
+
+
+
 ## 5.3.5 (2025-06-11)
 
 **Note:** Version bump only for package @steambrew/client
