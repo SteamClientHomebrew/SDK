@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.3.7 (2025-06-16)
+
+
+### Bug Fixes
+
+* Fix `<Menu />` on new Steam beta ([5da35a5](https://github.com/SteamClientHomebrew/SDK/commit/5da35a5a70163cde11638fcc80630959209477d9))
+
+
+
+
+
 ## 5.3.6 (2025-06-12)
 
 **Note:** Version bump only for package @steambrew/api
