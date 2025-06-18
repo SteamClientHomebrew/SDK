@@ -18,6 +18,7 @@ class Bootstrap {
 	logger: import('@steambrew/client/build/logger').default;
 	startTime: number;
 	ctx: Context;
+	millenniumAuthToken: string | undefined = undefined;
 
 	async init() {
 		const loggerModule = await import('@steambrew/client/build/logger');
@@ -62,8 +63,14 @@ class Bootstrap {
 		}
 
 		this.logger.log('Injecting Millennium frontend library...');
-		Object.assign((window.MILLENNIUM_API ??= {}), await import('@steambrew/client'), await import('./millennium-api'));
 
+		const steambrewClientModule = await import('@steambrew/client');
+		const millenniumApiModule = await import('./millennium-api');
+
+		/** Set Auth Token */
+		millenniumApiModule.setMillenniumAuthToken(this.millenniumAuthToken);
+
+		Object.assign((window.MILLENNIUM_API ??= {}), steambrewClientModule, millenniumApiModule);
 		this.logger.log('Millennium API injected successfully.', window.MILLENNIUM_API);
 	}
 
@@ -81,8 +88,10 @@ class Bootstrap {
 		});
 	}
 
-	async StartPreloader(port: number, shimList?: string[]) {
+	async StartPreloader(port: number, millenniumAuthToken: string, shimList?: string[]) {
 		await this.init();
+
+		this.millenniumAuthToken = millenniumAuthToken;
 
 		/** Setup IPC */
 		window.MILLENNIUM_IPC_PORT = port;
@@ -101,7 +110,10 @@ class Bootstrap {
 			}
 			case Context.Browser: {
 				this.logger.log('Running in browser context...');
-				window.MILLENNIUM_API = await import('./millennium-api');
+				const millenniumApiModule = await import('./millennium-api');
+				millenniumApiModule.setMillenniumAuthToken(this.millenniumAuthToken);
+
+				window.MILLENNIUM_API = millenniumApiModule;
 
 				const browserUtils = await import('./browser-init');
 				await browserUtils.appendAccentColor();
