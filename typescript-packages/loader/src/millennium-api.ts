@@ -21,32 +21,22 @@ export function setMillenniumAuthToken(token: string) {
 }
 
 const backendIPC = {
-	postMessage: (messageId: number, contents: any): Promise<any> =>
-		new Promise((resolve) => {
-			const iteration = window.CURRENT_IPC_CALL_COUNT++;
-			const message = { id: messageId, iteration, data: contents, millenniumAuthToken };
+	postMessage: async (messageId: number, contents: any): Promise<any> => {
+		if (!millenniumAuthToken) {
+			console.warn('No Millennium auth token set. This will cause issues with IPC calls.');
+		}
 
-			if (!millenniumAuthToken) {
-				console.warn('No Millennium auth token set. This will cause issues with IPC calls.');
-			}
+		const response = await fetch('https://millennium.ipc', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'text/plain',
+				'X-Millennium-Auth': millenniumAuthToken,
+			},
+			body: JSON.stringify({ id: messageId, data: contents }),
+		});
 
-			const handler = (event: MessageEvent) => {
-				try {
-					const json = JSON.parse(event.data);
-					if (json.id !== iteration) {
-						return;
-					}
-
-					window.MILLENNIUM_IPC_SOCKET.removeEventListener('message', handler);
-					resolve(json);
-				} catch {
-					console.error('Invalid JSON from IPC:', event.data, contents);
-				}
-			};
-
-			window.MILLENNIUM_IPC_SOCKET.addEventListener('message', handler);
-			window.MILLENNIUM_IPC_SOCKET.send(JSON.stringify(message));
-		}),
+		return await response.json();
+	},
 };
 
 window.MILLENNIUM_BACKEND_IPC = backendIPC;
@@ -55,9 +45,15 @@ export const Millennium = {
 	callServerMethod: (pluginName: string, methodName: string, kwargs?: any) => {
 		const query = { pluginName, methodName, ...(kwargs && { argumentList: kwargs }) };
 
-		return backendIPC.postMessage(0, query).then((res: any) => {
-			return typeof res.returnValue === 'string' ? atob(res.returnValue) : res.returnValue;
-		});
+		return backendIPC
+			.postMessage(0, query)
+			.then((res: any) => {
+				return typeof res.returnValue === 'string' ? atob(res.returnValue) : res.returnValue;
+			})
+			.catch((err: any) => {
+				console.error(`Error calling server method ${pluginName}.${methodName}:`, err);
+				throw err;
+			});
 	},
 
 	findElement: (doc: Document, selector: string, timeout?: number): Promise<NodeListOf<Element>> =>

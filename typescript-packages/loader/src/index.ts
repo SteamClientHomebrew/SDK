@@ -28,28 +28,6 @@ class Bootstrap {
 		this.startTime = performance.now();
 	}
 
-	connectMillenniumBackend(port: number): Promise<WebSocket> {
-		return new Promise((resolve) => {
-			try {
-				let socket = new WebSocket('ws://127.0.0.1:' + port);
-
-				socket.addEventListener('open', () => {
-					const endTime = performance.now(); // End timing
-					const connectionTime = endTime - this.startTime;
-					this.logger.log(`Successfully connected to IPC server in ${connectionTime.toFixed(2)} ms.`);
-					resolve(socket);
-				});
-
-				socket.addEventListener('error', () => {
-					console.error('Failed to connect to IPC server at port', port);
-					window.location.reload(); // Reload the page if the connection fails
-				});
-			} catch (error) {
-				console.warn('Failed to connect to IPC server:', error);
-			}
-		});
-	}
-
 	async injectLegacyReactGlobals() {
 		this.logger.log('Injecting Millennium API...');
 
@@ -88,15 +66,9 @@ class Bootstrap {
 		});
 	}
 
-	async StartPreloader(port: number, millenniumAuthToken: string, shimList?: string[]) {
+	async StartPreloader(millenniumAuthToken: string, shimList?: string[]) {
 		await this.init();
-
 		this.millenniumAuthToken = millenniumAuthToken;
-
-		/** Setup IPC */
-		window.MILLENNIUM_IPC_PORT = port;
-		window.MILLENNIUM_IPC_SOCKET = await this.connectMillenniumBackend(port);
-		window.CURRENT_IPC_CALL_COUNT = 0;
 
 		window.MILLENNIUM_FRONTEND_LIB_VERSION = process.env.MILLENNIUM_FRONTEND_LIB_VERSION || 'unknown';
 		window.MILLENNIUM_BROWSER_LIB_VERSION = process.env.MILLENNIUM_FRONTEND_LIB_VERSION || 'unknown';
