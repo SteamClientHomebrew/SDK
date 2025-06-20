@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 5.4.0 (2025-06-18)
+
+
+### Features
+
+* use auth token for IPC calls. ([b068cd0](https://github.com/SteamClientHomebrew/SDK/commit/b068cd020770528b535955834e30150151bf39f2))
+
+
+
+
+
 ## 5.3.7 (2025-06-16)
 
 
