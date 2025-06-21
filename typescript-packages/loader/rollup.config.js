@@ -18,7 +18,7 @@ export default {
 	output: {
 		dir: 'build',
 		format: 'esm',
-		entryFileNames: `millennium-pre.c${clientVersion}.b${browserVersion}.js`,
+		entryFileNames: `millennium.js`,
 		chunkFileNames: 'chunks/[hash].js',
 		sourcemap: true,
 	},
