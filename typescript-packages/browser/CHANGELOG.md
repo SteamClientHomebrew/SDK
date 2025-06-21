@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.4.2 (2025-06-21)
+
+
+### Bug Fixes
+
+* millennium asset name causing issues ([8f12b80](https://github.com/SteamClientHomebrew/PluginComponents/commit/8f12b809dc23b4d1dd28b8b5a75172b4df86aa19))
+
+
+
+
+
 ## 5.4.1 (2025-06-20)
 
 **Note:** Version bump only for package @steambrew/webkit
