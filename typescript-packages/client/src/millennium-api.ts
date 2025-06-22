@@ -1,5 +1,5 @@
 /** Returnable IPC types */
-type IPC_types = string | number | boolean;
+type IPCTypes = string | number | boolean | void;
 
 /*
  Global Millennium API for developers. 
@@ -40,7 +40,11 @@ type Millennium = {
  *    pass
  * ```
  */
-declare const callable: <Args extends any[] = [], T = IPC_types>(route: string) => (...args: Args) => Promise<T>;
+declare const callable: <
+	// Ideally this would be `Params extends Record<...>` but for backwards compatibility we keep a tuple type
+	Params extends [params: Record<string, IPCTypes>] | [] = [],
+	Return extends IPCTypes = IPCTypes
+>(route: string) => (params: Params[0]) => Promise<Return>;
 
 const m_private_context: any = undefined;
 export const pluginSelf = m_private_context;
