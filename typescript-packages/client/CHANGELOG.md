@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.4.3 (2025-06-27)
+
+
+### Bug Fixes
+
+* properly export steam globals ([a64013f](https://github.com/SteamClientHomebrew/PluginComponents/commit/a64013f0b402dad59554326bf043690fde41442d))
+
+
+
+
+
 ## 5.4.2 (2025-06-21)
 
 
