@@ -3,7 +3,6 @@
 	"version": "1.0.0",
 	"private": true,
 	"scripts": {
-		"prepare": "husky",
 		"test": "lerna run test",
 		"build": "lerna run build",
 		"docs": "typedoc"

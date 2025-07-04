@@ -9,8 +9,7 @@
 	"license": "LGPL-2.1-only",
 	"scripts": {
 		"build": "shx rm -rf ./build && tsc -b",
-		"prepare": "npm run build",
-		"dev-link": "npm run build && npm link"
+		"prepare": "pnpm run build"
 	},
 	"files": [
 		"/lib",
