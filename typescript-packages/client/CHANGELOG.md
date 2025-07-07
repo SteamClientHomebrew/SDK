@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.4.5 (2025-07-07)
+
+
+### Bug Fixes
+
+* **build:** use ESM window type for setTimeout instead of implicit global usage. ([4c30c89](https://github.com/SteamClientHomebrew/PluginComponents/commit/4c30c89e0964c5737b32c34b985863578c158af1))
+
+
+
+
+
 ## 5.4.4 (2025-07-04)
 
 **Note:** Version bump only for package @steambrew/client
