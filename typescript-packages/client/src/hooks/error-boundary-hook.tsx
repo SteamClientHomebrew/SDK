@@ -98,7 +98,7 @@ class ErrorBoundaryHook extends Logger {
 		if (this.disableReportingTimer) {
 			clearTimeout(this.disableReportingTimer);
 		}
-		this.disableReportingTimer = setTimeout(() => {
+		this.disableReportingTimer = window.setTimeout(() => {
 			this.debug('Reporting re-enabled after 30s timeout.');
 			this.disableReportingTimer = 0;
 		}, 30000);
