@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.4.6 (2025-07-08)
+
+
+### Bug Fixes
+
+* Fix ConfirmModal be undefined on Steam Beta. ([102ad4f](https://github.com/SteamClientHomebrew/PluginComponents/commit/102ad4fb8859c73ef4ad342aea46116233fe3873))
+
+
+
+
+
 ## 5.4.5 (2025-07-07)
 
 
