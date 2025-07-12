@@ -1,8 +1,10 @@
+import ProtocolMapping from 'devtools-protocol/types/protocol-mapping';
+
 /** Returnable IPC types */
 type IPC_types = string | number | boolean;
 
 /*
- Global Millennium API for developers. 
+ Global Millennium API for developers.
 */
 type Millennium = {
 	/**
@@ -130,7 +132,7 @@ class MillenniumChromeDevToolsProtocol {
 		}
 	}
 
-	send(method: string, params: any = {}, sessionId?: string) {
+	send<T extends keyof ProtocolMapping.Commands>(method: T, params: ProtocolMapping.Commands[T]['paramsType'][0] = {}, sessionId?: string): Promise<ProtocolMapping.Commands[T]['returnType']> {
 		return new Promise((resolve, reject) => {
 			const id = this.currentId++;
 
@@ -165,7 +167,7 @@ class MillenniumChromeDevToolsProtocol {
 	}
 
 	// Helper method to send without waiting for response (fire and forget)
-	sendNoResponse(method: string, params = {}) {
+	sendNoResponse<T extends keyof ProtocolMapping.Commands>(method: T, params: ProtocolMapping.Commands[T]['paramsType'][0] = {}) {
 		const message: CDPMessage = {
 			id: this.currentId++,
 			method: method,
@@ -181,4 +183,5 @@ class MillenniumChromeDevToolsProtocol {
 
 const ChromeDevToolsProtocol: MillenniumChromeDevToolsProtocol = new MillenniumChromeDevToolsProtocol();
 const Millennium: Millennium = window.Millennium;
-export { ChromeDevToolsProtocol, Millennium, callable, BindPluginSettings, constSysfsExpr };
+export { BindPluginSettings, callable, ChromeDevToolsProtocol, constSysfsExpr, Millennium };
+
