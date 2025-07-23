@@ -1,3 +1,5 @@
+import { constSysfsExpr } from "./shared/constSysfsExpr";
+
 declare global {
 	interface Window {
 		Millennium: Millennium;
@@ -7,7 +9,7 @@ declare global {
 /** Returnable IPC types */
 type IPC_types = string | number | boolean | void;
 /*
- Global Millennium API for developers. 
+ Global Millennium API for developers.
 */
 type Millennium = {
 	/**
@@ -40,4 +42,5 @@ declare global {
 declare const BindPluginSettings: () => any;
 
 const Millennium: Millennium = window.Millennium;
-export { Millennium, callable, BindPluginSettings };
+export { BindPluginSettings, callable, constSysfsExpr, Millennium };
+
