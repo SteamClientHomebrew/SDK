@@ -66,7 +66,7 @@ class Bootstrap {
 		});
 	}
 
-	async StartPreloader(millenniumAuthToken: string, shimList?: string[]) {
+	async StartPreloader(millenniumAuthToken: string, shimList?: string[], enabledPlugins?: string[]) {
 		await this.init();
 		this.millenniumAuthToken = millenniumAuthToken;
 
@@ -89,6 +89,7 @@ class Bootstrap {
 
 				const browserUtils = await import('./browser-init');
 				await browserUtils.appendAccentColor();
+				await browserUtils.addPluginDOMBreadCrumbs(enabledPlugins);
 				break;
 			}
 			default: {
