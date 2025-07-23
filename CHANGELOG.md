@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 5.5.0 (2025-07-23)
+
+
+### Features
+
+* add enabled plugin breadcrumbs into browser DOM ([3195ca6](https://github.com/SteamClientHomebrew/SDK/commit/3195ca6977b113ba97826ac1c71a06aa99d57f7d))
+
+
+
+
+
 ## 5.4.6 (2025-07-08)
 
 
