@@ -3,7 +3,7 @@
 	"license": "LGPL-2.1-only",
 	"scripts": {
 		"build": "rollup -c",
-		"prepare": "npm run build"
+		"prepare": "pnpm run build"
 	},
 	"devDependencies": {
 		"@types/jest": "^29.5.12",
@@ -30,5 +30,5 @@
 		"/build"
 	],
 	"name": "@steambrew/api",
-	"version": "5.4.0"
+	"version": "5.5.0"
 }

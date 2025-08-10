@@ -131,7 +131,7 @@ class Toaster extends Logger {
 			},
 		};
 		if (toast.expiration) {
-			expirationTimeout = setTimeout(() => {
+			expirationTimeout = window.setTimeout(() => {
 				self.debug('Dismissing expired toast', toast);
 				try {
 					group && window.NotificationStore.RemoveGroupFromTray(group);

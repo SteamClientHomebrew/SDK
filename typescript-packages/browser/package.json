@@ -1,6 +1,6 @@
 {
 	"name": "@steambrew/webkit",
-	"version": "5.4.0",
+	"version": "5.5.0",
 	"description": "A support library for creating plugins with Millennium.",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
@@ -9,8 +9,7 @@
 	"license": "LGPL-2.1-only",
 	"scripts": {
 		"build": "shx rm -rf ./build && tsc -b",
-		"prepare": "npm run build",
-		"dev-link": "npm run build && npm link"
+		"prepare": "pnpm run build"
 	},
 	"files": [
 		"/lib",

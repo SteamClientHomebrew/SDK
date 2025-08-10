@@ -3,6 +3,77 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 5.5.0 (2025-07-23)
+
+
+### Features
+
+* add enabled plugin breadcrumbs into browser DOM ([3195ca6](https://github.com/SteamClientHomebrew/SDK/commit/3195ca6977b113ba97826ac1c71a06aa99d57f7d))
+
+
+
+
+
+## 5.4.6 (2025-07-08)
+
+
+### Bug Fixes
+
+* Fix ConfirmModal be undefined on Steam Beta. ([102ad4f](https://github.com/SteamClientHomebrew/SDK/commit/102ad4fb8859c73ef4ad342aea46116233fe3873))
+
+
+
+
+
+## 5.4.5 (2025-07-07)
+
+
+### Bug Fixes
+
+* **build:** use ESM window type for setTimeout instead of implicit global usage. ([4c30c89](https://github.com/SteamClientHomebrew/SDK/commit/4c30c89e0964c5737b32c34b985863578c158af1))
+
+
+
+
+
+## 5.4.4 (2025-07-04)
+
+**Note:** Version bump only for package @steambrew/api
+
+
+
+
+
+## 5.4.3 (2025-06-27)
+
+
+### Bug Fixes
+
+* properly export steam globals ([a64013f](https://github.com/SteamClientHomebrew/SDK/commit/a64013f0b402dad59554326bf043690fde41442d))
+
+
+
+
+
+## 5.4.2 (2025-06-21)
+
+
+### Bug Fixes
+
+* millennium asset name causing issues ([8f12b80](https://github.com/SteamClientHomebrew/SDK/commit/8f12b809dc23b4d1dd28b8b5a75172b4df86aa19))
+
+
+
+
+
+## 5.4.1 (2025-06-20)
+
+**Note:** Version bump only for package @steambrew/api
+
+
+
+
+
 # 5.4.0 (2025-06-18)
 
 

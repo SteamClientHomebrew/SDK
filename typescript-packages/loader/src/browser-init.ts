@@ -21,6 +21,10 @@ export async function appendAccentColor() {
 	addStyleSheetFromText(document, `:root {\n${entries}\n}`, 'SystemAccentColorInject');
 }
 
+export async function addPluginDOMBreadCrumbs(enabledPlugins: string[] = []) {
+	document.documentElement.setAttribute('data-millennium-plugin', enabledPlugins.join(' '));
+}
+
 function formatCssVarKey(key: string) {
 	// Capitalize first letter and convert "Rgb" to "-RGB"
 	return key.replace(/Rgb$/, '-RGB').replace(/^./, (c) => c.toUpperCase());

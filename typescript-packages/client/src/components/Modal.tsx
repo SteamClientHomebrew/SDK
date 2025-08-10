@@ -80,7 +80,9 @@ export interface ConfirmModalProps extends ModalRootProps {
 	bMiddleDisabled?: boolean;
 }
 /** @component React Components */
-export const ConfirmModal = findModuleExport((e: Export) => !e?.prototype?.OK && e?.prototype?.Cancel && e?.prototype?.render) as FC<ConfirmModalProps>;
+export const ConfirmModal = findModuleExport(
+	(e: Export) => e?.toString()?.includes('bUpdateDisabled') && e?.toString()?.includes('closeModal') && e?.toString()?.includes('onGamepadCancel'),
+) as FC<ConfirmModalProps>;
 
 /** @component React Components */
 export const ModalRoot = Object.values(
