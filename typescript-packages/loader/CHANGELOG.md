@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.5.2 (2025-08-24)
+
+
+### Bug Fixes
+
+* **DialogHeader:** valve rewrote component on beta, update filter to search for both versions ([3d930e9](https://github.com/SteamClientHomebrew/SDK/commit/3d930e99e0a85753b8de1f2358b45cc32d624d63))
+
+
+
+
+
 ## 5.5.1 (2025-08-16)
 
 **Note:** Version bump only for package @steambrew/api
