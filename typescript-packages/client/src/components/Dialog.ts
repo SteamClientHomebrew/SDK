@@ -1,6 +1,6 @@
 import { CSSProperties, FC, ReactNode, RefAttributes } from 'react';
 
-import { CommonUIModule } from '../webpack';
+import { CommonUIModule, Module } from '../webpack';
 import { FooterLegendProps } from './FooterLegend';
 
 export interface DialogCommonProps extends RefAttributes<HTMLDivElement> {
@@ -66,7 +66,12 @@ const MappedDialogDivs = new Map(
 );
 
 /** @component React Components */
-export const DialogHeader = MappedDialogDivs.get('DialogHeader') as FC<DialogCommonProps>;
+export const DialogHeader = (MappedDialogDivs.get('DialogHeader') ||
+	Object.values(CommonUIModule).find((component: Module) => {
+		const str = component?.render?.toString?.();
+
+		return str?.includes('role:"heading"') && str.includes(')("DialogHeader",');
+	})) as FC<DialogCommonProps>;
 /** @component React Components */
 export const DialogSubHeader = MappedDialogDivs.get('DialogSubHeader') as FC<DialogCommonProps>;
 /** @component React Components */
