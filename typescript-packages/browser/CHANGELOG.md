@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.5.3 (2025-08-27)
+
+
+### Bug Fixes
+
+* **modals:** fix ModalRoot on beta ([bec51cd](https://github.com/SteamClientHomebrew/PluginComponents/commit/bec51cd836f7fb54c222ccd4c803ff56670e781e))
+
+
+
+
+
 ## 5.5.2 (2025-08-24)
 
 
