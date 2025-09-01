@@ -1,6 +1,6 @@
 {
 	"name": "@steambrew/client",
-	"version": "5.5.0",
+	"version": "5.5.3",
 	"description": "A support library for creating plugins with Millennium.",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
@@ -37,6 +37,7 @@
 		"@rollup/plugin-terser": "^0.4.4",
 		"@rollup/plugin-typescript": "^11.1.6",
 		"chalk": "^4.1.0",
+		"devtools-protocol": "^0.0.1485358",
 		"fs": "0.0.1-security",
 		"path": "^0.12.7",
 		"rollup": "^4.17.2",

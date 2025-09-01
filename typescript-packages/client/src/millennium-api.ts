@@ -1,8 +1,10 @@
+import ProtocolMapping from 'devtools-protocol/types/protocol-mapping';
+
 /** Returnable IPC types */
 type IPCType = string | number | boolean | void;
 
 /*
- Global Millennium API for developers. 
+ Global Millennium API for developers.
 */
 type Millennium = {
 	/**
@@ -59,34 +61,6 @@ declare global {
 
 declare const BindPluginSettings: () => any;
 
-interface FileInfo {
-	content: string;
-	filePath: string;
-	fileName: string;
-}
-
-type BufferEncoding = 'ascii' | 'utf8' | 'utf-8' | 'utf16le' | 'ucs2' | 'ucs-2' | 'base64' | 'latin1' | 'binary' | 'hex';
-
-interface SingleFileExprProps {
-	basePath?: string;
-	encoding?: BufferEncoding;
-}
-
-interface MultiFileExprProps {
-	basePath?: string;
-	include?: string; // A regex pattern to include files
-	encoding?: BufferEncoding;
-}
-
-/**
- * Create a compile time filesystem expression.
- * This function will evaluate a file path at compile time, and embed a files content statically into the bundle.
- */
-declare const constSysfsExpr: {
-	(fileName: string, props: SingleFileExprProps): FileInfo;
-	(props: MultiFileExprProps): FileInfo[];
-};
-
 interface CDPMessage {
 	id?: number;
 	method: string;
@@ -134,7 +108,7 @@ class MillenniumChromeDevToolsProtocol {
 		}
 	}
 
-	send(method: string, params: any = {}, sessionId?: string) {
+	send<T extends keyof ProtocolMapping.Commands>(method: T, params: ProtocolMapping.Commands[T]['paramsType'][0] = {}, sessionId?: string): Promise<ProtocolMapping.Commands[T]['returnType']> {
 		return new Promise((resolve, reject) => {
 			const id = this.currentId++;
 
@@ -169,7 +143,7 @@ class MillenniumChromeDevToolsProtocol {
 	}
 
 	// Helper method to send without waiting for response (fire and forget)
-	sendNoResponse(method: string, params = {}) {
+	sendNoResponse<T extends keyof ProtocolMapping.Commands>(method: T, params: ProtocolMapping.Commands[T]['paramsType'][0] = {}) {
 		const message: CDPMessage = {
 			id: this.currentId++,
 			method: method,
@@ -185,4 +159,5 @@ class MillenniumChromeDevToolsProtocol {
 
 const ChromeDevToolsProtocol: MillenniumChromeDevToolsProtocol = new MillenniumChromeDevToolsProtocol();
 const Millennium: Millennium = window.Millennium;
-export { ChromeDevToolsProtocol, Millennium, callable, BindPluginSettings, constSysfsExpr };
+export { BindPluginSettings, callable, ChromeDevToolsProtocol, Millennium };
+

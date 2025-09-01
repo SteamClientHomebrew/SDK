@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.5.3 (2025-08-27)
+
+
+### Bug Fixes
+
+* **modals:** fix ModalRoot on beta ([bec51cd](https://github.com/SteamClientHomebrew/PluginComponents/commit/bec51cd836f7fb54c222ccd4c803ff56670e781e))
+
+
+
+
+
+## 5.5.2 (2025-08-24)
+
+
+### Bug Fixes
+
+* **DialogHeader:** valve rewrote component on beta, update filter to search for both versions ([3d930e9](https://github.com/SteamClientHomebrew/PluginComponents/commit/3d930e99e0a85753b8de1f2358b45cc32d624d63))
+
+
+
+
+
+## 5.5.1 (2025-08-16)
+
+**Note:** Version bump only for package @steambrew/webkit
+
+
+
+
+
 # 5.5.0 (2025-07-23)
 
 
