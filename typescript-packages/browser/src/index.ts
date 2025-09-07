@@ -1,4 +1,4 @@
-import { constSysfsExpr } from "./shared/constSysfsExpr";
+import { constSysfsExpr } from './constSysfsExpr';
 
 declare global {
 	interface Window {
@@ -43,4 +43,3 @@ declare const BindPluginSettings: () => any;
 
 const Millennium: Millennium = window.Millennium;
 export { BindPluginSettings, callable, constSysfsExpr, Millennium };
-
