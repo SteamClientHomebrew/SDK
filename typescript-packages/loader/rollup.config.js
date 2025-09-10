@@ -19,7 +19,7 @@ export default {
 		dir: 'build',
 		format: 'esm',
 		entryFileNames: `millennium.js`,
-		chunkFileNames: 'chunks/[hash].js',
+		chunkFileNames: 'chunks/chunk-[name].js',
 		sourcemap: true,
 	},
 	preserveEntrySignatures: true,
