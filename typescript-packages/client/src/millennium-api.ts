@@ -1,7 +1,7 @@
 import ProtocolMapping from 'devtools-protocol/types/protocol-mapping';
 
 /** Returnable IPC types */
-type IPC_types = string | number | boolean;
+type IPCType = string | number | boolean | void;
 
 /*
  Global Millennium API for developers.
@@ -42,7 +42,11 @@ type Millennium = {
  *    pass
  * ```
  */
-declare const callable: <Args extends any[] = [], T = IPC_types>(route: string) => (...args: Args) => Promise<T>;
+declare const callable: <
+	// Ideally this would be `Params extends Record<...>` but for backwards compatibility we keep a tuple type
+	Params extends [params: Record<string, IPCType>] | [] = [],
+	Return extends IPCType = IPCType
+>(route: string) => (...params: Params) => Promise<Return>;
 
 const m_private_context: any = undefined;
 export const pluginSelf = m_private_context;
