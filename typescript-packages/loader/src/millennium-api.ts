@@ -48,7 +48,7 @@ export const Millennium = {
 		return backendIPC
 			.postMessage(0, query)
 			.then((res: any) => {
-				return typeof res.returnValue === 'string' ? atob(res.returnValue) : res.returnValue;
+				return typeof res.returnValue === 'string' ? decodeURIComponent(escape(atob(res.returnValue))) : res.returnValue;
 			})
 			.catch((err: any) => {
 				console.error(`Error calling server method ${pluginName}.${methodName}:`, err);
