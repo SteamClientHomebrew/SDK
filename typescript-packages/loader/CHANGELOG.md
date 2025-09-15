@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.5.10 (2025-09-15)
+
+
+### Bug Fixes
+
+* Only use npmrc when publishing. ([fa0741c](https://github.com/SteamClientHomebrew/SDK/commit/fa0741c1357bf17d7eaf96de776df56fdea7dcad))
+
+
+
+
+
 ## 5.5.9 (2025-09-15)
 
 **Note:** Version bump only for package @steambrew/api
