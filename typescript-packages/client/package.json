@@ -8,8 +8,7 @@
 	"type": "module",
 	"license": "LGPL-2.1-only",
 	"scripts": {
-		"build": "shx rm -rf ./build && tsc -b",
-		"prepare": "pnpm run build"
+		"build": "shx rm -rf ./build && tsc -b"
 	},
 	"files": [
 		"/lib",

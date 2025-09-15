@@ -2,8 +2,7 @@
 	"type": "module",
 	"license": "LGPL-2.1-only",
 	"scripts": {
-		"build": "rollup -c",
-		"prepare": "pnpm run build"
+		"build": "rollup -c"
 	},
 	"devDependencies": {
 		"@types/jest": "^29.5.12",
