@@ -49,6 +49,7 @@ jobs:
             - name: Publish to npm
               if: steps.version.outputs.published == 'true'
               run: |
+                  cp .npmrc.publish .npmrc
                   npx lerna publish from-package --yes
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
