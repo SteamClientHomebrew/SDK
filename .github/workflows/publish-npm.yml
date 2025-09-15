@@ -36,6 +36,7 @@ jobs:
               id: version
               run: |
                   git tag > before_tags.txt
+                  npx lerna run build
                   npx lerna version --conventional-commits --yes --no-push
                   git tag > after_tags.txt
 
