@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.5.6 (2025-09-14)
+
+
+### Bug Fixes
+
+* Fix improper base 64 decode of Unicode characters ([7b23234](https://github.com/SteamClientHomebrew/SDK/commit/7b232344dd7029ca848a0314a7ad7049dfb259cb))
+
+
+
+
+
 ## 5.5.5 (2025-09-10)
 
 **Note:** Version bump only for package @steambrew/api
