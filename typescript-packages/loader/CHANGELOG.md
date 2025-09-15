@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.5.11 (2025-09-15)
+
+
+### Bug Fixes
+
+* failing build ([3923795](https://github.com/SteamClientHomebrew/SDK/commit/39237958290dbcfa05b6fe1e2bb5eae938a95ac4))
+
+
+
+
+
 ## 5.5.10 (2025-09-15)
 
 
