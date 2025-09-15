@@ -128,7 +128,7 @@ function processPatch<
 		patchedFunction,
 		original,
 		hasUnpatched: false,
-		unpatch: () => unpatch(patch as any),
+		unpatch: () => unpatch(patch),
 	};
 
 	object[property].__millenniumPatch = patch;
@@ -136,7 +136,9 @@ function processPatch<
 	return patch;
 }
 
-function unpatch(patch: Patch): void {
+function unpatch<
+	Object extends Record<PropertyKey, any>,
+>(patch: Patch<Object>): void {
 	const { object, property, handler, patchedFunction, original } = patch;
 	if (patch.hasUnpatched) throw new Error('Function is already unpatched.');
 	let realProp = property;
