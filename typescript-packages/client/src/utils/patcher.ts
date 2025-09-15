@@ -128,7 +128,7 @@ function processPatch<
 		patchedFunction,
 		original,
 		hasUnpatched: false,
-		unpatch: () => unpatch(patch),
+		unpatch: (): void => unpatch(patch),
 	};
 
 	object[property].__millenniumPatch = patch;
