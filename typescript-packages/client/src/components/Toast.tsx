@@ -1,9 +1,9 @@
 import { FC, memo, ReactNode } from 'react';
-import Logger from '../logger';
-import { joinClassNames } from '../utils';
 import { findClassModule } from '../class-mapper';
-import { Focusable } from './Focusable';
+import Logger from '../logger';
 import { Navigation } from '../modules/Router';
+import { joinClassNames } from '../utils';
+import { Focusable } from './Focusable';
 
 const logger = new Logger('ToastRenderer');
 
@@ -105,7 +105,7 @@ const GamepadUIQAMToast: FC<ToastProps> = memo(({ toast, newIndicator }) => {
 	);
 });
 
-/** @hide This is not meant for external use */
+/** @hide @internal This is not meant for external use */
 export const ToastRenderer: FC<ToastRendererProps> = memo(({ toast, location, newIndicator }) => {
 	switch (location) {
 		default:
