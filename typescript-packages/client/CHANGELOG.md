@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.5.14 (2025-09-20)
+
+
+### Reverts
+
+* chore: remove unused dependencies ([3baaeca](https://github.com/SteamClientHomebrew/PluginComponents/commit/3baaeca3f546d6b59bf6a32c1c2705186ea13bcf))
+
+
+
+
+
 ## 5.5.13 (2025-09-20)
 
 **Note:** Version bump only for package @steambrew/client
