@@ -1,15 +1,11 @@
-import { CSSProperties, FC, ReactNode, RefAttributes } from 'react';
+import { ButtonHTMLAttributes, FC, HTMLAttributes } from 'react';
 
 import { CommonUIModule, Module } from '../webpack';
 import { FooterLegendProps } from './FooterLegend';
 
-export interface DialogCommonProps extends RefAttributes<HTMLDivElement> {
-	style?: CSSProperties;
-	className?: string;
-	children?: ReactNode;
-}
+export type DialogCommonProps = HTMLAttributes<HTMLDivElement>
 
-export interface DialogButtonProps extends DialogCommonProps, FooterLegendProps {
+export interface DialogButtonProps extends FooterLegendProps, ButtonHTMLAttributes<HTMLButtonElement> {
 	/**
 	 * Enables/disables the focus around the button.
 	 *
@@ -35,17 +31,6 @@ export interface DialogButtonProps extends DialogCommonProps, FooterLegendProps 
 	 * Depending on the context of where the button is, even a disabled button can focused.
 	 */
 	focusable?: boolean;
-
-	onClick?(e: MouseEvent): void;
-	onPointerDown?(e: PointerEvent): void;
-	onPointerUp?(e: PointerEvent): void;
-	onPointerCancel?(e: PointerEvent): void;
-	onMouseDown?(e: MouseEvent): void;
-	onMouseUp?(e: MouseEvent): void;
-	onTouchStart?(e: TouchEvent): void;
-	onTouchEnd?(e: TouchEvent): void;
-	onTouchCancel?(e: TouchEvent): void;
-	onSubmit?(e: SubmitEvent): void;
 }
 
 const CommonDialogDivs = Object.values(CommonUIModule).filter(

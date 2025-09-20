@@ -4,7 +4,7 @@ import { findModule } from '../webpack';
 import { DialogCommonProps } from './Dialog';
 import { FooterLegendProps } from './FooterLegend';
 
-export interface DialogCheckboxProps extends DialogCommonProps, FooterLegendProps {
+export interface DialogCheckboxProps extends Omit<DialogCommonProps, 'onChange'>, FooterLegendProps {
 	onChange?(checked: boolean): void;
 	label?: ReactNode;
 	description?: ReactNode;
@@ -15,7 +15,6 @@ export interface DialogCheckboxProps extends DialogCommonProps, FooterLegendProp
 	bottomSeparator?: 'standard' | 'thick' | 'none';
 	controlled?: boolean;
 	checked?: boolean;
-	onClick?(evt: Event): void;
 }
 
 /** @component React Components */
