@@ -9,7 +9,7 @@ function addStyleSheetFromText(document: Document, innerStyle: string, id?: stri
 type SystemColors = Record<string, string>;
 
 export async function appendAccentColor() {
-	const systemColors: SystemColors = JSON.parse(await Millennium.callServerMethod('core', 'Core_GetSystemColors'));
+	const systemColors: SystemColors = JSON.parse(await Millennium.callServerMethod('core', 'GetSystemColors'));
 
 	const entries = Object.entries(systemColors)
 		.map(([key, value]) => {
