@@ -89,6 +89,8 @@ class Bootstrap {
 
 				const browserUtils = await import('./browser-init');
 				await browserUtils.appendAccentColor();
+				await browserUtils.appendQuickCss();
+
 				await browserUtils.addPluginDOMBreadCrumbs(enabledPlugins);
 				break;
 			}

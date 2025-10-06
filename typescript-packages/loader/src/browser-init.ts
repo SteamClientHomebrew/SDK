@@ -21,8 +21,14 @@ export async function appendAccentColor() {
 	addStyleSheetFromText(document, `:root {\n${entries}\n}`, 'SystemAccentColorInject');
 }
 
+export async function appendQuickCss() {
+	const quickCss: string = JSON.parse(await Millennium.callServerMethod('core', 'Core_LoadQuickCss'));
+	addStyleSheetFromText(document, quickCss, 'MillenniumQuickCss');
+}
+
 export async function addPluginDOMBreadCrumbs(enabledPlugins: string[] = []) {
 	document.documentElement.setAttribute('data-millennium-plugin', enabledPlugins.join(' '));
+	document.documentElement.classList.add('MillenniumWindow_SteamBrowser');
 }
 
 function formatCssVarKey(key: string) {
