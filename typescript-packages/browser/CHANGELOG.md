@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 5.6.0 (2025-10-06)
+
+
+### Features
+
+* Add Quick CSS tab to Millennium Settings ([dcb84d3](https://github.com/SteamClientHomebrew/PluginComponents/commit/dcb84d3d8991d7477c50b68c46db0da07cf5bd50))
+
+
+
+
+
 ## 5.5.14 (2025-09-20)
 
 
