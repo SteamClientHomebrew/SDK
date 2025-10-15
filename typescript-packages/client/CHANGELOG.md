@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 5.7.0 (2025-10-15)
+
+
+### Features
+
+* React 19 support ([c47c98f](https://github.com/SteamClientHomebrew/PluginComponents/commit/c47c98f2bef179ca906a5ca0fc17d10c05184860))
+
+
+
+
+
 # 5.6.0 (2025-10-06)
 
 
