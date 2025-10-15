@@ -42,9 +42,8 @@ function getReactInternals(): any {
 		/** react >18 */
 		react?.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
 
-	if (!internals) {
-		console.error('[getReactInternals] Could not find React internals');
-		return null;
+	if (internals?.ReactCurrentDispatcher?.current) {
+		return internals.ReactCurrentDispatcher.current;
 	}
 
 	return Object.values(internals).find((module: any) => module?.useEffect && module?.useContext && module?.useRef && module?.useState);
