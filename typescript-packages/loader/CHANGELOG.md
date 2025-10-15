@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.7.1 (2025-10-15)
+
+
+### Bug Fixes
+
+* Add backwards compatibility to Focusable ([ba76be8](https://github.com/SteamClientHomebrew/SDK/commit/ba76be8725b992b208866b2ab80fd56ca01029a2))
+
+
+
+
+
 # 5.7.0 (2025-10-15)
 
 
