@@ -37,7 +37,20 @@ class Bootstrap {
 			const webpack = await import('@steambrew/client/build/webpack');
 
 			window.SP_REACT = webpack.findModule((m) => m.Component && m.PureComponent && m.useLayoutEffect);
-			window.SP_REACTDOM = webpack.findModule((m) => m.createPortal && m.createRoot);
+			window.SP_REACTDOM = {
+				...webpack.findModule((m) => m.createPortal && m.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE),
+				...webpack.findModule((m) => m.createRoot),
+			};
+
+			const jsx = webpack.findModule((m) => m.jsx && Object.keys(m).length == 1)?.jsx;
+
+			if (jsx) {
+				window.SP_JSX_FACTORY = {
+					Fragment: window.SP_REACT.Fragment,
+					jsx,
+					jsxs: jsx,
+				};
+			}
 		}
 
 		this.logger.log('Injecting Millennium frontend library...');

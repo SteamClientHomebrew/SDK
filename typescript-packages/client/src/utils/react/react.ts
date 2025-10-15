@@ -7,6 +7,7 @@ declare global {
 	interface Window {
 		SP_REACT: typeof React;
 		SP_REACTDOM: any;
+		SP_JSX_FACTORY: any;
 	}
 }
 
@@ -33,8 +34,24 @@ export function createPropListRegex(propList: string[], fromStart: boolean = tru
 
 let oldHooks = {};
 
+function getReactInternals(): any {
+	const react = window.SP_REACT as any;
+	let internals =
+		/** react <18 */
+		react?.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED ??
+		/** react >18 */
+		react?.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+
+	if (!internals) {
+		console.error('[getReactInternals] Could not find React internals');
+		return null;
+	}
+
+	return Object.values(internals).find((module: any) => module?.useEffect && module?.useContext && module?.useRef && module?.useState);
+}
+
 export function applyHookStubs(customHooks: any = {}): any {
-	const hooks = (window.SP_REACT as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher.current;
+	const hooks = getReactInternals();
 
 	// TODO: add more hooks
 
@@ -66,7 +83,7 @@ export function applyHookStubs(customHooks: any = {}): any {
 }
 
 export function removeHookStubs() {
-	const hooks = (window.SP_REACT as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher.current;
+	const hooks = getReactInternals();
 	Object.assign(hooks, oldHooks);
 	oldHooks = {};
 }

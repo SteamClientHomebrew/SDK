@@ -10,6 +10,7 @@ export * from './constSysfsExpr';
 export * from './utils';
 export * from './webpack';
 
+import { JSX } from 'react';
 import ErrorBoundaryHook from './hooks/error-boundary-hook';
 import RouterHook from './hooks/router/router-hook';
 import Toaster from './hooks/toaster-hook';

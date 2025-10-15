@@ -40,6 +40,7 @@ export default {
 		resolve(),
 		commonjs(),
 		externalGlobals({
+			'react/jsx-runtime': 'SP_JSX_FACTORY',
 			react: 'SP_REACT',
 			'react-dom': 'SP_REACTDOM',
 		}),

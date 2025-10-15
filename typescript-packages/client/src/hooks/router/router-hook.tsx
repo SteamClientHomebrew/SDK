@@ -1,4 +1,4 @@
-import { FC, ReactElement, ReactNode, cloneElement, createElement, useEffect } from 'react';
+import { FC, JSX, ReactElement, ReactNode, cloneElement, createElement, useEffect } from 'react';
 import type { Route } from 'react-router';
 
 import { MillenniumGlobalComponentsState, MillenniumGlobalComponentsStateContextProvider, useMillenniumGlobalComponentsState } from './GlobalComponentsState';
@@ -260,18 +260,17 @@ class RouterHook extends Logger {
 
 	private gamepadRouterWrapper({ children }: { children: ReactElement }) {
 		// Used to store the new replicated routes we create to allow routes to be unpatched.
-
 		const { routes, routePatches } = useMillenniumRouterState();
+
 		// TODO make more redundant
-		if (!children?.props?.children?.[0]?.props?.children) {
+		if (!(children?.props as any)?.children?.[0]?.props?.children) {
 			this.debug('routerWrapper wrong component?', children);
 			return children;
 		}
-		const mainRouteList = children.props.children[0].props.children;
-		const ingameRouteList = children.props.children[1].props.children; // /appoverlay and /apprunning
+		const mainRouteList = (children as any).props.children[0].props.children;
+		const ingameRouteList = (children as any).props.children[1].props.children; // /appoverlay and /apprunning
 		this.processList(mainRouteList, routes, routePatches.get(EUIMode.GamePad), true, this.Route);
 		this.processList(ingameRouteList, null, routePatches.get(EUIMode.GamePad), false, this.Route);
-
 		this.debug('Rerendered gamepadui routes list');
 		return children;
 	}

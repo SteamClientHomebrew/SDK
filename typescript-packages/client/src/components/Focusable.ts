@@ -17,6 +17,4 @@ export interface FocusableProps extends HTMLAttributes<HTMLDivElement>, FooterLe
 const focusableRegex = createPropListRegex(['flow-children', 'onActivate', 'onCancel', 'focusClassName', 'focusWithinClassName']);
 
 /** @component React Components */
-export const Focusable = findModuleExport((e: Export) => e?.render?.toString && focusableRegex.test(e.render.toString())) as FC<
-	FocusableProps & RefAttributes<HTMLDivElement>
->;
+export const Focusable = findModuleExport((e: Export) => e?.toString && focusableRegex.test(e.toString())) as FC<FocusableProps & RefAttributes<HTMLDivElement>>;
