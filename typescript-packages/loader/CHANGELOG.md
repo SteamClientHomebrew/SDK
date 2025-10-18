@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 5.8.0 (2025-10-18)
+
+
+### Features
+
+* fix Quick CSS on webkit until next Millennium release ([ccd7eb1](https://github.com/SteamClientHomebrew/SDK/commit/ccd7eb15c51cb26ef673c3ba396a9358a0175c4f))
+
+
+
+
+
 ## 5.7.4 (2025-10-18)
 
 
