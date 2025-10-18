@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.7.4 (2025-10-18)
+
+
+### Bug Fixes
+
+* QuickCss failing when user is not on the millennium alpha version ([4c30e87](https://github.com/SteamClientHomebrew/PluginComponents/commit/4c30e87e5c1e921624ad4eeb8de92c46af2a6c32))
+
+
+
+
+
 ## 5.7.3 (2025-10-18)
 
 
