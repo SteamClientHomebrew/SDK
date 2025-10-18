@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.7.3 (2025-10-18)
+
+
+### Bug Fixes
+
+* more explicit SP_REACTDOM definition on react 18 vs 19 ([ad4786a](https://github.com/SteamClientHomebrew/SDK/commit/ad4786aa7ac41f1ccf0792ce35cede6a94e9c840))
+
+
+
+
+
 ## 5.7.2 (2025-10-15)
 
 **Note:** Version bump only for package @steambrew/api
