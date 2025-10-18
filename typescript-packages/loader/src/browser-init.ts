@@ -23,7 +23,7 @@ export async function appendAccentColor() {
 
 export async function appendQuickCss() {
 	try {
-		const quickCss: string = JSON.parse(await Millennium.callServerMethod('core', 'Core_LoadQuickCss'));
+		const quickCss: string = await Millennium.callServerMethod('core', 'Core_LoadQuickCss');
 		addStyleSheetFromText(document, quickCss, 'MillenniumQuickCss');
 	} catch {}
 }
