@@ -22,8 +22,10 @@ export async function appendAccentColor() {
 }
 
 export async function appendQuickCss() {
-	const quickCss: string = JSON.parse(await Millennium.callServerMethod('core', 'Core_LoadQuickCss'));
-	addStyleSheetFromText(document, quickCss, 'MillenniumQuickCss');
+	try {
+		const quickCss: string = JSON.parse(await Millennium.callServerMethod('core', 'Core_LoadQuickCss'));
+		addStyleSheetFromText(document, quickCss, 'MillenniumQuickCss');
+	} catch {}
 }
 
 export async function addPluginDOMBreadCrumbs(enabledPlugins: string[] = []) {
