@@ -72,12 +72,14 @@ export const findModuleDetailsByExport = (
 			if (minExports && Object.keys(mod).length < minExports) continue;
 			for (let exportName in mod) {
 				if (mod?.[exportName]) {
-					const filterRes = filter(mod[exportName], exportName);
-					if (filterRes) {
-						return [mod, mod[exportName], exportName, id];
-					} else {
-						continue;
-					}
+					try {
+						const filterRes = filter(mod[exportName], exportName);
+						if (filterRes) {
+							return [mod, mod[exportName], exportName, id];
+						} else {
+							continue;
+						}
+					} catch {}
 				}
 			}
 		}
