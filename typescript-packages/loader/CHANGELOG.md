@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.8.2 (2025-11-26)
+
+
+### Bug Fixes
+
+* Fix symbol errors when finding modules on new Steam beta ([bb140ef](https://github.com/SteamClientHomebrew/SDK/commit/bb140efbc7b9b7e2b02459bcaea4468c33b0f1c2))
+
+
+
+
+
 ## 5.8.1 (2025-11-16)
 
 **Note:** Version bump only for package @steambrew/api
