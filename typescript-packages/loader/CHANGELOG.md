@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.8.3 (2025-11-30)
+
+
+### Bug Fixes
+
+* Fix quick CSS not properly being added to DOM ([b13442c](https://github.com/SteamClientHomebrew/SDK/commit/b13442c7ffd03a360c1357a632a070d445a9dddf))
+
+
+
+
+
 ## 5.8.2 (2025-11-26)
 
 
