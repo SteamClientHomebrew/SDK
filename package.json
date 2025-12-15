@@ -8,9 +8,6 @@
 		"docs": "typedoc"
 	},
 	"devDependencies": {
-		"@commitlint/config-conventional": "^19.8.1",
-		"commitlint": "^19.8.1",
-		"husky": "^9.1.7",
 		"lerna": "^8.2.3",
 		"typedoc": "^0.28.5",
 		"typedoc-plugin-frontmatter": "^1.3.0",
