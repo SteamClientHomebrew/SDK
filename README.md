@@ -1,3 +1,6 @@
+> [!WARNING]
+> This repository has been archived and is no longer used. All related code is now directly apart of the Millennium repo. 
+
 # Millennium SDK
 
 ## Introduction
